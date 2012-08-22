@@ -1,0 +1,24 @@
+<!DOCTYPE html> 
+<html>
+<head>
+<meta charset="utf-8">
+<title>签到成功</title>
+<link href="jquery-mobile/jquery.mobile-1.1.0.css" rel="stylesheet" type="text/css"/>
+<script src="jquery-mobile/jquery-1.7.1.js" type="text/javascript"></script>
+<script src="jquery-mobile/jquery.mobile-1.1.0.js" type="text/javascript"></script>
+<script src="cordova.js" type="text/javascript"></script>
+<script src="usercheck.js" type="text/javascript"></script>
+</head>
+
+<body>
+<input type="button" value="签到成功" onclick="gohome()">
+<script type="text/javascript">
+function gohome(){
+var url=window.location.href;
+var arg1=url.split("=");
+var code=arg1[1];
+  window.location.href ='http://localhost/ucar/logined.html?grant_type=authorization_code&client_id=100284268&client_secret=f19d0810fc0674500e9acf25d467aeb7&state=false&code='+code;
+}
+</script>
+</body>
+</html>
