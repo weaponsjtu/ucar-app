@@ -1,0 +1,98 @@
+<!DOCTYPE html> 
+<html>
+<head>
+<meta charset="utf-8">
+<title>分享页面</title>
+<link href="jquery-mobile/jquery.mobile-1.2.0-alpha.1.css" rel="stylesheet" type="text/css"/>
+<script src="jquery-mobile/jquery-1.7.2.js" type="text/javascript"></script>
+<script src="jquery-mobile/jquery.mobile-1.2.0-alpha.1.js" type="text/javascript"></script>
+<script src="cordova.js" type="text/javascript"></script>
+<script type="text/javascript" src="http://qzonestyle.gtimg.cn/qzone/openapi/qc_loader.js" data-appid="100284268" data-redirecturi="http://ihavecar.sinaapp.com/qc_callback.html" charset="utf-8"></script>
+<script type="text/javascript" src="jquery.raty.js"></script>
+<script type="text/javascript">
+$(function() {
+	$('div#star').raty({
+		size:      24,
+		starHalf:  'star-half-big.png',
+		starOff:   'star-off-big.png',
+		starOn:    'star-on-big.png'
+	});
+});
+</script>
+
+<style type="text/css">
+#sina {
+	background: url('img/ucar_icon.gif') 0 0 no-repeat;
+	width: 16px;
+	height: 16px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div data-role="page">
+
+ <div data-role="header" data-theme="b">
+   <a href="">返回</a>
+   <h1>点评与分享</h1>
+   <a href="">发送</a>
+ </div>
+ 
+ <div data-role="content">
+    <label for="textarea-a">发表评论: <span style="float:right;">140字</span></label>
+	<textarea name="textarea" id="textarea-a"></textarea>
+    
+    
+    <div><span style="float:right;">我要分享到&nbsp;&nbsp;<img id="sina"></img></span></div>
+ </div>
+ 
+ <div data-role="footer">
+   <h4>当前位置:&nbsp;&nbsp;<b id="current"></b></h4>
+ </div>
+
+
+
+<!--
+<br>
+<div id="star"></div>
+        <br>
+<div>
+        请输入内容<input type="text" name="content" height="100" width="220"/><br>
+        <label>
+      <input type="checkbox" name="CheckboxGroup" value="复选框" id="sina_share">
+      分享至sina</label>
+    <br>
+    <label>
+      <input type="checkbox" name="CheckboxGroup" value="复选框" id="QQ_share">
+    分享至QQ</label>
+<br>
+<input id="post_data" type="button" onClick="share()" value="评价">
+</div>-->
+
+<script type="text/javascript">
+var star=new Array("★","★★","★★★","★★★★","★★★★★");
+function share(){
+	var score = $('#star').raty('score');
+	var con = document.getElementsByName('content');
+	var check = document.getElementsByName('CheckboxGroup');	
+	for(i=0;i<check.length;i++){
+		if(check[i].checked){
+			if(check[i].id=="QQ_share"){
+				$.ajax({type:'POST',async:false, url:'https://graph.qq.com/t/add_t',data:{access_token:"40E4FBB667C41EBD4656236CB917EFC4",oauth_consumer_key:"100284268",openid:"D08D45C9F3E2F67A5B96EA312FFF61D8",content:"我正在某某地干嘛"+con[0].value+"  "+star[score-1]}});
+			}
+			if(check[i].id=="sina_share"){
+				$.ajax({type:'POST',async:false, url:'https://api.weibo.com/2/statuses/update.json',data:{access_token:"2.00zf_UtBILdqSE750dcc0906gRNEaE",uid:"1736056791",client_id:"3943049038",status:"我在这里xxxx，我觉得"+con[0].value+" ，我打"+star[score-1],lat:31.176173,long:121.127916}});
+			}
+		}
+	}
+	$.ajax({type:'POST',async:false, url:'http://ihavecar.sinaapp.com/postcomment.php?shopid=1&userid=test@test.cn&userscore='+score+'&content="'+con[0].value+'"'});
+
+	window.location.href ='shoppage.html';
+}
+
+</script>
+</body>
+</html>

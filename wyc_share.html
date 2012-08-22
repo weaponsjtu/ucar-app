@@ -1,0 +1,142 @@
+<!DOCTYPE html> 
+<html>
+<head>
+<meta charset="utf-8">
+<title>分享页面</title>
+<link href="jquery-mobile/jquery.mobile-1.2.0-alpha.1.css" rel="stylesheet" type="text/css"/>
+<script src="jquery-mobile/jquery-1.7.2.js" type="text/javascript"></script>
+<script src="jquery-mobile/jquery.mobile-1.2.0-alpha.1.js" type="text/javascript"></script>
+<script src="cordova.js" type="text/javascript"></script>
+<script type="text/javascript" src="http://qzonestyle.gtimg.cn/qzone/openapi/qc_loader.js" data-appid="100284268" data-redirecturi="http://ihavecar.sinaapp.com/qc_callback.html" charset="utf-8"></script>
+<script type="text/javascript" src="jquery.raty.js"></script>
+<script type="text/javascript">
+$(function() {
+	$('div#star').raty({
+		size:      24,
+		starHalf:  'star-half-big.png',
+		starOff:   'star-off-big.png',
+		starOn:    'star-on-big.png'
+	});
+});
+</script>
+</head>
+
+<body>
+<br>
+<div id="star"></div>
+        <br>
+<div>
+        请输入内容<input type="text" name="content" height="100" width="220"/><br>
+        <label>
+<div id="address"></div>
+<input id="post_data" type="button" onClick="address()" value="位置">
+<input id="post_data" type="button" onClick="share()" value="评价">
+</div>
+
+<script type="text/javascript">
+var star=new Array("★","★★","★★★","★★★★","★★★★★");
+
+var url=window.location.href;
+var arg=url.split("=");
+var shopid=arg[1];
+
+var share_set;
+var sina_accesstoken;
+var sina_openid;
+var qq_accesstoken;
+var qq_uid;
+var shopadd="金陵东路1024号";
+var shopname;
+var lat=31.391540;
+var long=121.466980;
+var score;
+var sina_share=1;
+var qq_share=0;
+
+var add_flag=1;//是否显示位置信息
+var html='';
+
+readfile();
+
+function address(){
+	if(add_flag%2==1){
+	html='';
+	html+='<tr><td> 当前位置：'+shopadd+'</td></tr>';
+	$('#address').html(html);
+	add_flag++;
+	}
+	else{
+		html='';
+		$('#address').html(html);
+		add_flag++;
+	}
+}
+
+function readfile() {
+	document.addEventListener("deviceready", onDeviceReady, false);
+    // PhoneGap is ready
+    function onDeviceReady() {
+        window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, gotFS, fail);
+    }
+
+    function gotFS(fileSystem) {
+        fileSystem.root.getFile("ucar/DataFile.txt", {create: true}, gotFileEntry, fail);
+    }
+
+    function gotFileEntry(fileEntry) {
+        fileEntry.file(gotFile, fail);
+    }
+
+    function gotFile(file){
+        readAsText(file);
+    }
+
+    function readAsText(file) {
+				//alert("hello");
+        var reader = new FileReader();
+        reader.onloadend = function(evt) {
+            //console.log("Read as text");
+            //console.log(evt.target.result);
+			var arg=evt.target.result.split(";");
+			for(i=0;i<3;i++){
+				var arg1=arg[i].split("=");
+				if(arg1[0]=="sina_accesstoken"){
+					sina_accesstoken=arg1[1];
+				}
+				if(arg1[0]=="sina_openid"){
+					sina_openid=arg1[1];
+				}
+			}
+        };
+        reader.readAsText(file);
+    }
+
+    function fail(evt) {
+        console.log(evt.target.error.code);
+    }
+}
+
+function share(){
+	var score = $('#star').raty('score');
+	var con = document.getElementsByName('content');	
+//alert(sina_share);
+	if(qq_share==1){
+		$.ajax({type:'POST',async:false, url:'https://graph.qq.com/t/add_t',data:{access_token:"40E4FBB667C41EBD4656236CB917EFC4",oauth_consumer_key:"100284268",openid:"D08D45C9F3E2F67A5B96EA312FFF61D8",content:"	我正在某某地干嘛"+con[0].value+"  "+star[score-1]}});
+	}
+	if(sina_share==1){
+		//alert(add_flag);
+		if(add_flag%2==0){
+		$.ajax({type:'POST',async:false, url:'https://api.weibo.com/2/statuses/update.json',data:{access_token:sina_accesstoken,uid:sina_openid,client_id:"3943049038",status:con[0].value+" 评分："+star[score-1]+" ＃宝山汽修＃",lat:lat,long:long}});}
+		else{
+		$.ajax({type:'POST',async:false, url:'https://api.weibo.com/2/statuses/update.json',data:{access_token:sina_accesstoken,uid:sina_openid,client_id:"3943049038",status:con[0].value+" 评分："+star[score-1]+" ＃宝山汽修＃"}});}
+	}
+		
+	$.ajax({type:'POST',async:false, url:'http://ihavecar.sinaapp.com/postcomment.php?shopid='+shopid+'&userid=1736056791&userscore='+score+'&content="'+con[0].value+'"'});
+
+	window.location.href ='shoppage.html';
+}
+
+</script>
+</body>
+
+</html>

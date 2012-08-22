@@ -1,0 +1,95 @@
+<!DOCTYPE html> 
+<html>
+<head>
+<meta charset="utf-8">
+<title>账号设置</title>
+<link href="jquery-mobile/jquery.mobile-1.1.0.css" rel="stylesheet" type="text/css"/>
+<script src="jquery-mobile/jquery-1.7.1.js" type="text/javascript"></script>
+<script src="jquery-mobile/jquery.mobile-1.1.0.js" type="text/javascript"></script>
+<script src="cordova.js" type="text/javascript"></script>
+</head>
+
+<body>
+<input type="button" id="back" value="返回" onClick="goback()">
+<div id="user"></div>
+<div>
+<input type="button" id="sinalogin" value="新浪登录" onClick="sinalogin()">
+<input type="button" id="qqlogin" value="腾讯登录" onClick="getname()" />
+</div>
+<div>你可以随时关闭与合作平台的分享设置</div>
+<script type="text/javascript">
+var url=window.location.href;
+var arg1=url.split("=");
+var arg2=arg1[1].split("&");
+var sinaid=arg1[2];
+var accesstoken=arg2[0];
+var nickname;
+var image;
+$.ajaxSettings.async = false;
+$.getJSON('https://api.weibo.com/2/users/show.json?callback=?', 
+  {access_token:accesstoken, uid:sinaid},
+  function(json){
+	//console.info(json);
+	nickname=json.data.screen_name;
+	image=json.data.profile_image_url;
+	$.ajax({type:'POST',async:false, url:'http://ihavecar.sinaapp.com/postuser.php?nickname='+nickname+'&photo='+image});
+	var html='<table>';
+	html+='<tr><td><img src="'+image+'" width="60" height="60"></td>';
+	html+='<td>'+nickname+'  </td>';
+	html+='</tr></table>';
+	$('#user').html(html);
+}
+);
+
+function goback(){
+	window.history.back(-1);
+}
+function sinalogin(){
+	window.location.href ='https://api.weibo.com/oauth2/authorize?client_id=3943049038&redirect_uri=http://ihavecar.sinaapp.com/logined.html&response_type=token';
+}
+
+function writefile(){
+	//等待加载PhoneGap
+
+	document.addEventListener("deviceready", onDeviceReady, false);
+
+	// PhoneGap加载完毕
+
+	function onDeviceReady() {
+		window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, gotFS, fail);
+	}
+         //获取newFile目录，如果不存在则创建该目录
+	function gotFS(fileSystem) {
+		newFile = fileSystem.root.getDirectory("newFile", {create : true,exclusive : false}, writerFile, fail);		
+	}
+	//获取newFile目录下面的dataFile.txt文件，如果不存在则创建此文件
+	function writerFile(newFile) {
+		newFile.getFile("dataFile.txt", {create : true,exclusive : false}, gotFileEntry, fail);
+	}
+	
+	function gotFileEntry(fileEntry) {
+		fileEntry.createWriter(gotFileWriter, fail);
+	}
+
+	function gotFileWriter(writer) {
+		writer.onwrite = function(evt) {
+			alert("write success");
+		};
+		writer.write("some sample text");
+		// 文件当前内容是"some sample text"
+		writer.truncate(11);
+		// 文件当前内容是"some sample" 
+		writer.seek(4);
+		// 文件当前内容依然是"some sample"，但是文件的指针位于"some"的"e"之后
+		writer.write(" different text");
+		// 文件的当前内容是"some different text"
+	}
+
+	function fail(error) {
+		alert("Failed to retrieve file:" + error.code);
+	}
+	// 检索一个已存在的文件，如果该文件不存在时则创建该文件
+}
+</script>
+</body>
+</html>

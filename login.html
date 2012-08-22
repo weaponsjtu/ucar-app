@@ -1,0 +1,152 @@
+<!DOCTYPE html> 
+<html>
+<head>
+<meta charset="utf-8">
+<title>账号设置</title>
+<link href="jquery-mobile/jquery.mobile-1.2.0-alpha.1.css" rel="stylesheet" type="text/css"/>
+<script src="jquery-mobile/jquery-1.7.2.js" type="text/javascript"></script>
+<script src="jquery-mobile/jquery.mobile-1.2.0-alpha.1.js" type="text/javascript"></script>
+<script src="cordova.js" type="text/javascript"></script>
+<style type="text/css">
+#main {
+	background:url("img/back.jpg") repeat;
+}
+
+#account {
+	border-radius: 15px;
+	border-style: solid;
+	border-color: white;
+	border-width: 1px;
+	background-color: white;
+	margin: 0 10px;
+}
+
+.center {
+	text-align:center;
+}
+</style>
+
+</head>
+
+<body>
+
+<div id="main" data-role="page">
+ <div data-role="header"  data-theme="b">
+   <a href="" onclick="window.history.back('-1')" rel="external">返回</a>
+   <h1>账号设置</h1>
+ </div>
+ 
+ <div data-role="content">
+   <h1>快速登录</h1>
+   <p>请选择一个账号登录与绑定</p>
+   <div id="account">
+     <ul data-role="listview">
+       <li><a id="sinalogin" onClick="sinalogin()">新浪登录</a></li>
+       <li><a id="qqlogin" onClick="qqlogin()">腾讯登录</a></li>
+       <li><a>人人登录</a></li>
+       <li><a>Gmail登录</a></li>
+     </ul>
+   </div>
+   
+   <!--<div data-role="fieldcontain">
+   <p>请选择一个账号登录与绑定</p>
+    <fieldset data-role="controlgroup">
+        <input type="checkbox" name="checkbox-1a" id="checkbox-1a" class="custom" />
+        <label for="checkbox-1a">新浪登录</label>
+
+        <input type="checkbox" name="checkbox-2a" id="checkbox-2a" class="custom" />
+        <label for="checkbox-2a">腾讯登录</label>
+
+        <input type="checkbox" name="checkbox-3a" id="checkbox-3a" class="custom" />
+        <label for="checkbox-3a">人人登录</label>
+
+        <input type="checkbox" name="checkbox-4a" id="checkbox-4a" class="custom" />
+        <label for="checkbox-4a">Gmail登录</label>
+    </fieldset>
+    </div>
+   
+   <table id="account">
+     <tr>
+      <td>
+       <div id="sinalogin" onClick="sinalogin()">新浪登录</div>
+       <hr size="1" color="#AAA"   align="center" />
+       <div id="qqlogin" onClick="qqlogin()">腾讯登录</div>
+      </td>
+     </tr>
+   </table>-->
+   <p style="text-align: right;">您可以随时关闭与合作平台的分享设置</p>
+   
+   <p class="center">点击阅读隐私声明</p>
+   <p class="center">如您选择登录即视为同意并愿意遵守原则</p>
+ </div>
+ 
+  <div data-role="footer">
+   <h3>当前位置:<b id="current"></b></h3>
+ </div>
+ 
+</div>
+
+<!--
+<input type="button" id="back" value="返回" onClick="goback()"/>
+<div>快速登录<br>请选择一个账号登录与绑定</div>
+
+<div>
+<input type="button" id="sinalogin" value="新浪登录" onClick="sinalogin()"/>
+<input type="button" id="qqlogin" value="腾讯登录" onClick="qqlogin()"/>
+</div>
+<div>你可以随时关闭与合作平台的分享设置</div>-->
+<script type="text/javascript">
+function goback(){
+	window.history.back(-1);
+}
+function sinalogin(){
+	window.location.href ='https://api.weibo.com/oauth2/authorize?client_id=3943049038&redirect_uri=http://ihavecar.sinaapp.com/success.html&response_type=token';
+}
+function qqlogin(){
+	window.location.href ='https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id=100284268&redirect_uri=http://ihavecar.sinaapp.com/qqsuccess.html';
+}
+function writefile(){
+	//等待加载PhoneGap
+	document.addEventListener("deviceready", onDeviceReady, false);
+
+	// PhoneGap加载完毕
+
+	function onDeviceReady() {
+		window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, gotFS, fail);
+	}
+         //获取newFile目录，如果不存在则创建该目录
+	function gotFS(fileSystem) {
+		newFile = fileSystem.root.getDirectory("newFile", {create : true,exclusive : false}, writerFile, fail);		
+	}
+	//获取newFile目录下面的dataFile.txt文件，如果不存在则创建此文件
+	function writerFile(newFile) {
+		newFile.getFile("dataFile.txt", {create : true,exclusive : false}, gotFileEntry, fail);
+	}
+	
+	function gotFileEntry(fileEntry) {
+		fileEntry.createWriter(gotFileWriter, fail);
+	}
+
+	function gotFileWriter(writer) {
+		writer.onwrite = function(evt) {
+			alert("write success");
+		};
+		writer.write("some sample text");
+		// 文件当前内容是"some sample text"
+		writer.truncate(11);
+		// 文件当前内容是"some sample" 
+		writer.seek(4);
+		// 文件当前内容依然是"some sample"，但是文件的指针位于"some"的"e"之后
+		writer.write(" different text");
+		// 文件的当前内容是"some different text"
+	}
+
+	function fail(error) {
+		alert("Failed to retrieve file:" + error.code);
+	}
+	// 检索一个已存在的文件，如果该文件不存在时则创建该文件
+}
+
+</script>
+</body>
+</html>
