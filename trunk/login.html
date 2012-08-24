@@ -7,6 +7,8 @@
 <script src="jquery-mobile/jquery-1.7.2.js" type="text/javascript"></script>
 <script src="jquery-mobile/jquery.mobile-1.2.0-alpha.1.js" type="text/javascript"></script>
 <script src="cordova.js" type="text/javascript"></script>
+<script type="text/javascript"
+src="http://qzonestyle.gtimg.cn/qzone/openapi/qc_loader.js" data-appid="100284268" data-redirecturi="http://ihavecar.sinaapp.com" charset="utf-8"></script>
 <style type="text/css">
 #main {
 	background:url("img/back.jpg") repeat;
@@ -100,10 +102,12 @@ function goback(){
 	window.history.back(-1);
 }
 function sinalogin(){
-	window.location.href ='https://api.weibo.com/oauth2/authorize?client_id=3943049038&redirect_uri=http://ihavecar.sinaapp.com/success.html&response_type=token';
+	window.location.href='http://1.ihavecar.sinaapp.com/client/login.html';
+	/*window.location.href ='https://api.weibo.com/oauth2/authorize?client_id=3943049038&redirect_uri=http://ihavecar.sinaapp.com/success.html&response_type=token';*/
 }
 function qqlogin(){
-	window.location.href ='https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id=100284268&redirect_uri=http://ihavecar.sinaapp.com/qqsuccess.html';
+	QC.Login.showPopup({appId:"100284268",redirect_URI:"http://ihavecar.sinaapp.com"});
+	/*window.location.href ='https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id=100284268&redirect_uri=http://ihavecar.sinaapp.com/qqsuccess.html';*/
 }
 function writefile(){
 	//等待加载PhoneGap
