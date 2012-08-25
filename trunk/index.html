@@ -22,6 +22,8 @@
 
 <script type="text/javascript">
 
+
+
 function getGPS()
 {
 	var gps = navigator.geolocation;
@@ -39,6 +41,7 @@ function getGPS()
 		showgps();
 	}
 }
+
 
 /*
 //移动版
@@ -69,7 +72,6 @@ function showgps(position)
 
 
 function translateCallback (point) {
-	map = new BMap.Map("container");
 	map.centerAndZoom(point, 15);
 	
 	//给地图添加监听器，移除信息框
@@ -83,7 +85,7 @@ function translateCallback (point) {
 					overlays[i].close();
 				}
 				if (overlays[i] instanceof BMap.Marker) {
-					var myIcon_Y = new BMap.Icon("img/定位PIN-黄.png", new BMap.Size(25, 34), {
+					var myIcon_Y = new BMap.Icon("img/pinY.png", new BMap.Size(25, 34), {
      		  			anchor: new BMap.Size(12, 34),
 					});
 					overlays[i].setIcon(myIcon_Y);
@@ -100,37 +102,21 @@ function translateCallback (point) {
 	 }  
 	});
 	
-	//map.enablePinchToZoom();
+	map.enablePinchToZoom();
 	
 	showYourPosition(map,point);
-	
-	
-	map.disableDoubleClickZoom();
-	map.disableDragging();
 }
 
 function showYourPosition(map,point)
 {
-	var myIcon = new BMap.Icon("img/定位标记.png", new BMap.Size(32, 32), {
+	var myIcon = new BMap.Icon("img/position.png", new BMap.Size(32, 32), {
          anchor: new BMap.Size(12, 34),
 	});
 	var marker =new BMap.Marker(point, {icon: myIcon});
 	map.addOverlay(marker);
-	//var label1 = new BMap.Label("yourposition");
-	//label1.setOffset(new BMap.Size(10,-10));
-	//marker.setLabel(label1);
-	/*
-	var point1= new BMap.Point(121.43659,31.01726);
-	var marker1 =new BMap.Marker(point1);
-	map.addOverlay(marker1);*/
-
 }
 
 function ucar(map, type, lng, lat) {
-	
-	
-	//map.removeViewAt(1);
-	
 	//显示搜索框
 	$("#searchBox").css("display", "block");
 	
@@ -139,13 +125,13 @@ function ucar(map, type, lng, lat) {
 	map.clearOverlays();
 	
 	//显示当前位置
-	//getGPS();
+	getGPS();
 	
 	if (lng != "" && lat != "") {
 		var newpoint = new BMap.Point(lng.valueOf(),lat.valueOf());
 		map.centerAndZoom(newpoint, 15);
 		
-		var myIcon_Y = new BMap.Icon("img/定位PIN-黄.png", new BMap.Size(25, 34), {
+		var myIcon_Y = new BMap.Icon("img/pinY.png", new BMap.Size(25, 34), {
      		  anchor: new BMap.Size(12, 34),
 		});
 		var searchMarker =new BMap.Marker(newpoint, {icon: myIcon_Y});
@@ -185,10 +171,8 @@ function ucar(map, type, lng, lat) {
 	ZoomControl_TR.prototype = new BMap.Control();
 	ZoomControl_TR.prototype.initialize = function(map) {
 		var div = document.createElement("div");
-		div.appendChild(document.createTextNode("刷新"));
+		div.innerHTML = "<img src='img/loading.jpg'>";
 		div.style.cursor = "pointer";
-		div.style.border = "1px solid gray";
-		div.style.backgroundColor = "white";
 		div.onclick = function (e) {
 			if (type == 1) {
 				showRepairPlace(map);
@@ -213,13 +197,8 @@ function ucar(map, type, lng, lat) {
 	ZoomControl_BL.prototype.initialize = function(map) {
 		var div = document.createElement("div");
 		div.innerHTML = "<img src='img/home.jpg'>";
-		//div.appendChild(document.createTextNode("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;返回&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"));
-		//div.style.width = screen.availWidth;
-		
+
 		div.style.cursor = "pointer";
-		div.style.border = "1px solid white";
-		div.style.color = "white";
-		//div.style.backgroundColor = "#222";
 		div.onclick = function (e) {
 			self.location = "index.html";
 		}
@@ -238,18 +217,10 @@ function ucar(map, type, lng, lat) {
 	ZoomControl_BR.prototype = new BMap.Control();
 	ZoomControl_BR.prototype.initialize = function(map) {
 		var div = document.createElement("div");
-		div.innerHTML = "<img class='icon' src='img/定位按钮.png'>";
-		//div.appendChild(document.createTextNode("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;返回&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"));
-		//div.style.width = screen.availWidth;
-		
+		div.innerHTML = "<img class='icon' src='img/pin.png'>";
 		div.style.cursor = "pointer";
-		div.style.border = "1px solid white";
-		div.style.color = "white";
-		//div.style.backgroundColor = "#222";
 		div.onclick = function (e) {
-			//self.location = "index.html";
 			getGPS();
-
 			if (type == 1) {
 				showRepairPlace(map);
 			} else if (type == 2) {
@@ -263,8 +234,6 @@ function ucar(map, type, lng, lat) {
 	}
 	var myZoomCtrl_BR = new ZoomControl_BR();
 	map.addControl(myZoomCtrl_BR);
-	
-	map.enableDragging();
 }
 
 
@@ -290,6 +259,7 @@ function settings(){
 
 $(document).ready(function() {
 //$(document).bind("pageinit", function(){
+	map = new BMap.Map("container");
 	$("#container").css("height", document.body.clientHeight - $("#container").offset().top - $("#footer").height());
 	var type = request("type");
 	if(type.indexOf("1") != -1){
@@ -308,14 +278,12 @@ $(document).ready(function() {
 	} else {
 		//$("#infobox").popup("open");
 	}
-    showgps();
+    getGPS();
 });
 
 $(window).load(function() {
 	var lng = request("lng");
 	var lat = request("lat");
-	
-	//alert(lng + "fd" + lat);
 	
 	var type = request("type");
 	if(type.indexOf("1") != -1){
@@ -352,10 +320,6 @@ ac.addEventListener("onconfirm", function(e) {    //鼠标点击下拉列表后�
 	border-color: white;
 	border-width: 1px;
 }
-
-/*#shopinfo {
-	background: url("img/悬浮框.png") no-repeat -384px 0px;
-}*/
 
 .left {
 	float: left;
@@ -401,16 +365,16 @@ table td {
         <h1><a href="#infobox"  data-rel="popup" data-role="button" data-icon="search" data-iconpos="right" data-position-to="#container" id="title" data-transition="slidedown">首页</a></h1>
 		<div id="infobox" data-role="popup" data-theme="none" class="ui-content box">
           <div>
-           <div id='repair' class='left' onclick='repair(map)'><img src='img/图标-维修.png' class='icon'><div class='label center'>保养与维修</div></div>
-           <div id='gasoline' class='left' onclick='gasoline(map)'><img src='img/图标-加油.png' class='icon' ><div class='label center'>加油站</div></div>
-	       <div id='park' class='left'><img src='img/图标-停车.png' class='icon'><div class='label center'>停车场</div></div>
-	       <div id='collect' class='left' onclick='collect()'><img src='img/图标-收藏.png' class='icon'><div class='label center'>我的收藏</div></div>
-	       <div id='setting' class='left' onclick='settings()'><img src='img/图标-设置.png' class='icon'><div class='label center'>设置</div></div>
+           <div id='repair' class='left' onclick='repair(map)'><img src='img/repair.png' class='icon'><div class='label center'>保养与维修</div></div>
+           <div id='gasoline' class='left' onclick='gasoline(map)'><img src='img/gasoline.png' class='icon' ><div class='label center'>加油站</div></div>
+	       <div id='park' class='left'><img src='img/park.png' class='icon'><div class='label center'>停车场</div></div>
+	       <div id='collect' class='left' onclick='collect()'><img src='img/collect.png' class='icon'><div class='label center'>我的收藏</div></div>
+	       <div id='setting' class='left' onclick='settings()'><img src='img/settings.png' class='icon'><div class='label center'>设置</div></div>
 	       <div class='clear'></div>
           </div>
           <div style="float: right">
-             <div style="float: right"><img src='img/未登录头像.png' class='icon'></div>
-             <div style="float: right; text-align:justify">
+             <div style="float: right"><img src='img/unlogin.png' class='icon'></div>
+             <div style="float: right;">
                <div class='label' style="font-size: 16px;">未登录</div>
                <div class='label'>点击登录</div>
              </div>
