@@ -3,6 +3,10 @@
 <head>
 <meta name="viewpoint" content="initial-scale=1.0, user-scalable=no"/>
 <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+<link href="jquery-mobile/jquery.mobile-1.2.0-alpha.1.css" rel="stylesheet" type="text/css"/>
+<script src="jquery-mobile/jquery-1.7.2.js" type="text/javascript"></script>
+<script src="jquery-mobile/jquery.mobile-1.2.0-alpha.1.js" type="text/javascript"></script>
+
 <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
 <script type="text/javascript" src="http://api.map.baidu.com/api?v=1.3"></script>
 <script type="text/javascript" src="http://api.map.baidu.com/library/InfoBox/1.2/src/InfoBox_min.js"></script>
@@ -13,9 +17,7 @@
 <script type="text/javascript" src="getUrlParam.js"></script>
 
 
-<link href="jquery-mobile/jquery.mobile-1.2.0-alpha.1.css" rel="stylesheet" type="text/css"/>
-<script src="jquery-mobile/jquery-1.7.2.js" type="text/javascript"></script>
-<script src="jquery-mobile/jquery.mobile-1.2.0-alpha.1.js" type="text/javascript"></script>
+
 <script type="text/javascript" src="jquery.raty.js"></script>
 
 <title>Ucar</title>
@@ -125,7 +127,7 @@ function ucar(map, type, lng, lat) {
 	map.clearOverlays();
 	
 	//显示当前位置
-	getGPS();
+	showgps();
 	
 	if (lng != "" && lat != "") {
 		var newpoint = new BMap.Point(lng.valueOf(),lat.valueOf());
@@ -188,27 +190,6 @@ function ucar(map, type, lng, lat) {
 	var myZoomCtrl_TR = new ZoomControl_TR();
 	map.addControl(myZoomCtrl_TR);
 	
-	//添加返回主页控件
-	function ZoomControl_BL(){
-		this.defaultAnchor = BMAP_ANCHOR_BOTTOM_LEFT;
-		this.defaultOffset = new BMap.Size(10,10);
-	}
-	ZoomControl_BL.prototype = new BMap.Control();
-	ZoomControl_BL.prototype.initialize = function(map) {
-		var div = document.createElement("div");
-		div.innerHTML = "<img src='img/home.jpg'>";
-
-		div.style.cursor = "pointer";
-		div.onclick = function (e) {
-			self.location = "index.html";
-		}
-		map.getContainer().appendChild(div);
-		return div;
-	}
-	var myZoomCtrl_BL = new ZoomControl_BL();
-	map.addControl(myZoomCtrl_BL);
-	
-	
 	//添加定位控件
 	function ZoomControl_BR(){
 		this.defaultAnchor = BMAP_ANCHOR_BOTTOM_RIGHT;
@@ -220,7 +201,7 @@ function ucar(map, type, lng, lat) {
 		div.innerHTML = "<img class='icon' src='img/pin.png'>";
 		div.style.cursor = "pointer";
 		div.onclick = function (e) {
-			getGPS();
+			showgps();
 			if (type == 1) {
 				showRepairPlace(map);
 			} else if (type == 2) {
@@ -262,26 +243,15 @@ $(document).ready(function() {
 	map = new BMap.Map("container");
 	$("#container").css("height", document.body.clientHeight - $("#container").offset().top - $("#footer").height());
 	var type = request("type");
-	if(type.indexOf("1") != -1){
-		//改变标题
-		$("#title .ui-btn-text").html("保养与维修");
-	
-		//显示搜索框
-		$("#searchBox").css("display", "block");
-	}
-	else if(type.indexOf("2") != -1){
-		//改变标题
-		$("#title .ui-btn-text").html("加油站");
-	
-		//显示搜索框
-		$("#searchBox").css("display", "block");
-	} else {
+	if(type == ""){
 		//$("#infobox").popup("open");
 	}
-    getGPS();
+    showgps();
+	console.log("document ready");
 });
 
 $(window).load(function() {
+	console.log("window load");
 	var lng = request("lng");
 	var lat = request("lat");
 	
@@ -361,7 +331,7 @@ table td {
 
 <div data-role="page" id="main_menu">
     <div data-role="header" id="header" data-theme="b">
-        <a data-role="content"><img src="img/LOGO.png" style="width: 60px; height:50px;"></a>
+        <a href="#" onclick="self.location='index.html'" data-role="content"><img src="img/LOGO.png" style="width: 60px; height:50px;"></a>
         <h1><a href="#infobox"  data-rel="popup" data-role="button" data-icon="search" data-iconpos="right" data-position-to="#container" id="title" data-transition="slidedown">首页</a></h1>
 		<div id="infobox" data-role="popup" data-theme="none" class="ui-content box">
           <div>
@@ -399,7 +369,9 @@ table td {
 </div>
 
 
-
+<script type="text/javascript">
+   console.log("document load");
+</script>
 
 </body>
 </html>
