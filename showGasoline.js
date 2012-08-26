@@ -1,11 +1,11 @@
 ﻿function showGasoline(map,minlng,maxlng,minlat,maxlat)
 {
 	$.getJSON("http://ihavecar.sinaapp.com/getGasolinePlace.php?jasoncallback=?&randomID="+Math.random()+"&minlng="+minlng+"&maxlng="+maxlng+"&minlat="+minlat+"&maxlat="+maxlat,function (json) {
-		var myIcon_Y = new BMap.Icon("img/定位PIN-黄.png", new BMap.Size(74, 101), {
+		var myIcon_Y = new BMap.Icon("img/pinY.png", new BMap.Size(74, 101), {
      		  anchor: new BMap.Size(12, 34),
 		});
 		
-		var myIcon_R = new BMap.Icon("img/定位PIN-红.png", new BMap.Size(25, 34), {
+		var myIcon_R = new BMap.Icon("img/pinR.png", new BMap.Size(25, 34), {
      		  anchor: new BMap.Size(12, 34),
 		});
 	    
@@ -53,7 +53,7 @@
 				infobox.open(GasolinePoint);
 				$(function(){
 					$('#star').raty({readOnly: true,start: entry['评分总和']});
-					$('#shopinfo').css("background", 'url("img/悬浮框.png") no-repeat -389px -10px');
+					$('#shopinfo').css("background", 'url("img/infobox.png") no-repeat -389px -10px');
 					$('#shopinfo').click(function(e) {
                         window.location.href = "shopinfo.html?type=2&shopid="+entry['序号'];
                     });

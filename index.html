@@ -148,8 +148,10 @@ function ucar(map, type, lng, lat) {
 		//改变标题
 		$("#title  .ui-btn-text").html("保养与维修");
 		
+		console.log("repair create");
 		//显示汽修店
 		showRepairPlace(map);
+		console.log("repair load");
 	} 
 	else if (type == 2) {
 		//改变标题
@@ -173,7 +175,7 @@ function ucar(map, type, lng, lat) {
 	ZoomControl_TR.prototype = new BMap.Control();
 	ZoomControl_TR.prototype.initialize = function(map) {
 		var div = document.createElement("div");
-		div.innerHTML = "<img src='img/loading.jpg'>";
+		div.innerHTML = "<img src='img/loading.png'>";
 		div.style.cursor = "pointer";
 		div.onclick = function (e) {
 			if (type == 1) {
