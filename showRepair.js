@@ -86,22 +86,28 @@ function enterSearch(map)
 
 function SearchRepairPlace(map, searchContent)
 {
-	var myGeo = new BMap.Geocoder();
-	myGeo.getPoint(searchContent,function(searchPoint) {
-		if (searchPoint) {
-			map.centerAndZoom(searchPoint, 15);
-			var searchMarker =new BMap.Marker(searchPoint);
-			map.addOverlay(searchMarker);
-			var searchLabel = new BMap.Label(searchContent);
-			searchLabel.setOffset(new BMap.Size(10,-10));
-			searchMarker.setLabel(searchLabel);
-			showRepairPlace(map);		
-		}
-		else
-		{
-			alert ("CAN NOT find the place");
-		}
-	},"上海市");
+    function searchComplete()
+    {
+        var searchResult = local.getResults().getPoi(0);
+        if (searchResult != null && searchResult != undefined)
+        {
+            var searchPoint = searchResult.point;
+            map.clearOverlays();
+            map.centerAndZoom(searchPoint,15);
+            var searchMarker = new BMap.Marker(searchPoint);
+            map.addOverlay(searchMarker);
+            var searchLabel = new BMap.Label(searchContent);
+            searchLabel.setOffset(new BMap.Size(10,-10));
+            searchMarker.setLabel(searchLabel);
+            showRepairPlace(map);
+        }
+        else
+            alert("找不到该位置");
+        
+    }
+    var local = new BMap.LocalSearch("上海",{onSearchComplete: searchComplete});
+    local.search(searchContent);
 }
+
 
 // JavaScript Document
