@@ -23,7 +23,8 @@
 <title>Ucar</title>
 
 <script type="text/javascript">
-
+    var shFinish = -1;
+    
 function getGPS()
 {
 	var gps = navigator.geolocation;
@@ -32,7 +33,8 @@ function getGPS()
 		gps.getCurrentPosition(showgps,
 		function (error)
 		{
-			alert('got an error: ' + error.code + 'message: ' + error.message);
+			//alert('got an error: ' + error.code + 'message: ' + error.message);
+            alert ("未打开GPS");
 		},
 		{timeout:20000,enableHighAccuracy: true});
 	}
@@ -43,9 +45,8 @@ function getGPS()
 }
 
 
-
-//移动版
 /*
+//移动版
 function showgps(position)
 {
 	if (position)
@@ -70,9 +71,39 @@ function showgps(position)
 		BMap.Convertor.translate(gpspoint,0,translateCallback);
 }
 
+    
+//判断是否在上海
+function isInShanghai(point)
+{
+    var myGeo = new BMap.Geocoder();
+    myGeo.getLocation(point,
+        function (geoResult)
+        {
+            if (geoResult)
+            {
+                if (geoResult.addressComponents.province == "上海市" || geoResult.addressComponents.city == "上海市")
+                {
+                    shFinish = 1;
+                    alert ("在上海");
+                }
+                else
+                {
+                    shFinish = 0;
+                    alert("不在上海");
+                }
+            }
+            else
+            {
+                alert("找不到你的位置");
+                shFinish = -2;
+            }
+        });
+        
+}
 
 function translateCallback (point) {
-	map.centerAndZoom(point, 15);
+	isInShanghai(point);
+    map.centerAndZoom(point, 15);
 	
 	//给地图添加监听器，移除信息框
 	map.addEventListener("click", function(event){
@@ -280,6 +311,19 @@ ac.addEventListener("onconfirm", function(e) {    //鼠标点击下拉列表后�
     $("#search").blur();
 });
 
+    $(document).addEventListener("deviceready", onDeviceReady, false);
+    function onDeviceReady()
+    {
+        checkConnection();
+    }
+    function checkConnection()
+    {
+        var networkState = navigator.network.connection.type;
+        if (networkState == Connection.NONE)
+            alert ("没有联网");
+        else
+            alert ("联网了");
+    }
 
 </script>
 
