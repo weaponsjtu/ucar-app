@@ -1,13 +1,9 @@
 ﻿function showRepair(map,minlng,maxlng,minlat,maxlat)
 {
 	$.getJSON("http://ihavecar.sinaapp.com/getRepairPlace.php?jasoncallback=?&randomID="+Math.random()+"&minlng="+minlng+"&maxlng="+maxlng+"&minlat="+minlat+"&maxlat="+maxlat,function (json) {
-		var myIcon_Y = new BMap.Icon("img/pinY.png", new BMap.Size(74, 101), {
-     		  anchor: new BMap.Size(12, 34),
-		});
+		var myIcon_Y = new BMap.Icon("img/pinY.png", new BMap.Size(61, 94));
 		
-		var myIcon_R = new BMap.Icon("img/pinR.png", new BMap.Size(25, 34), {
-     		  anchor: new BMap.Size(12, 34),
-		});
+		var myIcon_R = new BMap.Icon("img/pinR.png", new BMap.Size(61, 94));
 		$.each(json,function(entryIndex,entry) {
 			var RepairPoint = new BMap.Point(entry['经度'],entry['纬度']);
 			var RepairMarker =new BMap.Marker(RepairPoint, {icon: myIcon_Y});
@@ -22,8 +18,8 @@
 				 "<div class='label' style='color: #ddd;'>" + entry['经营地址'] + "</div>" +
 				 "<div id='star'></div>" +
 			  "</td>" +
-			  "<td   id='shopinfo'>" + 
-			     "<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>" +
+			  "<td id='shopinfo'>" + 
+			     "<a id='shopinfo_a' data-transition='slidefade'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>" +
 			  "</td>" + 
 			 "</tr>" +
 			 "</table></div>";
@@ -53,9 +49,12 @@
 				$(function(){
 					$('#star').raty({readOnly: true,start: entry['评价']});
 					$('#shopinfo').css("background", 'url("img/infobox.png") no-repeat -389px -10px');
-					$('#shopinfo').click(function(e) {
-                        window.location.href = "shopinfo.html?type=1&shopid="+entry['序号'];
-                    });
+					//$('#shopinfo_a').attr("href", "shopinfo.html?type=1&shopid="+entry['序号']);
+					$('#shopinfo').click(function(){
+						console.log("click shopinfo box");
+						window.location.href = "shopinfo.html?type=1&shopid="+entry['序号'];
+						console.log(window.location.href);
+					});
 				});
 				
 			});
