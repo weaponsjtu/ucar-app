@@ -84,7 +84,7 @@ function isInShanghai(point)
                 if (geoResult.addressComponents.province == "上海市" || geoResult.addressComponents.city == "上海市")
                 {
                     shFinish = 1;
-                    alert ("在上海");
+                    /* alert ("在上海"); */
                 }
                 else
                 {
@@ -106,7 +106,7 @@ function translateCallback (point) {
     map.centerAndZoom(point, 15);
 	
 	//给地图添加监听器，移除信息框
-	map.addEventListener("click", function(event){
+/* 	map.addEventListener("click", function(event){
 		if (event.overlay instanceof BMap.Marker) {
 			
 		} else {
@@ -116,14 +116,12 @@ function translateCallback (point) {
 					overlays[i].close();
 				}
 				if (overlays[i] instanceof BMap.Marker) {
-					var myIcon_Y = new BMap.Icon("img/pinY.png", new BMap.Size(25, 34), {
-     		  			anchor: new BMap.Size(12, 34),
-					});
+					var myIcon_Y = new BMap.Icon("img/pinY.png", new BMap.Size(61, 94));
 					overlays[i].setIcon(myIcon_Y);
 				}
 			}
 		}
-	});
+	}); */
 	
 	var myGeo = new BMap.Geocoder();  
 	// 根据坐标得到地址描述  
@@ -140,9 +138,7 @@ function translateCallback (point) {
 
 function showYourPosition(map,point)
 {
-	var myIcon = new BMap.Icon("img/position.png", new BMap.Size(32, 32), {
-         anchor: new BMap.Size(12, 34),
-	});
+	var myIcon = new BMap.Icon("img/position.png", new BMap.Size(32, 32));
 	var marker =new BMap.Marker(point, {icon: myIcon});
 	map.addOverlay(marker);
 }
@@ -162,9 +158,7 @@ function ucar(map, type, lng, lat) {
 		var newpoint = new BMap.Point(lng.valueOf(),lat.valueOf());
 		map.centerAndZoom(newpoint, 15);
 		
-		var myIcon_Y = new BMap.Icon("img/pinY.png", new BMap.Size(25, 34), {
-     		  anchor: new BMap.Size(12, 34),
-		});
+		var myIcon_Y = new BMap.Icon("img/pinY.png", new BMap.Size(61, 94));
 		var searchMarker =new BMap.Marker(newpoint, {icon: myIcon_Y});
 		map.addOverlay(searchMarker);
 		var searchLabel = new BMap.Label("经度: " + lng + ", 纬度: " + lat);
@@ -311,7 +305,7 @@ ac.addEventListener("onconfirm", function(e) {    //鼠标点击下拉列表后�
     $("#search").blur();
 });
 
-    $(document).addEventListener("deviceready", onDeviceReady, false);
+    document.addEventListener("deviceready", onDeviceReady, false);
     function onDeviceReady()
     {
         checkConnection();
@@ -321,8 +315,8 @@ ac.addEventListener("onconfirm", function(e) {    //鼠标点击下拉列表后�
         var networkState = navigator.network.connection.type;
         if (networkState == Connection.NONE)
             alert ("没有联网");
-        else
-            alert ("联网了");
+/*         else
+            alert ("联网了"); */
     }
 
 </script>
@@ -378,7 +372,7 @@ table td {
 <div data-role="page" id="main_menu">
     <div data-role="header" id="header" data-theme="b">
         <a href="#" onclick="self.location='index.html'" data-role="content"><img src="img/LOGO.png" style="width: 60px; height:50px;"></a>
-        <h1><a href="#infobox"  data-rel="popup" data-role="button" data-icon="search" data-iconpos="right" data-position-to="#container" id="title" data-transition="slidedown">首页</a></h1>
+        <h1><a href="#infobox"  data-rel="popup" data-role="button" data-position-to="#container" id="title" data-transition="slidedown">首页</a></h1>
 		<div id="infobox" data-role="popup" data-theme="none" class="ui-content box">
           <div>
            <div id='repair' class='left' onclick='repair(map)'><img src='img/repair.png' class='icon'><div class='label center'>保养与维修</div></div>
