@@ -19,8 +19,7 @@
 				 "<div id='star'></div>" +
 			  "</td>" +
 			  "<td id='shopinfo'>" + 
-			     "<a id='shopinfo_a' data-transition='slidefade'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>" +
-			  "</td>" + 
+			  "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>" + 
 			 "</tr>" +
 			 "</table></div>";
 			
@@ -49,10 +48,9 @@
 				$(function(){
 					$('#star').raty({readOnly: true,start: entry['评价']});
 					$('#shopinfo').css("background", 'url("img/infobox.png") no-repeat -389px -10px');
-					//$('#shopinfo_a').attr("href", "shopinfo.html?type=1&shopid="+entry['序号']);
 					$('#shopinfo').click(function(){
 						console.log("click shopinfo box");
-						window.location.href = "shopinfo.html?type=1&shopid="+entry['序号'];
+						window.location = "shopinfo.html?type=1&shopid="+entry['序号'];
 						console.log(window.location.href);
 					});
 				});

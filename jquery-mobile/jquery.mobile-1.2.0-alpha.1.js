@@ -6945,7 +6945,7 @@ $( document ).bind( "pagecreate create", function( e ) {
 					if ( $.mobile.urlHistory.activeIndex === 0 && dstHash === $.mobile.urlHistory.initialDst ) {
 						dstHash += $.mobile.dialogHashKey;
 					}
-					$.mobile.urlHistory.ignoreNextHashChange = currentIsDialog;
+					$.mobile.urlHistory.ignoreNextHashChange = true;//currentIsDialog;
 					$.mobile.urlHistory.addNew( dstHash, dstTransition, activeEntry.title, activeEntry.pageUrl, activeEntry.role );
 					$.mobile.path.set( dstHash );
 				}

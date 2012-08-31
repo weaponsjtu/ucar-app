@@ -23,7 +23,7 @@
 <title>Ucar</title>
 
 <script type="text/javascript">
-    var shFinish = -1;//-1初始化值，1在上海，0不在上海，－2无法获悉行政区域
+var shFinish = -1;//-1初始化值，1在上海，0不在上海，－2无法获悉行政区域
     
 function getGPS()
 {
@@ -46,6 +46,7 @@ function getGPS()
 
 //移动版和模拟器版必须注释掉一个，用于不同环境的测试需求。
 
+/*
 //移动版
 function showgps(position)
 {
@@ -61,16 +62,17 @@ function showgps(position)
 		alert("无法获取位置");
 	
 }
+*/
 
 	
-/*
+
 //模拟器测试版
 function showgps(position)
 {
 		var gpspoint = new BMap.Point(121.42559,31.01726);
 		BMap.Convertor.translate(gpspoint,0,translateCallback);
 }
-*/
+
     
 //判断是否在上海
 function isInShanghai(point)
@@ -152,7 +154,7 @@ function ucar(map, type, lng, lat) {
 	map.clearOverlays();
 	
 	//显示当前位置
-	getGPS();
+	showgps();
 	
 	if (lng != "" && lat != "") {
 		var newpoint = new BMap.Point(lng.valueOf(),lat.valueOf());
@@ -170,11 +172,8 @@ function ucar(map, type, lng, lat) {
 	if (type == 1) {
 		//改变标题
 		$("#title  .ui-btn-text").html("保养与维修");
-		
-		console.log("repair create");
 		//显示汽修店
 		showRepairPlace(map);
-		console.log("repair load");
 	} 
 	else if (type == 2) {
 		//改变标题
@@ -185,7 +184,7 @@ function ucar(map, type, lng, lat) {
 	} else {
 		alert("Wrong type");
 	}
-	
+
 	var opts = {type:BMAP_NAVIGATION_CONTROL_ZOOM}
 	map.addControl(new BMap.NavigationControl(opts));
 	map.addControl(new BMap.ScaleControl());
@@ -193,12 +192,12 @@ function ucar(map, type, lng, lat) {
 	//添加刷新控件
 	function ZoomControl_TR(){
 		this.defaultAnchor = BMAP_ANCHOR_TOP_RIGHT;
-		this.defaultOffset = new BMap.Size(10,10);
+		this.defaultOffset = new BMap.Size(5,5);
 	}
 	ZoomControl_TR.prototype = new BMap.Control();
 	ZoomControl_TR.prototype.initialize = function(map) {
 		var div = document.createElement("div");
-		div.innerHTML = "<img src='img/loading.png'>";
+		div.innerHTML = "<img class='icon' src='img/loading.png'>";
 		div.style.cursor = "pointer";
 		div.onclick = function (e) {
 			if (type == 1) {
@@ -218,7 +217,7 @@ function ucar(map, type, lng, lat) {
 	//添加定位控件
 	function ZoomControl_BR(){
 		this.defaultAnchor = BMAP_ANCHOR_BOTTOM_RIGHT;
-		this.defaultOffset = new BMap.Size(10,10);
+		this.defaultOffset = new BMap.Size(5,5);
 	}
 	ZoomControl_BR.prototype = new BMap.Control();
 	ZoomControl_BR.prototype.initialize = function(map) {
@@ -226,7 +225,7 @@ function ucar(map, type, lng, lat) {
 		div.innerHTML = "<img class='icon' src='img/pin.png'>";
 		div.style.cursor = "pointer";
 		div.onclick = function (e) {
-			getGPS();
+			showgps();
 			if (type == 1) {
 				showRepairPlace(map);
 			} else if (type == 2) {
@@ -271,12 +270,22 @@ $(document).ready(function() {
 	if(type == ""){
 		//$("#infobox").popup("open");
 	}
-    getGPS();
-	console.log("document ready");
+	showgps();
+	
+
+	jQuery('body').live('swipeleft',function(event){
+		$.mobile.hashListeningEnabled = false;
+		window.history.back();
+		event.preventDefault();
+	});
+	jQuery('body').live('swiperight',function(event){
+		$.mobile.hashListeningEnabled = false;
+		window.history.forward();
+		event.preventDefault();
+	});	
 });
 
 $(window).load(function() {
-	console.log("window load");
 	var lng = request("lng");
 	var lat = request("lat");
 	
@@ -305,6 +314,7 @@ ac.addEventListener("onconfirm", function(e) {    //鼠标点击下拉列表后�
     $("#search").blur();
 });
 
+   /*
     document.addEventListener("deviceready", onDeviceReady, false);
     function onDeviceReady()
     {
@@ -315,10 +325,10 @@ ac.addEventListener("onconfirm", function(e) {    //鼠标点击下拉列表后�
         var networkState = navigator.network.connection.type;
         if (networkState == Connection.NONE)
             alert ("没有联网");
-/*         else
-            alert ("联网了"); */
+        else
+            alert ("联网了"); 
     }
-
+*/
 </script>
 
 <style type="text/css">
@@ -407,11 +417,6 @@ table td {
      </div>
     
 </div>
-
-
-<script type="text/javascript">
-   console.log("document load");
-</script>
 
 </body>
 </html>

@@ -26,13 +26,45 @@
 }
 </style>
 
+<script type="text/javascript">
+function back(){
+	if (typeof(navigator) != 'undefined' && typeof(navigator.app) != 'undefined' && typeof(navigator.app.backHistory) == 'function') {
+		navigator.app.backHistory();
+	} else{
+		history.back();
+	}
+}
+
+$(document).ready(function(){
+	jQuery('body').live('swipeleft',function(event){
+		back();
+		//event.preventDefault();
+	});
+	jQuery('body').live('swiperight',function(event){
+		window.history.forward();
+		//event.preventDefault();
+	});
+});
+
+$('.ui-btn-back').live('tap',function() {
+	alert("tap");
+	back();
+	return false;
+}).live('click',function() {
+	alert("click");
+	back();
+	return false;
+});
+
+</script>
+
 </head>
 
 <body>
 
 <div id="main" data-role="page">
  <div data-role="header"  data-theme="b">
-   <a href="" onclick="window.history.back('-1')" rel="external">返回</a>
+   <a href="#" class="ui-btn-back">返回</a>
    <h1>账号设置</h1>
  </div>
  
