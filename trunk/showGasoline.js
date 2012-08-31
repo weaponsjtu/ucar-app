@@ -1,13 +1,9 @@
 ﻿function showGasoline(map,minlng,maxlng,minlat,maxlat)
 {
 	$.getJSON("http://ihavecar.sinaapp.com/getGasolinePlace.php?jasoncallback=?&randomID="+Math.random()+"&minlng="+minlng+"&maxlng="+maxlng+"&minlat="+minlat+"&maxlat="+maxlat,function (json) {
-		var myIcon_Y = new BMap.Icon("img/pinY.png", new BMap.Size(74, 101), {
-     		  anchor: new BMap.Size(12, 34),
-		});
+		var myIcon_Y = new BMap.Icon("img/pinY.png", new BMap.Size(61, 94));
 		
-		var myIcon_R = new BMap.Icon("img/pinR.png", new BMap.Size(25, 34), {
-     		  anchor: new BMap.Size(12, 34),
-		});
+		var myIcon_R = new BMap.Icon("img/pinR.png", new BMap.Size(61, 94));
 	    
 		$.each(json,function(entryIndex,entry) {
 			var GasolinePoint = new BMap.Point(entry['经度'],entry['纬度']);
