@@ -7,6 +7,8 @@
 <script src="jquery-mobile/jquery-1.7.2.js" type="text/javascript"></script>
 <script src="jquery-mobile/jquery.mobile-1.2.0-alpha.1.js" type="text/javascript"></script>
 <script src="cordova.js" type="text/javascript"></script>
+<script type="text/javascript"
+src="http://qzonestyle.gtimg.cn/qzone/openapi/qc_loader.js" data-appid="100284268" data-redirecturi="http://ihavecar.sinaapp.com" charset="utf-8"></script>
 <style type="text/css">
 #main {
 	background:url("img/back.jpg") repeat;
@@ -87,63 +89,27 @@ $('.ui-btn-back').live('tap',function() {
   <div data-role="footer">
    <h3>当前位置:<b id="current"></b></h3>
  </div>
- 
 </div>
 
+
 <script type="text/javascript">
-function goback(){
-	window.history.back(-1);
-}
+
 function sinalogin(){
 //window.location.href='http://1.ihavecar.sinaapp.com/client/login.html';
 	window.location.href ='https://api.weibo.com/oauth2/authorize?client_id=3943049038&redirect_uri=http://ihavecar.sinaapp.com/success.html&response_type=token';
 }
 function qqlogin(){
+/*QC.Login({
+	btnId : 'qqLoginBtn',
+	size : 'A_L', 
+	clientId : '100284268',
+	scope : '',
+	redirectURI : 'http://ihavecar.sinaapp.com',
+	btnMode: 'showUserAfterLogin'
+});*/
 	//QC.Login.showPopup({appId:"100284268",redirect_URI:"http://ihavecar.sinaapp.com"});
 	window.location.href ='https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id=100284268&redirect_uri=http://ihavecar.sinaapp.com/qqsuccess.html';
 }
-function writefile(){
-	//等待加载PhoneGap
-	document.addEventListener("deviceready", onDeviceReady, false);
-
-	// PhoneGap加载完毕
-
-	function onDeviceReady() {
-		window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, gotFS, fail);
-	}
-         //获取newFile目录，如果不存在则创建该目录
-	function gotFS(fileSystem) {
-		newFile = fileSystem.root.getDirectory("newFile", {create : true,exclusive : false}, writerFile, fail);		
-	}
-	//获取newFile目录下面的dataFile.txt文件，如果不存在则创建此文件
-	function writerFile(newFile) {
-		newFile.getFile("dataFile.txt", {create : true,exclusive : false}, gotFileEntry, fail);
-	}
-	
-	function gotFileEntry(fileEntry) {
-		fileEntry.createWriter(gotFileWriter, fail);
-	}
-
-	function gotFileWriter(writer) {
-		writer.onwrite = function(evt) {
-			alert("write success");
-		};
-		writer.write("some sample text");
-		// 文件当前内容是"some sample text"
-		writer.truncate(11);
-		// 文件当前内容是"some sample" 
-		writer.seek(4);
-		// 文件当前内容依然是"some sample"，但是文件的指针位于"some"的"e"之后
-		writer.write(" different text");
-		// 文件的当前内容是"some different text"
-	}
-
-	function fail(error) {
-		alert("Failed to retrieve file:" + error.code);
-	}
-	// 检索一个已存在的文件，如果该文件不存在时则创建该文件
-}
-
 </script>
 </body>
 </html>
