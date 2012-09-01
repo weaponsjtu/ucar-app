@@ -6959,7 +6959,8 @@ $( document ).bind( "pagecreate create", function( e ) {
 				$( window ).unbind( "navigate.popupBinder navigate.popup" );
 			}
 
-			if ( $.mobile.hashListeningEnabled && !abort ) {
+			//if ( $.mobile.hashListeningEnabled && !abort ) {
+			if ( false && !abort ) {
 				window.history.back();
 			}
 			else {
