@@ -48,10 +48,10 @@
 				$(function(){
 					$('#star').raty({readOnly: true,start: entry['评价']});
 					$('#shopinfo').css("background", 'url("img/infobox.png") no-repeat -389px -10px');
-					$('#shopinfo').click(function(){
-						console.log("click shopinfo box");
+					$('#shopinfo').live('tap',function(){
 						window.location = "shopinfo.html?type=1&shopid="+entry['序号'];
-						console.log(window.location.href);
+					}).live('click',function(){
+						window.location = "shopinfo.html?type=1&shopid="+entry['序号'];
 					});
 				});
 				

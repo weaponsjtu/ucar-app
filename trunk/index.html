@@ -46,7 +46,7 @@ function getGPS()
 
 //移动版和模拟器版必须注释掉一个，用于不同环境的测试需求。
 
-/*
+
 //移动版
 function showgps(position)
 {
@@ -62,17 +62,17 @@ function showgps(position)
 		alert("无法获取位置");
 	
 }
-*/
+
 
 	
-
+/*
 //模拟器测试版
 function showgps(position)
 {
 		var gpspoint = new BMap.Point(121.42559,31.01726);
 		BMap.Convertor.translate(gpspoint,0,translateCallback);
 }
-
+*/
     
 //判断是否在上海
 function isInShanghai(point)
@@ -85,7 +85,8 @@ function isInShanghai(point)
             {
                 if (geoResult.addressComponents.province == "上海市" || geoResult.addressComponents.city == "上海市")
                 {
-                    shFinish = 1;
+                	$("#current").html(geoResult.address);
+                	shFinish = 1;
                     /* alert ("在上海"); */
                 }
                 else
@@ -103,9 +104,10 @@ function isInShanghai(point)
         
 }
 
-function translateCallback (point) {
+function translateCallback (point) {	
 	isInShanghai(point);
     map.centerAndZoom(point, 15);
+	
 	
 	//给地图添加监听器，移除信息框
 /* 	map.addEventListener("click", function(event){
@@ -125,17 +127,13 @@ function translateCallback (point) {
 		}
 	}); */
 	
-	var myGeo = new BMap.Geocoder();  
-	// 根据坐标得到地址描述  
-	myGeo.getLocation(point, function(result){  
-	 if (result){  
-	   $("#current").html(result.address);  
-	 }  
-	});
-	
 	map.enablePinchToZoom();
 	
 	showYourPosition(map,point);
+	
+	if($("#title  .ui-btn-text").html() == "首页"){
+		$("#infobox").popup("open");
+	}
 }
 
 function showYourPosition(map,point)
@@ -154,7 +152,7 @@ function ucar(map, type, lng, lat) {
 	map.clearOverlays();
 	
 	//显示当前位置
-	showgps();
+	getGPS();
 	
 	if (lng != "" && lat != "") {
 		var newpoint = new BMap.Point(lng.valueOf(),lat.valueOf());
@@ -174,8 +172,7 @@ function ucar(map, type, lng, lat) {
 		$("#title  .ui-btn-text").html("保养与维修");
 		//显示汽修店
 		showRepairPlace(map);
-	} 
-	else if (type == 2) {
+	}  else if (type == 2) {
 		//改变标题
 		$("#title  .ui-btn-text").html("加油站");
 		
@@ -225,7 +222,7 @@ function ucar(map, type, lng, lat) {
 		div.innerHTML = "<img class='icon' src='img/pin.png'>";
 		div.style.cursor = "pointer";
 		div.onclick = function (e) {
-			showgps();
+			getGPS();
 			if (type == 1) {
 				showRepairPlace(map);
 			} else if (type == 2) {
@@ -267,22 +264,15 @@ $(document).ready(function() {
 	map = new BMap.Map("container");
 	$("#container").css("height", document.body.clientHeight - $("#container").offset().top - $("#footer").height());
 	var type = request("type");
-	if(type == ""){
-		//$("#infobox").popup("open");
+	if(type.indexOf("1") != -1){
+		//改变标题
+		$("#title  .ui-btn-text").html("保养与维修");
+	} 
+	if(type.indexOf("2") != -1){
+		//改变标题
+		$("#title  .ui-btn-text").html("加油站");
 	}
-	showgps();
-	
-
-	jQuery('body').live('swipeleft',function(event){
-		$.mobile.hashListeningEnabled = false;
-		window.history.back();
-		event.preventDefault();
-	});
-	jQuery('body').live('swiperight',function(event){
-		$.mobile.hashListeningEnabled = false;
-		window.history.forward();
-		event.preventDefault();
-	});	
+	getGPS();
 });
 
 $(window).load(function() {
@@ -290,12 +280,14 @@ $(window).load(function() {
 	var lat = request("lat");
 	
 	var type = request("type");
+	
 	if(type.indexOf("1") != -1){
 		ucar(map, 1, lng, lat);
 	}
 	if(type.indexOf("2") != -1){
 		ucar(map, 2, lng, lat);
 	} 
+	
 });
 
 //自动联想
@@ -314,7 +306,7 @@ ac.addEventListener("onconfirm", function(e) {    //鼠标点击下拉列表后�
     $("#search").blur();
 });
 
-   /*
+   
     document.addEventListener("deviceready", onDeviceReady, false);
     function onDeviceReady()
     {
@@ -325,10 +317,9 @@ ac.addEventListener("onconfirm", function(e) {    //鼠标点击下拉列表后�
         var networkState = navigator.network.connection.type;
         if (networkState == Connection.NONE)
             alert ("没有联网");
-        else
-            alert ("联网了"); 
+        /* else
+            alert ("联网了");  */
     }
-*/
 </script>
 
 <style type="text/css">
