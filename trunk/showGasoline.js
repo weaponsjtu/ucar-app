@@ -50,9 +50,17 @@
 				$(function(){
 					$('#star').raty({readOnly: true,start: entry['评分总和']});
 					$('#shopinfo').css("background", 'url("img/infobox.png") no-repeat -389px -10px');
-					$('#shopinfo').click(function(e) {
-                        window.location.href = "shopinfo.html?type=2&shopid="+entry['序号'];
-                    });
+					if (DEBUG) {
+						$('#shopinfo').click(function(){
+						   window.location = "shopinfo.html?type=2&shopid="+entry['序号'];
+					  });
+					} else {
+					  $('#shopinfo').live('tap',function(){
+						  window.location = "shopinfo.html?type=2&shopid="+entry['序号'];
+					  }).live('click',function(){
+						  window.location = "shopinfo.html?type=2&shopid="+entry['序号'];
+					  });
+				  }
 				});
 				
 			});
