@@ -24,23 +24,29 @@
 
 <script type="text/javascript">
 var shFinish = -1;//-1初始化值，1在上海，0不在上海，－2无法获悉行政区域
+
+var DEBUG = false; //控制是否为测试模式
     
 function getGPS()
 {
-	var gps = navigator.geolocation;
-	if (gps)
-	{
-		gps.getCurrentPosition(showgps,
-		function (error)
+	if (DEBUG) {
+		showgps_debug();
+	} else {
+		var gps = navigator.geolocation;
+		if (gps)
 		{
-			//alert('got an error: ' + error.code + 'message: ' + error.message);
-            alert ("未打开GPS");
-		},
-		{timeout:20000,enableHighAccuracy: true});
-	}
-	else
-	{
-		showgps();
+			gps.getCurrentPosition(showgps_product,
+			function (error)
+			{
+				//alert('got an error: ' + error.code + 'message: ' + error.message);
+	            alert ("未打开GPS");
+			},
+			{timeout:20000,enableHighAccuracy: true});
+		}
+		else
+		{
+			showgps_product();
+		}
 	}
 }
 
@@ -48,7 +54,7 @@ function getGPS()
 
 
 //移动版
-function showgps(position)
+function showgps_product(position)
 {
 	if (position)
 	{
@@ -64,15 +70,16 @@ function showgps(position)
 }
 
 
+
 	
-/*
+
 //模拟器测试版
-function showgps(position)
+function showgps_debug(position)
 {
 		var gpspoint = new BMap.Point(121.42559,31.01726);
 		BMap.Convertor.translate(gpspoint,0,translateCallback);
 }
-*/
+
     
 //判断是否在上海
 function isInShanghai(point)
@@ -108,7 +115,6 @@ function translateCallback (point) {
 	isInShanghai(point);
     map.centerAndZoom(point, 15);
 	
-	
 	//给地图添加监听器，移除信息框
 /* 	map.addEventListener("click", function(event){
 		if (event.overlay instanceof BMap.Marker) {
@@ -131,9 +137,10 @@ function translateCallback (point) {
 	
 	showYourPosition(map,point);
 	
+	//打开首页悬浮框
 	if($("#title  .ui-btn-text").html() == "首页"){
 		$("#infobox").popup("open");
-	}
+	} 
 }
 
 function showYourPosition(map,point)
@@ -182,8 +189,8 @@ function ucar(map, type, lng, lat) {
 		alert("Wrong type");
 	}
 
-	var opts = {type:BMAP_NAVIGATION_CONTROL_ZOOM}
-	map.addControl(new BMap.NavigationControl(opts));
+	//var opts = {type:BMAP_NAVIGATION_CONTROL_ZOOM}
+	//map.addControl(new BMap.NavigationControl(opts));
 	map.addControl(new BMap.ScaleControl());
 	
 	//添加刷新控件
@@ -236,6 +243,23 @@ function ucar(map, type, lng, lat) {
 	}
 	var myZoomCtrl_BR = new ZoomControl_BR();
 	map.addControl(myZoomCtrl_BR);
+	
+	//添加缩放控件
+	function ZoomControl_TL(){
+		this.defaultAnchor = BMAP_ANCHOR_TOP_LEFT;
+		this.defaultOffset = new BMap.Size(5,5);
+	}
+	ZoomControl_TL.prototype = new BMap.Control();
+	ZoomControl_TL.prototype.initialize = function(map) {		
+		div = document.createElement("div");
+		div.innerHTML = "<img src='img/cancel-off-big.png' style='cursor: pointer' onclick='map.zoomIn()'><br>" +
+		"<img src='img/cancel-off-big.png' style='cursor: pointer' onclick='map.zoomOut()'>";
+		map.getContainer().appendChild(div);
+		return div;
+	}
+	var myZoomCtrl_TL = new ZoomControl_TL();
+	map.addControl(myZoomCtrl_TL);
+	
 }
 
 
@@ -306,7 +330,7 @@ ac.addEventListener("onconfirm", function(e) {    //鼠标点击下拉列表后�
     $("#search").blur();
 });
 
-   
+   /*
     document.addEventListener("deviceready", onDeviceReady, false);
     function onDeviceReady()
     {
@@ -317,9 +341,10 @@ ac.addEventListener("onconfirm", function(e) {    //鼠标点击下拉列表后�
         var networkState = navigator.network.connection.type;
         if (networkState == Connection.NONE)
             alert ("没有联网");
-        /* else
-            alert ("联网了");  */
+         else
+            alert ("联网了"); 
     }
+    */
 </script>
 
 <style type="text/css">

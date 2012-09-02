@@ -42,6 +42,21 @@ table tr {
 table td {
 	padding: 0 5px;
 }
+
+.left {
+	float: left;
+	padding: 10px;
+}
+
+.clear {
+	clear: both;
+}
+
+#shopinfo {
+	background-color: white; 
+	border-radius: 15px;
+	border: solid gray 1px;
+}
 </style>
 </head>
 
@@ -62,11 +77,20 @@ table td {
  <div>
     <table>
      <tr>
-      <td><img src="img/car.jpg" style="width: 100px; height: 100px;"></td>
-      <td id="shopinfo" style="background-color: white; border-radius: 15px;"></td>
+      <td><img src="img/car.jpg" style="width: 100px; height: 100px; align:top;"></td>
+      <td id="shopinfo"></td>
      </tr>
     </table>
  </div>
+ 
+ <!--<div id="shopdiv">
+ 	  <div class="left">
+ 	  	 <img src="img/car.jpg" style="width: 100px; height: 100px;">
+ 	  </div>
+ 	  <div class="left" id="shopinfo"></div>
+ 	  <div class="clear"></div>
+ </div>-->
+ 	  	
  
  <div>
    <span style="font-size: 18px;"><b>标签：</b></span>
@@ -82,8 +106,11 @@ table td {
   <div id="lng" style="display:none"></div>
   <div id="lat" style="display:none"></div>
 <script type="text/javascript">
+	$("#shopdiv").css("max-width", document.body.clientWidth + 'px');
+	console.log(document.body.clientWidth);
 	var shopid = request("shopid");
-	showshop(shopid);
+	var type = request("type");
+	showshop(shopid, type);
 	showcomment(1);
 </script>
 
