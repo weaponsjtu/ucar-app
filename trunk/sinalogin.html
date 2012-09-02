@@ -7,9 +7,49 @@
 <script src="jquery-mobile/jquery-1.7.2.js" type="text/javascript"></script>
 <script src="jquery-mobile/jquery.mobile-1.2.0-alpha.1.js" type="text/javascript"></script>
 <script src="cordova.js" type="text/javascript"></script>
+<script type="text/javascript">
+function back(){
+	if (typeof(navigator) != 'undefined' && typeof(navigator.app) != 'undefined' && typeof(navigator.app.backHistory) == 'function') {
+		navigator.app.backHistory();
+	} else{
+		history.back();
+	}
+}
+
+$(document).ready(function(){
+	jQuery('body').live('swipeleft',function(event){
+		back();
+		//event.preventDefault();
+	});
+	jQuery('body').live('swiperight',function(event){
+		window.history.forward();
+		//event.preventDefault();
+	});
+});
+
+$('.ui-btn-back').live('tap',function() {
+	back();
+	return false;
+}).live('click',function() {
+	back();
+	return false;
+});
+
+</script>
+
 </head>
 <body>
-<iframe id="sinaframe"  Height="400px" border=0 frameBorder=0 Width="700px" scrolling=no src="https://api.weibo.com/oauth2/authorize?client_id=3943049038&redirect_uri=http://ihavecar.sinaapp.com/callback.php&response_type=code"></iframe> 
+<div data-role="page">
+	 <div data-role="header"  data-theme="b">
+    <a href="#" class="ui-btn-back">返回</a>
+    <h1>新浪微博</h1>
+   </div>
+   <div date-role="content">
+     <iframe id="sinaframe"  Height="400px" border=0 frameBorder=0 Width="700px" scrolling=no 
+	     src="https://api.weibo.com/oauth2/authorize?client_id=3943049038&redirect_uri=http://ihavecar.sinaapp.com/callback.php&response_type=code">
+     </iframe>
+   </div>
+</div>
 
 <script type="text/javascript">
 window.onmessage=function(e) {
