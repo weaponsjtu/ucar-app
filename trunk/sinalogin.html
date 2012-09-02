@@ -57,7 +57,42 @@ window.onmessage=function(e) {
 	var json_data = JSON.parse(json_str);
 	var access_token = json_data.access_token;
 	var data = json_data.data;*/
-	alert(e.data);
+	function writefile(){
+	//等待加载PhoneGap
+
+	document.addEventListener("deviceready", onDeviceReady, false);
+
+	// PhoneGap加载完毕
+
+	function onDeviceReady() {
+		window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, gotFS, fail);
+	}
+         //获取newFile目录，如果不存在则创建该目录
+	function gotFS(fileSystem) {
+		newFile = fileSystem.root.getDirectory("UCAR", {create : true,exclusive : false}, writerFile, fail);		
+	}
+	//获取newFile目录下面的dataFile.txt文件，如果不存在则创建此文件
+	function writerFile(newFile) {
+		newFile.getFile("dataFile.txt", {create : true,exclusive : false}, gotFileEntry, fail);
+	}
+	
+	function gotFileEntry(fileEntry) {
+		fileEntry.createWriter(gotFileWriter, fail);
+	}
+
+	function gotFileWriter(writer) {
+		writer.onwrite = function(evt) {
+			alert("write success");
+		};
+		writer.write("access_token:"+e.data);
+	}
+
+	function fail(error) {
+		alert("Failed to retrieve file:" + error.code);
+	}
+	// 检索一个已存在的文件，如果该文件不存在时则创建该文件
+}
+	window.location.href ='logined.html?nickname=stephen';
 };
 	
 </script>
