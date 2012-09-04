@@ -7,7 +7,7 @@ $(document).ready(function(){
 		$.each(json,function(entryIndex,entry){
 				html+='<tr><td><img style="padding: 10px;" src="'+entry['photo']+'" width="60" height="60"></td>';
 	            html+='<td><b>'+entry['nickname'] + '</b>&nbsp;&nbsp;&nbsp;&nbsp;'; 
-				html+='<span id="star'+entry['comment_id']+'"></span><script type="text/javascript">$(function(){$("#star'+entry['comment_id']+'").raty({readOnly:	true,start:		'+entry['score']+'	});});</script>'; 
+				html+='<span id="star'+entry['commentid']+'"></span><script type="text/javascript">$(function(){$("#star'+entry['commentid']+'").raty({readOnly:	true,start:		'+entry['score']+'	});});</script>'; 
 	            html+='<br><p>'+entry['content']+'</p>'; 
 				//html+=''+entry['time']+'  </td>';    
 	            html+='</tr>';  
