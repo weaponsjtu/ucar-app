@@ -15,8 +15,8 @@
 			"<tr>" +
 			  "<td><img class='icon' src='" + entry['图片'] + "'></td>" + 
 			  "<td>" + 
-			     "<div class='label' style='font-size: 14px'>" + entry['加油站名称'] + "</div>" +
-				 "<div class='label' style='color: #ddd;'>" + entry['加油站地址'] + "</div>" +
+			     "<div class='label' style='font-size: 14px'>" + entry['企业名称'] + "</div>" +
+				 "<div class='label' style='color: #ddd;'>" + entry['企业地址'] + "</div>" +
 				 "<div id='star'></div>" +
 			  "</td>" +
 			  "<td   id='shopinfo'>" + 
@@ -48,7 +48,7 @@
 				GasolineMarker.setIcon(myIcon_R);
 				infobox.open(GasolinePoint);
 				$(function(){
-					$('#star').raty({readOnly: true,start: entry['评分总和']});
+					$('#star').raty({readOnly: true,start: entry['评分']});
 					$('#shopinfo').css("background", 'url("img/infobox.png") no-repeat -389px -10px');
 					if (DEBUG) {
 						$('#shopinfo').click(function(){

@@ -14,8 +14,8 @@
 			"<tr>" +
 			  "<td><img class='icon' src='img/car.jpg'></td>" + 
 			  "<td>" + 
-			     "<div class='label' style='font-size: 14px'>" + entry['业户名称'] + "</div>" +
-				 "<div class='label' style='color: #ddd;'>" + entry['经营地址'] + "</div>" +
+			     "<div class='label' style='font-size: 14px'>" + entry['企业名称'] + "</div>" +
+				 "<div class='label' style='color: #ddd;'>" + entry['企业地址'] + "</div>" +
 				 "<div id='star'></div>" +
 			  "</td>" +
 			  "<td id='shopinfo'>" + 
@@ -46,7 +46,7 @@
 				RepairMarker.setIcon(myIcon_R);
 				infobox.open(RepairPoint);
 				$(function(){
-					$('#star').raty({readOnly: true,start: entry['评价']});
+					$('#star').raty({readOnly: true,start: entry['评分']});
 					$('#shopinfo').css("background", 'url("img/infobox.png") no-repeat -389px -10px');
 					if (DEBUG) {
 						$('#shopinfo').click(function(){
