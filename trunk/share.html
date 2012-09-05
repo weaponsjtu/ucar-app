@@ -11,7 +11,7 @@
 <script type="text/javascript" src="jquery.raty.js"></script>
 <script type="text/javascript">
 $(function() {
-	$('div#star').raty({
+	$('#star').raty({
 		size:      24,
 		starHalf:  'star-half-big.png',
 		starOff:   'star-off-big.png',
@@ -65,15 +65,20 @@ $('.ui-btn-back').live('tap',function() {
  <div data-role="header" data-theme="b">
    <a href="#" class="ui-btn-back">返回</a>
    <h1>点评与分享</h1>
-   <a href="">发送</a>
+   <a href="" id="submit">发送</a>
  </div>
  
  <div data-role="content">
-    <label for="textarea-a">发表评论: <span style="float:right;">140字</span></label>
+ <form action="" method="post">	
+ 	<div style="text-align: center" >
+ 		 <span  style="border-bottom: solid gray 1px" id="star"></span>
+ 	</div>
+    
+  <label for="textarea-a">发表评论: <span style="float:right;">140字</span></label>
 	<textarea name="textarea" id="textarea-a" autofocus="true"></textarea>
     
-    
-    <div><span style="float:right;">我要分享到&nbsp;&nbsp;<img id="sina"></img></span></div>
+  <div><span style="float:right;">我要分享到&nbsp;&nbsp;<img id="sina"></img></span></div>
+ </form>
  </div>
  
  <div data-role="footer">

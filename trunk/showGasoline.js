@@ -42,7 +42,9 @@
 						overlays[i].close();
 					}
 					if (overlays[i] instanceof BMap.Marker) {
-						overlays[i].setIcon(myIcon_Y);
+						if (overlays[i].getTitle() != 'current') {
+							overlays[i].setIcon(myIcon_Y);
+						}
 					}
 				}
 				GasolineMarker.setIcon(myIcon_R);
