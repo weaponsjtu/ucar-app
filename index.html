@@ -25,7 +25,7 @@
 <script type="text/javascript">
 var shFinish = -1;//-1初始化值，1在上海，0不在上海，－2无法获悉行政区域
 
-var DEBUG = false; //控制是否为测试模式
+var DEBUG = true; //控制是否为测试模式
     
 function getGPS()
 {
@@ -113,10 +113,10 @@ function isInShanghai(point)
 
 function translateCallback (point) {	
 	isInShanghai(point);
-    map.centerAndZoom(point, 15);
+  map.centerAndZoom(point, 15);
 	
 	//给地图添加监听器，移除信息框
-/* 	map.addEventListener("click", function(event){
+ 	map.addEventListener("click", function(event){
 		if (event.overlay instanceof BMap.Marker) {
 			
 		} else {
@@ -127,11 +127,13 @@ function translateCallback (point) {
 				}
 				if (overlays[i] instanceof BMap.Marker) {
 					var myIcon_Y = new BMap.Icon("img/pinY.png", new BMap.Size(61, 94));
-					overlays[i].setIcon(myIcon_Y);
+					if (overlays[i].getTitle() != 'current') {
+						overlays[i].setIcon(myIcon_Y);
+					}
 				}
 			}
 		}
-	}); */
+	});
 	
 	map.enablePinchToZoom();
 	
@@ -146,7 +148,7 @@ function translateCallback (point) {
 function showYourPosition(map,point)
 {
 	var myIcon = new BMap.Icon("img/position.png", new BMap.Size(32, 32));
-	var marker =new BMap.Marker(point, {icon: myIcon});
+	var marker =new BMap.Marker(point, {icon: myIcon, title: 'current'});
 	map.addOverlay(marker);
 }
 

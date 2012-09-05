@@ -25,6 +25,9 @@ $(document).ready(function(){
 		window.history.forward();
 		//event.preventDefault();
 	});
+	
+	$("#sinaframe").css('width', document.body.clientWidth);
+	$("#sinaframe").css('height', document.body.clientHeight - $("#sinaframe").offset().top);
 });
 
 $('.ui-btn-back').live('tap',function() {
@@ -34,6 +37,7 @@ $('.ui-btn-back').live('tap',function() {
 	back();
 	return false;
 });
+
 
 </script>
 
@@ -45,7 +49,7 @@ $('.ui-btn-back').live('tap',function() {
     <h1>新浪微博</h1>
    </div>
    <div date-role="content">
-     <iframe id="sinaframe"  Height="400px" border=0 frameBorder=0 Width="700px" scrolling=no 
+     <iframe id="sinaframe"
 	     src="https://api.weibo.com/oauth2/authorize?client_id=3943049038&redirect_uri=http://ihavecar.sinaapp.com/callback.php&response_type=code">
      </iframe>
    </div>
