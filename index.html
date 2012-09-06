@@ -25,7 +25,7 @@
 <script type="text/javascript">
 var shFinish = -1;//-1初始化值，1在上海，0不在上海，－2无法获悉行政区域
 
-var DEBUG = true; //控制是否为测试模式
+var DEBUG = false; //控制是否为测试模式
     
 function getGPS()
 {
@@ -113,6 +113,8 @@ function isInShanghai(point)
 
 function translateCallback (point) {	
 	isInShanghai(point);
+	
+	if(map) {
   map.centerAndZoom(point, 15);
 	
 	//给地图添加监听器，移除信息框
@@ -143,6 +145,7 @@ function translateCallback (point) {
 	if($("#title  .ui-btn-text").html() == "首页"){
 		$("#infobox").popup("open");
 	} 
+  }
 }
 
 function showYourPosition(map,point)
