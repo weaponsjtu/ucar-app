@@ -1,9 +1,9 @@
 ﻿function showGasoline(map,minlng,maxlng,minlat,maxlat)
 {
 	$.getJSON("http://ihavecar.sinaapp.com/getGasolinePlace.php?jasoncallback=?&randomID="+Math.random()+"&minlng="+minlng+"&maxlng="+maxlng+"&minlat="+minlat+"&maxlat="+maxlat,function (json) {
-		var myIcon_Y = new BMap.Icon("img/pinY.png", new BMap.Size(61, 94));
+		var myIcon_Y = new BMap.Icon("img/pinY.png", new BMap.Size(61, 94), {anchor: new BMap.Size(30,94)});
 		
-		var myIcon_R = new BMap.Icon("img/pinR.png", new BMap.Size(61, 94));
+		var myIcon_R = new BMap.Icon("img/pinR.png", new BMap.Size(61, 94), {anchor: new BMap.Size(30,94)});
 	    
 		$.each(json,function(entryIndex,entry) {
 			var GasolinePoint = new BMap.Point(entry['经度'],entry['纬度']);
@@ -30,9 +30,19 @@
 					 //width: screen.availWidth / 2 + "px",
 				}
 			,closeIconMargin: "1px 1px 0 0"
-			,closeIconUrl: "img/close.png"
+			,closeIconUrl: "img/close1.png"
 			,enableAutoPan: true
 			,align: INFOBOX_AT_BOTTOM
+			});
+			
+			infobox.addEventListener("close", function(e) {
+				for (var i = 0; i < overlays.length; i++) {
+    		  if (overlays[i] instanceof BMap.Marker) {
+						if (overlays[i].getTitle() != 'current' && overlays[i].getTitle() != 'search') {
+							overlays[i].setIcon(myIcon_Y);
+						}
+				  }
+			  }
 			});
 			
 			GasolineMarker.addEventListener("click", function(){
@@ -42,7 +52,7 @@
 						overlays[i].close();
 					}
 					if (overlays[i] instanceof BMap.Marker) {
-						if (overlays[i].getTitle() != 'current') {
+						if (overlays[i].getTitle() != 'current' && overlays[i].getTitle() != 'search') {
 							overlays[i].setIcon(myIcon_Y);
 						}
 					}
