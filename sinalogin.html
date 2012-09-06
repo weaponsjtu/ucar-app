@@ -57,10 +57,12 @@ $('.ui-btn-back').live('tap',function() {
 
 <script type="text/javascript">
 window.onmessage=function(e) {
-/*	var json_str = e.data;
-	var json_data = JSON.parse(json_str);
-	var access_token = json_data.access_token;
-	var data = json_data.data;*/
+	var json_str = e.data;
+	var access_token = json_str.access_token;
+	var uid = json_str.uid;
+	var image = json_str.image;
+	var nickname = json_str.name;
+	$.ajax({type:'POST',async:false, url:'http://ihavecar.sinaapp.com/postuser.php?nickname='+nickname+'&photo='+image+'&sina='+uid});
 	function writefile(){
 	//等待加载PhoneGap
 
@@ -75,7 +77,8 @@ window.onmessage=function(e) {
 	function gotFS(fileSystem) {
 		newFile = fileSystem.root.getDirectory("UCAR", {create : true,exclusive : false}, writerFile, fail);		
 	}
-	//获取newFile目录下面的dataFile.txt文件，如果不存在则创建此文件
+	//获取newFile目录下面的dataFile.txt文件，如果
+	不存在则创建此文件
 	function writerFile(newFile) {
 		newFile.getFile("dataFile.txt", {create : true,exclusive : false}, gotFileEntry, fail);
 	}
@@ -96,7 +99,7 @@ window.onmessage=function(e) {
 	}
 	// 检索一个已存在的文件，如果该文件不存在时则创建该文件
 }
-	window.location.href ='logined.html?img='+e.data;
+	window.location.href =encodeURI('logined.html?img='+image+'&name='+nickname);
 };
 	
 </script>
