@@ -1,9 +1,9 @@
 ﻿function showRepair(map,minlng,maxlng,minlat,maxlat)
 {
 	$.getJSON("http://ihavecar.sinaapp.com/getRepairPlace.php?jasoncallback=?&randomID="+Math.random()+"&minlng="+minlng+"&maxlng="+maxlng+"&minlat="+minlat+"&maxlat="+maxlat,function (json) {
-		var myIcon_Y = new BMap.Icon("img/pinY.png", new BMap.Size(61, 94));
+		var myIcon_Y = new BMap.Icon("img/pinY.png", new BMap.Size(61, 94), {anchor: new BMap.Size(30,94)});
 		
-		var myIcon_R = new BMap.Icon("img/pinR.png", new BMap.Size(61, 94));
+		var myIcon_R = new BMap.Icon("img/pinR.png", new BMap.Size(61, 94), {anchor: new BMap.Size(30,94)});
 		$.each(json,function(entryIndex,entry) {
 			var RepairPoint = new BMap.Point(entry['经度'],entry['纬度']);
 			var RepairMarker =new BMap.Marker(RepairPoint, {icon: myIcon_Y});
@@ -42,7 +42,7 @@
 			infobox.addEventListener("close", function(e) {
 				for (var i = 0; i < overlays.length; i++) {
     		  if (overlays[i] instanceof BMap.Marker) {
-						if (overlays[i].getTitle() != 'current') {
+						if (overlays[i].getTitle() != 'current' && overlays[i].getTitle() != 'search') {
 							overlays[i].setIcon(myIcon_Y);
 						}
 				  }
@@ -56,7 +56,7 @@
 						overlays[i].close();
 					}
 					if (overlays[i] instanceof BMap.Marker) {
-						if (overlays[i].getTitle() != 'current') {
+						if (overlays[i].getTitle() != 'current' && overlays[i].getTitle() != 'search') {
 							overlays[i].setIcon(myIcon_Y);
 						}
 					}
@@ -116,7 +116,7 @@ function SearchRepairPlace(map, searchContent)
             var searchPoint = searchResult.point;
             map.clearOverlays();
             map.centerAndZoom(searchPoint,15);
-            var searchMarker = new BMap.Marker(searchPoint);
+            var searchMarker = new BMap.Marker(searchPoint, {title: 'search'});
             map.addOverlay(searchMarker);
             var searchLabel = new BMap.Label(searchContent);
             searchLabel.setOffset(new BMap.Size(10,-10));
