@@ -11,9 +11,28 @@
 <script type="text/javascript" src="jquery.raty.js"></script>
 
 <style type="text/css">
-#delete {
+a.delete {
+	display: none;
 	width: 80px;
 	height: 30px;
+	background-color: #F37873;
+	color: white;
+	padding: 5px 10px;
+	font-weight: bold;
+	text-decoration: none;
+	cursor: pointer;
+	margin-right: 10px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-moz-box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+	-webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+	text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.25);
+	font-size: 12pt;
+  background-image: -webkit-linear-gradient(top, #F37873 0%, #DB504D 50%, #CB0500 50%, #A20601 100%);
+	background-image: -moz-linear-gradient(top, #F37873 0%, #DB504D 50%, #CB0500 50%, #A20601 100%);
+	background-image: -ms-linear-gradient(top, #F37873 0%, #DB504D 50%, #CB0500 50%, #A20601 100%);
+	background-image: -o-linear-gradient(top, #F37873 0%, #DB504D 50%, #CB0500 50%, #A20601 100%);
+	background-image: linear-gradient(top, #F37873 0%, #DB504D 50%, #CB0500 50%, #A20601 100%);
 }
 
 #main {
@@ -50,6 +69,10 @@ $('.ui-btn-back').live('tap',function() {
 	return false;
 });
 
+function edit(){
+	$("a.delete").css("display", "inline");
+}
+
 </script>
 
 </head>
@@ -60,6 +83,7 @@ $('.ui-btn-back').live('tap',function() {
  <div data-role="header"  data-theme="b">
     <a href="#" class="ui-btn-back">返回</a>
     <h1>我的收藏</h1>
+    <a href="#" onclick="edit()">编辑</a>
  </div>
  <div  data-role="content">
     <div id="collection"></div>
