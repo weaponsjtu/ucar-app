@@ -22,15 +22,31 @@
 			  "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>" + 
 			 "</tr>" +
 			 "</table></div>";
+			 
+			/*var infoWindow = new BMap.InfoWindow(infohtml);  // 创建信息窗口对象
+
+			RepairMarker.addEventListener("click", function(){          
+  			 this.openInfoWindow(infoWindow);  
+			});*/
 			
 			var infobox = new BMapLib.InfoBox(map, infohtml, {
 				boxStyle:{
 					 //width: screen.availWidth / 2 + "px",
 				}
 			,closeIconMargin: "1px 1px 0 0"
-			,closeIconUrl: "img/close.png"
+			,closeIconUrl: "img/close1.png"
 			,enableAutoPan: true
 			,align: INFOBOX_AT_BOTTOM
+			});
+			
+			infobox.addEventListener("close", function(e) {
+				for (var i = 0; i < overlays.length; i++) {
+    		  if (overlays[i] instanceof BMap.Marker) {
+						if (overlays[i].getTitle() != 'current') {
+							overlays[i].setIcon(myIcon_Y);
+						}
+				  }
+			  }
 			});
 			
 			RepairMarker.addEventListener("click", function(){
@@ -45,6 +61,7 @@
 						}
 					}
 				}
+				//alert("marker start");
 				RepairMarker.setIcon(myIcon_R);
 				infobox.open(RepairPoint);
 				$(function(){
@@ -62,7 +79,7 @@
 					  });
 				  }
 				});
-				
+				//alert("marker end");
 			});
 		});
 	});
