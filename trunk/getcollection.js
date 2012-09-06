@@ -9,10 +9,10 @@ function getcollection() {
 	            html+='<td><b style="font-size: 18px; margin: 10px 0;">'+entry['企业名称']+'</b><br>'; 
 				html+='<font>'+entry['企业地址']+' </font>'; 
 				html+='<div style="padding: 10px 0;" id="star'+entry['序号']+'"></div><script type="text/javascript">$(function(){$("div#star'+entry['序号']+'").raty({readOnly:	true,start:		'+entry['评分']+'	});});</script></td>'; 
-				html+='<td> <a href="#" class="delete" onclick="">Delete</a> </td>';
+				html+='<td> <a href="#" class="delete" onclick="shopDelete(event)">Delete</a> </td>';
 	            html+='</tr>';  
-	        });
-			html+='</table>'   
+	      });
+			html+='</table>';   
 	    	$('#collection').html(html); 
 		}); 
 	});  

@@ -17,7 +17,7 @@ a.delete {
 	height: 30px;
 	background-color: #F37873;
 	color: white;
-	padding: 5px 10px;
+	padding: 8px 10px;
 	font-weight: bold;
 	text-decoration: none;
 	cursor: pointer;
@@ -69,8 +69,29 @@ $('.ui-btn-back').live('tap',function() {
 	return false;
 });
 
-function edit(){
-	$("a.delete").css("display", "inline");
+function edit(e){
+	node = e.target
+	if (node.innerText == "编辑") {
+	  $("a.delete").css("display", "inline");
+	  node.innerText = "完成";
+	} else {
+		$("a.delete").css("display", "none");
+		node.innerText = "编辑";
+	}
+}
+
+//ajax 删除收藏的商户
+function shopDelete(e){
+	tr = e.target.parentNode.parentNode;
+	table = tr.parentNode;
+	table.removeChild(tr);
+	
+	$.getJSON('http://ihavecar.sinaapp.com/collection.php?jasoncallback=?&randomID='+Math.random(), function(json){
+		//random函数用来取消缓存影响,jsonp形式进行跨域传数据
+			$.each(json,function(entryIndex,entry){
+				
+			});
+		}); 
 }
 
 </script>
@@ -83,7 +104,7 @@ function edit(){
  <div data-role="header"  data-theme="b">
     <a href="#" class="ui-btn-back">返回</a>
     <h1>我的收藏</h1>
-    <a href="#" onclick="edit()">编辑</a>
+    <a href="#" onclick="edit(event)">编辑</a>
  </div>
  <div  data-role="content">
     <div id="collection"></div>
