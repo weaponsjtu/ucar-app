@@ -63,7 +63,9 @@
 <script type="text/javascript">
 var url=window.location.href;
 var arg1=url.split("=");
-var img=arg1[1];
+var arg2=arg1[1].split("&");
+var img=arg2[0];
+var name=decodeURI(arg1[2]);
 
 /*$.ajaxSettings.async = false;
 $.getJSON('https://api.weibo.com/2/users/show.json?callback=?', 
@@ -83,7 +85,7 @@ $.getJSON('https://api.weibo.com/2/users/show.json?callback=?',
 
 var html='<table>';
 	html+='<tr><td><img src='+img+' width="60" height="60"></td>';
-	html+='<td>aaa </td>';
+	html+='<td>'+name+' </td>';
 	html+='</tr></table>';
 	$('#user').html(html);
 	
