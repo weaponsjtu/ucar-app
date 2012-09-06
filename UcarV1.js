@@ -1,6 +1,6 @@
 ﻿var shFinish = -1;//-1初始化值，1在上海，0不在上海，－2无法获悉行政区域
 
-var DEBUG = true; //控制是否为测试模式
+var DEBUG = false; //控制是否为测试模式
 
 
 function showYourPosition(map,point)
@@ -40,6 +40,41 @@ function isInShanghai(point)
         
 }
 
+function mapClick(event){
+	 allPrpos(event);
+ 	 clickTime += 1;
+ 	 if (clickTime%2 == 1) {
+ 	 	//alert("map start");
+		//alert("hello");
+ 		num = 0;
+ 		overlays = map.getOverlays();
+ 		for (var i = 0; i < overlays.length; i++) {
+ 			if (overlays[i] instanceof BMapLib.InfoBox) {
+ 				num += 1;
+ 			}
+ 		}
+ 		
+ 		//alert(clickTime + "fds" +num);
+ 		
+ 		if ( num > 0) {
+			overlays = map.getOverlays();
+			var myIcon_Y = new BMap.Icon("img/pinY.png", new BMap.Size(61, 94));
+			for (var i = 0; i < overlays.length; i++) {
+				if (overlays[i] instanceof BMapLib.InfoBox) {
+					overlays[i].close();
+				}
+				if (overlays[i] instanceof BMap.Marker) {
+					if (overlays[i].getTitle() != 'current') {
+						overlays[i].setIcon(myIcon_Y);
+					}
+				}
+			}
+		}
+		//alert("map end");
+	 }
+	}
+
+var clickTime = 0;
 function translateCallback (point) {	
 	isInShanghai(point);
 	
@@ -47,24 +82,7 @@ function translateCallback (point) {
   map.centerAndZoom(point, 15);
 	
 	//给地图添加监听器，移除信息框
- 	map.addEventListener("click", function(event){
-		if (event.overlay instanceof BMap.Marker) {
-			
-		} else {
-			overlays = map.getOverlays();
-			for (var i = 0; i < overlays.length; i++) {
-				if (overlays[i] instanceof BMapLib.InfoBox) {
-					overlays[i].close();
-				}
-				if (overlays[i] instanceof BMap.Marker) {
-					var myIcon_Y = new BMap.Icon("img/pinY.png", new BMap.Size(61, 94));
-					if (overlays[i].getTitle() != 'current') {
-						overlays[i].setIcon(myIcon_Y);
-					}
-				}
-			}
-		}
-	});
+ 	//map.addEventListener("click", mapClick);
 	
 	map.enablePinchToZoom();
 	
@@ -124,10 +142,20 @@ function getGPS()
 	}
 }
 
-
-
-    
-
-
-
-
+//打印对象的所有值
+function  allPrpos(obj) {
+    // 用来保存所有的属性名称和值
+    var   props = "" ;
+    // 开始遍历
+    for ( var   p in obj ){
+        // 方法
+        if ( typeof ( obj [ p ]) == " function " ){
+            obj [ p ]() ;
+        } else {
+            // p 为属性名称，obj[p]为对应属性的值
+            props += "Obj."+p + " = " + obj [ p ] + " \t<br /> " ;
+        }
+    }
+    // 最后显示所有的属性
+		alert(props);
+}
