@@ -38,14 +38,14 @@ function ucar(map, type, lng, lat) {
 	
 	if (lng != "" && lat != "") {
 		var newpoint = new BMap.Point(lng.valueOf(),lat.valueOf());
-		map.centerAndZoom(newpoint, 15);
+		map.panTo(newpoint);
 		
-		var myIcon_Y = new BMap.Icon("img/pinY.png", new BMap.Size(61, 94));
+		/*var myIcon_Y = new BMap.Icon("img/pinY.png", new BMap.Size(61, 94));
 		var searchMarker =new BMap.Marker(newpoint, {icon: myIcon_Y});
 		map.addOverlay(searchMarker);
 		var searchLabel = new BMap.Label("经度: " + lng + ", 纬度: " + lat);
 		searchLabel.setOffset(new BMap.Size(10,-10));
-		searchMarker.setLabel(searchLabel);
+		searchMarker.setLabel(searchLabel);*/
 	}
 	
 	
@@ -76,7 +76,7 @@ function ucar(map, type, lng, lat) {
 	ZoomControl_TR.prototype = new BMap.Control();
 	ZoomControl_TR.prototype.initialize = function(map) {
 		var div = document.createElement("div");
-		div.innerHTML = "<img class='icon' src='img/loading.png'>";
+		div.innerHTML = "<img style='width: 45px; height: 44px;' src='img/loading.png'>";
 		div.style.cursor = "pointer";
 		div.onclick = function (e) {
 			if (type == 1) {
@@ -101,7 +101,7 @@ function ucar(map, type, lng, lat) {
 	ZoomControl_BR.prototype = new BMap.Control();
 	ZoomControl_BR.prototype.initialize = function(map) {
 		var div = document.createElement("div");
-		div.innerHTML = "<img class='icon' src='img/pin.png'>";
+		div.innerHTML = "<img style='width: 45px; height: 44px;' src='img/pin.png'>";
 		div.style.cursor = "pointer";
 		div.onclick = function (e) {
 			getGPS();
@@ -127,8 +127,8 @@ function ucar(map, type, lng, lat) {
 	ZoomControl_TL.prototype = new BMap.Control();
 	ZoomControl_TL.prototype.initialize = function(map) {		
 		div = document.createElement("div");
-		div.innerHTML = "<img src='img/cancel-off-big.png' style='cursor: pointer' onclick='map.zoomIn()'><br>" +
-		"<img src='img/cancel-off-big.png' style='cursor: pointer' onclick='map.zoomOut()'>";
+		div.innerHTML = "<img src='img/zoomOut.png' style='cursor: pointer; width: 32px; height: 30px;' onclick='map.zoomOut()'><br>" +
+		"<img src='img/zoomIn.png' style='cursor: pointer; width: 32px; height: 30px;' onclick='map.zoomIn()'>";
 		map.getContainer().appendChild(div);
 		return div;
 	}
@@ -139,17 +139,17 @@ function ucar(map, type, lng, lat) {
 
 
 function repair(map) {
-	$("#infobox").popup("close");
+	$("#suspendBox").popup("close");
 	ucar(map, 1, "","");
 }
 
 function gasoline(map) {
-	$("#infobox").popup("close");
+	$("#suspendBox").popup("close");
 	ucar(map, 2, "","");
 }
 
 function collect(){
-	$("#infobox").popup("close");
+	$("#suspendBox").popup("close");
 	self.location = "collect.html";	
 }
 
@@ -159,7 +159,6 @@ function settings(){
 }
 
 $(document).ready(function() {
-//$(document).bind("pageinit", function(){
 	map = new BMap.Map("container");
 	$("#container").css("height", document.body.clientHeight - $("#container").offset().top - $("#footer").height());
 	var type = request("type");
@@ -255,16 +254,30 @@ ac.addEventListener("onconfirm", function(e) {    //鼠标点击下拉列表后�
 	text-align:center;
 }
 
-.icon {
-
+div#suspendBox .icon {
+	height: 57px;
+	width: 57px;
 }
 
 #title {
 	font-size: 20px;
 }
 
-table td {
-	padding: 0 5px;
+div#shopbox .label {
+	font-weight: bold;
+	font-size: 14px;
+}
+
+/*信息框*/
+div#shopbox {
+	background: url("img/infobox.png") no-repeat;
+	width: 220px;
+	height: 59px;
+	padding-left: 5px;
+}
+
+td#wrap {
+	width: 190px;
 }
 </style>
 
@@ -275,8 +288,8 @@ table td {
 <div data-role="page" id="main_menu">
     <div data-role="header" id="header" data-theme="b">
         <a href="#" onclick="self.location='index.html'" data-role="content"><img src="img/LOGO.png" style="width: 60px; height:50px;"></a>
-        <h1><a href="#infobox"  data-rel="popup" data-role="button" data-position-to="window" id="title" data-transition="slidedown">首页</a></h1>
-		<div id="infobox" data-role="popup" data-theme="none" class="ui-content box">
+        <h1><a href="#suspendBox"  data-rel="popup" data-role="button" data-position-to="window" id="title" data-transition="slidedown">首页</a></h1>
+		<div id="suspendBox" data-role="popup" data-theme="none" class="ui-content box">
           <div>
            <div id='repair' class='left' onclick='repair(map)'><img src='img/repair.png' class='icon'><div class='label center'>保养与维修</div></div>
            <div id='gasoline' class='left' onclick='gasoline(map)'><img src='img/gasoline.png' class='icon' ><div class='label center'>加油站</div></div>

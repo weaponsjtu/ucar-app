@@ -90,7 +90,7 @@ function translateCallback (point) {
 	
 	//打开首页悬浮框
 	if($("#title  .ui-btn-text").html() == "首页"){
-		$("#infobox").popup("open");
+		$("#suspendBox").popup("open");
 	} 
   }
 }
@@ -121,7 +121,7 @@ function showgps_debug(position)
     
 function getGPS()
 {
-	if (DEBUG) {
+	if (true || DEBUG) {
 		showgps_debug();
 	} else {
 		var gps = navigator.geolocation;
