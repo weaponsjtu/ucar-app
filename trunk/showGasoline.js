@@ -1,19 +1,18 @@
 ﻿function showGasoline(map,minlng,maxlng,minlat,maxlat)
 {
 	$.getJSON("http://ihavecar.sinaapp.com/getGasolinePlace.php?jasoncallback=?&randomID="+Math.random()+"&minlng="+minlng+"&maxlng="+maxlng+"&minlat="+minlat+"&maxlat="+maxlat,function (json) {
-		var myIcon_Y = new BMap.Icon("img/pinY.png", new BMap.Size(61, 94), {anchor: new BMap.Size(30,94)});
+		var myIcon_Y = new BMap.Icon("img/pinY.png", new BMap.Size(31, 48), {anchor: new BMap.Size(15,48)});
 		
-		var myIcon_R = new BMap.Icon("img/pinR.png", new BMap.Size(61, 94), {anchor: new BMap.Size(30,94)});
+		var myIcon_R = new BMap.Icon("img/pinR.png", new BMap.Size(31, 48), {anchor: new BMap.Size(15,48)});
 	    
 		$.each(json,function(entryIndex,entry) {
 			var GasolinePoint = new BMap.Point(entry['经度'],entry['纬度']);
 			var GasolineMarker =new BMap.Marker(GasolinePoint, {icon: myIcon_Y});
 			map.addOverlay(GasolineMarker);
 			
-			var infohtml = "<div id='shopbox' class='box'>" +
+			/*var infohtml = "<div id='shopbox'>" +
 			"<table style='padding: 5px;'>" +
 			"<tr>" +
-			  "<td><img class='icon' src='" + entry['图片'] + "'></td>" + 
 			  "<td>" + 
 			     "<div class='label' style='font-size: 14px'>" + entry['企业名称'] + "</div>" +
 				 "<div class='label' style='color: #ddd;'>" + entry['企业地址'] + "</div>" +
@@ -23,13 +22,18 @@
 			     "<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>" +
 			  "</td>" + 
 			 "</tr>" +
-			 "</table></div>";
+			 "</table></div>";*/
+			 var infohtml = "<div id='shopbox'>" +
+			"<div class='label'>" + entry['企业名称'] + "</div>" +
+			"<div class='label' style='font-size: 12px;'>" + entry['企业地址'] + "</div>" +
+			"<div id='star'></div>" +
+			"</div>";
 			
 			var infobox = new BMapLib.InfoBox(map, infohtml, {
 				boxStyle:{
 					 //width: screen.availWidth / 2 + "px",
 				}
-			,closeIconMargin: "1px 1px 0 0"
+			,closeIconMargin: "1px 7px 0 0"
 			,closeIconUrl: "img/close1.png"
 			,enableAutoPan: true
 			,align: INFOBOX_AT_BOTTOM

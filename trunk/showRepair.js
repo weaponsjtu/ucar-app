@@ -1,27 +1,32 @@
 ﻿function showRepair(map,minlng,maxlng,minlat,maxlat)
 {
 	$.getJSON("http://ihavecar.sinaapp.com/getRepairPlace.php?jasoncallback=?&randomID="+Math.random()+"&minlng="+minlng+"&maxlng="+maxlng+"&minlat="+minlat+"&maxlat="+maxlat,function (json) {
-		var myIcon_Y = new BMap.Icon("img/pinY.png", new BMap.Size(61, 94), {anchor: new BMap.Size(30,94)});
+		var myIcon_Y = new BMap.Icon("img/pinY.png", new BMap.Size(31, 48), {anchor: new BMap.Size(15,48)});
 		
-		var myIcon_R = new BMap.Icon("img/pinR.png", new BMap.Size(61, 94), {anchor: new BMap.Size(30,94)});
+		var myIcon_R = new BMap.Icon("img/pinR.png", new BMap.Size(31, 48), {anchor: new BMap.Size(15,48)});
 		$.each(json,function(entryIndex,entry) {
 			var RepairPoint = new BMap.Point(entry['经度'],entry['纬度']);
 			var RepairMarker =new BMap.Marker(RepairPoint, {icon: myIcon_Y});
 			map.addOverlay(RepairMarker);
 			
-			var infohtml = "<div id='shopbox' class='box'>" +
-			"<table style='padding: 5px;'>" +
-			"<tr>" +
-			  "<td><img class='icon' src='img/car.jpg'></td>" + 
-			  "<td>" + 
+			/*var infohtml = "<div id='shopbox'>" +
+			"<table style='padding: 20px;'>" +
+			"<tr><td>" + 
 			     "<div class='label' style='font-size: 14px'>" + entry['企业名称'] + "</div>" +
-				 "<div class='label' style='color: #ddd;'>" + entry['企业地址'] + "</div>" +
-				 "<div id='star'></div>" +
-			  "</td>" +
-			  "<td id='shopinfo'>" + 
-			  "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>" + 
-			 "</tr>" +
-			 "</table></div>";
+			"</td></tr>" + 
+			"<tr><td>" + 
+			     "<div class='label' style='color: #ddd;'>" + entry['企业地址'] + "</div>" +
+			"</td></tr>" + 
+			"<tr><td>" + 
+			     "<div id='star'></div>" +
+			"</td></tr>" + 
+			 "</table></div>";*/
+			var infohtml = "<div id='shopbox'><table><tr><td id='wrap'>" +
+			"<div class='label'>" + entry['企业名称'] + "</div>" +
+			"<div class='label' style='font-size: 12px;'>" + entry['企业地址'] + "</div>" +
+			"<div id='star'></div></td>" +
+			"<td id='shopinfo'>&nbsp;&nbsp;&nbsp;&nbsp;</td></tr></table>" +
+			"</div>";
 			 
 			/*var infoWindow = new BMap.InfoWindow(infohtml);  // 创建信息窗口对象
 
@@ -33,7 +38,7 @@
 				boxStyle:{
 					 //width: screen.availWidth / 2 + "px",
 				}
-			,closeIconMargin: "1px 1px 0 0"
+			,closeIconMargin: "1px 7px 0 0"
 			,closeIconUrl: "img/close1.png"
 			,enableAutoPan: true
 			,align: INFOBOX_AT_BOTTOM
@@ -66,7 +71,7 @@
 				infobox.open(RepairPoint);
 				$(function(){
 					$('#star').raty({readOnly: true,start: entry['评分']});
-					$('#shopinfo').css("background", 'url("img/infobox.png") no-repeat -389px -10px');
+					//$('#shopinfo').css("background", 'url("img/infobox.png") no-repeat -389px -10px');
 					if (DEBUG) {
 						$('#shopinfo').click(function(){
 						   window.location = "shopinfo.html?type=1&shopid="+entry['序号'];
