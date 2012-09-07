@@ -127,8 +127,8 @@ function ucar(map, type, lng, lat) {
 	ZoomControl_TL.prototype = new BMap.Control();
 	ZoomControl_TL.prototype.initialize = function(map) {		
 		div = document.createElement("div");
-		div.innerHTML = "<img src='img/zoomOut.png' style='cursor: pointer; width: 32px; height: 30px;' onclick='map.zoomOut()'><br>" +
-		"<img src='img/zoomIn.png' style='cursor: pointer; width: 32px; height: 30px;' onclick='map.zoomIn()'>";
+		div.innerHTML = "<img src='img/zoomOut.png' style='cursor: pointer; width: 32px; height: 30px;' onclick='map.zoomIn()'><br>" +
+		"<img src='img/zoomIn.png' style='cursor: pointer; width: 32px; height: 30px;' onclick='map.zoomOut()'>";
 		map.getContainer().appendChild(div);
 		return div;
 	}
