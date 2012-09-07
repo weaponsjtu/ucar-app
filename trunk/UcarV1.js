@@ -121,7 +121,7 @@ function showgps_debug(position)
     
 function getGPS()
 {
-	if (true || DEBUG) {
+	if (DEBUG) {
 		showgps_debug();
 	} else {
 		var gps = navigator.geolocation;
