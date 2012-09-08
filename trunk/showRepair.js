@@ -21,7 +21,7 @@
 			     "<div id='star'></div>" +
 			"</td></tr>" + 
 			 "</table></div>";*/
-			var infohtml = "<div id='shopbox'><table><tr><td id='wrap'>" +
+			var infohtml = "<div id='shopbox' style='opacity: 0.95;'><table><tr><td id='wrap'>" +
 			"<div class='label'>" + entry['企业名称'] + "</div>" +
 			"<div class='label' style='font-size: 12px;'>" + entry['企业地址'] + "</div>" +
 			"<div id='star'></div></td>" +
@@ -43,6 +43,7 @@
 			,enableAutoPan: true
 			,align: INFOBOX_AT_BOTTOM
 			});
+		
 			
 			infobox.addEventListener("close", function(e) {
 				for (var i = 0; i < overlays.length; i++) {
@@ -55,6 +56,8 @@
 			});
 			
 			RepairMarker.addEventListener("click", function(){
+			 ClickTime += 1;
+			 if (ClickTime%2 == 1) {
 				overlays = map.getOverlays();
 				for (var i = 0; i < overlays.length; i++) {
 					if (overlays[i] instanceof BMapLib.InfoBox) {
@@ -71,19 +74,23 @@
 				infobox.open(RepairPoint);
 				$(function(){
 					$('#star').raty({readOnly: true,start: entry['评分']});
-					//$('#shopinfo').css("background", 'url("img/infobox.png") no-repeat -389px -10px');
-					if (DEBUG) {
-						$('#shopinfo').click(function(){
-						   window.location = "shopinfo.html?type=1&shopid="+entry['序号'];
+				  
+				  if (DEBUG) {
+						$("td#wrap").click(function(){
+						   window.location = "shopinfo.html?type=2&shopid="+entry['序号'];
 					  });
 					} else {
-					  $('#shopinfo').live('tap',function(){
-						  window.location = "shopinfo.html?type=1&shopid="+entry['序号'];
+					  $("td#wrap").live('tap',function(){
+						  window.location = "shopinfo.html?type=2&shopid="+entry['序号'];
 					  }).live('click',function(){
-						  window.location = "shopinfo.html?type=1&shopid="+entry['序号'];
+						  window.location = "shopinfo.html?type=2&shopid="+entry['序号'];
 					  });
 				  }
+				  
 				});
+			 } else {
+			 	infobox.close();
+			 }
 				//alert("marker end");
 			});
 		});

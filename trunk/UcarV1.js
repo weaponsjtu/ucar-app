@@ -2,6 +2,8 @@
 
 var DEBUG = false; //控制是否为测试模式
 
+var ClickTime = 0;
+
 
 function showYourPosition(map,point)
 {
@@ -40,41 +42,6 @@ function isInShanghai(point)
         
 }
 
-function mapClick(event){
-	 allPrpos(event);
- 	 clickTime += 1;
- 	 if (clickTime%2 == 1) {
- 	 	//alert("map start");
-		//alert("hello");
- 		num = 0;
- 		overlays = map.getOverlays();
- 		for (var i = 0; i < overlays.length; i++) {
- 			if (overlays[i] instanceof BMapLib.InfoBox) {
- 				num += 1;
- 			}
- 		}
- 		
- 		//alert(clickTime + "fds" +num);
- 		
- 		if ( num > 0) {
-			overlays = map.getOverlays();
-			var myIcon_Y = new BMap.Icon("img/pinY.png", new BMap.Size(61, 94));
-			for (var i = 0; i < overlays.length; i++) {
-				if (overlays[i] instanceof BMapLib.InfoBox) {
-					overlays[i].close();
-				}
-				if (overlays[i] instanceof BMap.Marker) {
-					if (overlays[i].getTitle() != 'current') {
-						overlays[i].setIcon(myIcon_Y);
-					}
-				}
-			}
-		}
-		//alert("map end");
-	 }
-	}
-
-var clickTime = 0;
 function translateCallback (point) {	
 	isInShanghai(point);
 	
