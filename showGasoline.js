@@ -23,10 +23,11 @@
 			  "</td>" + 
 			 "</tr>" +
 			 "</table></div>";*/
-			 var infohtml = "<div id='shopbox'>" +
+			 var infohtml = "<div id='shopbox' style='opacity: 0.95;'><table><tr><td id='wrap'>" +
 			"<div class='label'>" + entry['企业名称'] + "</div>" +
 			"<div class='label' style='font-size: 12px;'>" + entry['企业地址'] + "</div>" +
-			"<div id='star'></div>" +
+			"<div id='star'></div></td>" +
+			"<td id='shopinfo'>&nbsp;&nbsp;&nbsp;&nbsp;</td></tr></table>" +
 			"</div>";
 			
 			var infobox = new BMapLib.InfoBox(map, infohtml, {
@@ -50,6 +51,8 @@
 			});
 			
 			GasolineMarker.addEventListener("click", function(){
+			 ClickTime += 1;
+			 if (ClickTime%2 == 1) {
 				overlays = map.getOverlays();
 				for (var i = 0; i < overlays.length; i++) {
 					if (overlays[i] instanceof BMapLib.InfoBox) {
@@ -65,20 +68,22 @@
 				infobox.open(GasolinePoint);
 				$(function(){
 					$('#star').raty({readOnly: true,start: entry['评分']});
-					$('#shopinfo').css("background", 'url("img/infobox.png") no-repeat -389px -10px');
-					if (DEBUG) {
-						$('#shopinfo').click(function(){
+				  
+				  if (DEBUG) {
+						$("td#wrap").click(function(){
 						   window.location = "shopinfo.html?type=2&shopid="+entry['序号'];
 					  });
 					} else {
-					  $('#shopinfo').live('tap',function(){
+					  $("td#wrap").live('tap',function(){
 						  window.location = "shopinfo.html?type=2&shopid="+entry['序号'];
 					  }).live('click',function(){
 						  window.location = "shopinfo.html?type=2&shopid="+entry['序号'];
 					  });
 				  }
 				});
-				
+			 } else {
+			 	infobox.close();
+			 }
 			});
 		});
 	});
