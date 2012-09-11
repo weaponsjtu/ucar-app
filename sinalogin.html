@@ -56,29 +56,28 @@ $('.ui-btn-back').live('tap',function() {
 </div>
 
 <script type="text/javascript">
-window.onmessage=function(e) {
+window.onmessage=function(e){
 	var json_str = e.data;
 	var access_token = json_str.access_token;
 	var uid = json_str.uid;
 	var image = json_str.image;
 	var nickname = json_str.name;
+	alert(e.data);
 	$.ajax({type:'POST',async:false, url:'http://ihavecar.sinaapp.com/postuser.php?nickname='+nickname+'&photo='+image+'&sina='+uid});
+	window.location.href =encodeURI('logined.html?img='+image+'&name='+nickname);
+	writefile();
 	function writefile(){
 	//等待加载PhoneGap
-
 	document.addEventListener("deviceready", onDeviceReady, false);
-
-	// PhoneGap加载完毕
-
+	//PhoneGap加载完毕
 	function onDeviceReady() {
 		window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, gotFS, fail);
 	}
-         //获取newFile目录，如果不存在则创建该目录
+    //获取newFile目录，如果不存在则创建该目录
 	function gotFS(fileSystem) {
 		newFile = fileSystem.root.getDirectory("UCAR", {create : true,exclusive : false}, writerFile, fail);		
 	}
-	//获取newFile目录下面的dataFile.txt文件，如果
-	不存在则创建此文件
+	//获取newFile目录下面的dataFile.txt文件，如果不存在则创建此文件
 	function writerFile(newFile) {
 		newFile.getFile("dataFile.txt", {create : true,exclusive : false}, gotFileEntry, fail);
 	}
@@ -99,7 +98,7 @@ window.onmessage=function(e) {
 	}
 	// 检索一个已存在的文件，如果该文件不存在时则创建该文件
 }
-	window.location.href =encodeURI('logined.html?img='+image+'&name='+nickname);
+	//window.location.href =encodeURI('logined.html?img='+image+'&name='+nickname);
 };
 	
 </script>

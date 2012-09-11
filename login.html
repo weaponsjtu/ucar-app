@@ -84,8 +84,6 @@ $('.ui-btn-back').live('tap',function() {
      <ul data-role="listview">
        <li><a id="sinalogin" onClick="sinalogin()">新浪登录</a></li>
        <li><a id="qqlogin" onClick="qqlogin()">腾讯登录</a></li>
-       <li><a>人人登录</a></li>
-       <li><a>Gmail登录</a></li>
      </ul>
    </div>
    
@@ -103,20 +101,10 @@ $('.ui-btn-back').live('tap',function() {
 
 <script type="text/javascript">
 function sinalogin(){
-//window.location.href='http://1.ihavecar.sinaapp.com/client/login.html';
 	window.location.href ='sinalogin.html';
 }
 function qqlogin(){
-/*QC.Login({
-	btnId : 'qqLoginBtn',
-	size : 'A_L', 
-	clientId : '100284268',
-	scope : '',
-	redirectURI : 'http://ihavecar.sinaapp.com',
-	btnMode: 'showUserAfterLogin'
-});*/
-	//QC.Login.showPopup({appId:"100284268",redirect_URI:"http://ihavecar.sinaapp.com"});
-	window.location.href ='https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id=100284268&redirect_uri=http://ihavecar.sinaapp.com/qqsuccess.html';
+	window.location.href ='qqlogin.html';
 }
 </script>
 </body>
