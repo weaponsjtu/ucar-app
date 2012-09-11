@@ -77,13 +77,13 @@
 				  
 				  if (DEBUG) {
 						$("td#wrap").click(function(){
-						   window.location = "shopinfo.html?type=2&shopid="+entry['序号'];
+						   window.location = "shopinfo.html?type=1&shopid="+entry['序号'];
 					  });
 					} else {
 					  $("td#wrap").live('tap',function(){
-						  window.location = "shopinfo.html?type=2&shopid="+entry['序号'];
+						  window.location = "shopinfo.html?type=1&shopid="+entry['序号'];
 					  }).live('click',function(){
-						  window.location = "shopinfo.html?type=2&shopid="+entry['序号'];
+						  window.location = "shopinfo.html?type=1&shopid="+entry['序号'];
 					  });
 				  }
 				  
