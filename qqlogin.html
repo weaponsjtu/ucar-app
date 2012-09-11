@@ -26,8 +26,8 @@ $(document).ready(function(){
 		//event.preventDefault();
 	});
 	
-	$("#sinaframe").css('width', document.body.clientWidth);
-	$("#sinaframe").css('height', document.body.clientHeight - $("#sinaframe").offset().top);
+	$("#qqframe").css('width', document.body.clientWidth);
+	$("#qqframe").css('height', document.body.clientHeight - $("#qqframe").offset().top);
 });
 
 $('.ui-btn-back').live('tap',function() {
@@ -46,24 +46,23 @@ $('.ui-btn-back').live('tap',function() {
 <div data-role="page">
 	 <div data-role="header"  data-theme="b">
     <a href="#" class="ui-btn-back">返回</a>
-    <h1>新浪微博</h1>
+    <h1>腾讯微博</h1>
    </div>
    <div date-role="content">
-     <iframe id="sinaframe"
-	     src="https://api.weibo.com/oauth2/authorize?client_id=3943049038&redirect_uri=http://ihavecar.sinaapp.com/callback.php&response_type=code">
+     <iframe id="qqframe"
+	     src="http://ihavecar.sinaapp.com/oauth/qq_login.php">
      </iframe>
    </div>
 </div>
 
 <script type="text/javascript">
-window.onmessage=function(e){
+window.onmessage=function(e) {
 	var json_str = e.data;
 	var access_token = json_str.access_token;
-	var uid = json_str.uid;
-	var image = json_str.image;
-	var nickname = json_str.name;
-	alert(e.data);
-	$.ajax({type:'POST',async:false, url:'http://ihavecar.sinaapp.com/postuser.php?nickname='+nickname+'&photo='+image+'&sina='+uid});
+	var uid = json_str.openid;
+	var image = json_str.figureurl_1;
+	var nickname = json_str.nickname;
+	$.ajax({type:'POST',async:false, url:'http://ihavecar.sinaapp.com/postuser.php?nickname='+nickname+'&photo='+image+'&qq='+uid});
 	writefile();
 	window.location.href =encodeURI('logined.html?img='+image+'&name='+nickname);
 	
@@ -78,22 +77,20 @@ window.onmessage=function(e){
 	function gotFS(fileSystem) {
 		newFile = fileSystem.root.getDirectory("UCAR", {create : true,exclusive : false}, writerFile, fail);		
 	}
-	//获取newFile目录下面的dataFile.txt文件，如果不存在则创建此文件
+	//获取newFile目录下面的dataFile.txt文件，如果
+	不存在则创建此文件
 	function writerFile(newFile) {
 		newFile.getFile("dataFile.txt", {create : true,exclusive : false}, gotFileEntry, fail);
 	}
-	
 	function gotFileEntry(fileEntry) {
 		fileEntry.createWriter(gotFileWriter, fail);
 	}
-
 	function gotFileWriter(writer) {
 		writer.onwrite = function(evt) {
 			alert("write success");
 		};
 		writer.write("access_token:"+access_token+";");
 	}
-
 	function fail(error) {
 		alert("Failed to retrieve file:" + error.code);
 	}
