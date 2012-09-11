@@ -73,7 +73,7 @@ $('.ui-btn-back').live('tap',function() {
  <div data-role="header" data-theme="b">
    <a href="#" class="ui-btn-back">返回</a>
    <h1>点评与分享</h1>
-   <a href="" id="submit">发送</a>
+   <a input id="submit" onClick="share()">发送</a>
  </div>
  
  <div data-role="content" id="content">
@@ -83,7 +83,7 @@ $('.ui-btn-back').live('tap',function() {
  	</div>
     
   <label for="textarea-a">发表评论: <span style="float:right;">140字</span></label>
-	<textarea name="textarea" id="textarea-a" autofocus="true"></textarea>
+	<textarea name="textarea" id="textarea-a" autofocus></textarea>
     
   <div><span style="float:right;">我要分享到&nbsp;&nbsp;<img id="sina"></img></span></div>
  </form>
@@ -117,7 +117,8 @@ var star=new Array("★","★★","★★★","★★★★","★★★★★");
 function share(){
 	var score = $('#star').raty('score');
 	var con = document.getElementsByName('content');
-	var check = document.getElementsByName('CheckboxGroup');	
+	$.ajax({type:'POST',async:false, url:'https://api.weibo.com/2/statuses/update.json',data:{access_token:"2.00zf_UtBILdqSE750dcc0906gRNEaE",uid:"1736056791",client_id:"3943049038",status:"我在这里xxxx，我觉得"+con[0].value+" ，我打"+star[score-1],lat:31.176173,long:121.127916}});
+	/*var check = document.getElementsByName('CheckboxGroup');	
 	for(i=0;i<check.length;i++){
 		if(check[i].checked){
 			if(check[i].id=="QQ_share"){
@@ -127,7 +128,7 @@ function share(){
 				$.ajax({type:'POST',async:false, url:'https://api.weibo.com/2/statuses/update.json',data:{access_token:"2.00zf_UtBILdqSE750dcc0906gRNEaE",uid:"1736056791",client_id:"3943049038",status:"我在这里xxxx，我觉得"+con[0].value+" ，我打"+star[score-1],lat:31.176173,long:121.127916}});
 			}
 		}
-	}
+	}*/
 	$.ajax({type:'POST',async:false, url:'http://ihavecar.sinaapp.com/postcomment.php?shopid=1&userid=test@test.cn&userscore='+score+'&content="'+con[0].value+'"'});
 
 	window.location.href ='shoppage.html';
