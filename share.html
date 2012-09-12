@@ -93,31 +93,16 @@ $('.ui-btn-back').live('tap',function() {
    <h4>当前位置:&nbsp;&nbsp;<b id="current"></b></h4>
  </div>
 
-
-
-<!--
-<br>
-<div id="star"></div>
-        <br>
-<div>
-        请输入内容<input type="text" name="content" height="100" width="220"/><br>
-        <label>
-      <input type="checkbox" name="CheckboxGroup" value="复选框" id="sina_share">
-      分享至sina</label>
-    <br>
-    <label>
-      <input type="checkbox" name="CheckboxGroup" value="复选框" id="QQ_share">
-    分享至QQ</label>
-<br>
-<input id="post_data" type="button" onClick="share()" value="评价">
-</div>-->
-
 <script type="text/javascript">
 var star=new Array("★","★★","★★★","★★★★","★★★★★");
+var access_token="2.00zf_UtBILdqSE009e65d2e9d_jVUB";
+var shopname="西北偏北";
+var uid="1736056791";
 function share(){
+	//readfile();
 	var score = $('#star').raty('score');
-	var con = document.getElementsByName('content');
-	$.ajax({type:'POST',async:false, url:'https://api.weibo.com/2/statuses/update.json',data:{access_token:"2.00zf_UtBILdqSE750dcc0906gRNEaE",uid:"1736056791",client_id:"3943049038",status:"我在这里xxxx，我觉得"+con[0].value+" ，我打"+star[score-1],lat:31.176173,long:121.127916}});
+	var con = document.getElementsByName('textarea');
+	$.ajax({type:'POST', url:'https://api.weibo.com/2/statuses/update.json',data:{access_token:access_token,uid:uid,client_id:"3943049038",status:"我在"+shopname+"，"+con[0].value+" ，评分："+star[score-1],lat:31.176173,long:121.127916}});
 	/*var check = document.getElementsByName('CheckboxGroup');	
 	for(i=0;i<check.length;i++){
 		if(check[i].checked){
@@ -129,9 +114,53 @@ function share(){
 			}
 		}
 	}*/
-	$.ajax({type:'POST',async:false, url:'http://ihavecar.sinaapp.com/postcomment.php?shopid=1&userid=test@test.cn&userscore='+score+'&content="'+con[0].value+'"'});
+	$.ajax({type:'POST',async:false, url:'http://ihavecar.sinaapp.com/postcomment.php?shopid=1&userid='+uid+'&score='+score+'&content="'+con[0].value+'"'});
 
-	window.location.href ='shoppage.html';
+	window.location.href ='shopinfo.html';
+}
+
+function readfile() {
+	document.addEventListener("deviceready", onDeviceReady, false);
+    // PhoneGap is ready
+    function onDeviceReady() {
+        window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, gotFS, fail);
+    }
+
+    function gotFS(fileSystem) {
+        fileSystem.root.getFile("ucar/DataFile.txt", {create: true}, gotFileEntry, fail);
+    }
+
+    function gotFileEntry(fileEntry) {
+        fileEntry.file(gotFile, fail);
+    }
+
+    function gotFile(file){
+        readAsText(file);
+    }
+
+    function readAsText(file) {
+				//alert("hello");
+        var reader = new FileReader();
+        reader.onloadend = function(evt) {
+            //console.log("Read as text");
+            //console.log(evt.target.result);
+			var arg=evt.target.result.split(";");
+			for(i=0;i<3;i++){
+				var arg1=arg[i].split("=");
+				if(arg1[0]=="sina_accesstoken"){
+					sina_accesstoken=arg1[1];
+				}
+				if(arg1[0]=="sina_openid"){
+					sina_openid=arg1[1];
+				}
+			}
+        };
+        reader.readAsText(file);
+    }
+
+    function fail(evt) {
+        console.log(evt.target.error.code);
+    }
 }
 
 </script>
