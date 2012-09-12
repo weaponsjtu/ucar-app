@@ -125,8 +125,11 @@ function shopDelete(e){
     </h3>
  </div>
  
- <script type="text/javascript">
-getcollection(); 
+<script type="text/javascript">
+var url=window.location.href;
+var arg1=url.split("=");
+var uid=arg1[1];
+getcollection(uid); 
 </script>
 </div>
 
