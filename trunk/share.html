@@ -82,8 +82,8 @@ $('.ui-btn-back').live('tap',function() {
  		 <span  style="border-bottom: solid gray 1px" id="star"></span>
  	</div>
     
-  <label for="textarea-a">发表评论: <span style="float:right;">140字</span></label>
-	<textarea name="textarea" id="textarea-a" autofocus></textarea>
+  <label for="textarea-a">发表评论: <span id="counter" style="float:right;">140字</span></label>
+	<textarea name="textarea" id="textarea-a" autofocus onkeydown='countChar("textarea-a","counter");' onkeyup='countChar("textarea-a","counter");'></textarea>
     
   <div><span style="float:right;">我要分享到&nbsp;&nbsp;<img id="sina"></img></span></div>
  </form>
@@ -98,22 +98,19 @@ var star=new Array("★","★★","★★★","★★★★","★★★★★");
 var access_token="2.00zf_UtBILdqSE009e65d2e9d_jVUB";
 var shopname="西北偏北";
 var uid="1736056791";
+
+function countChar(textareaName,spanName)
+{
+	document.getElementById(spanName).innerHTML = 140 - document.getElementById(textareaName).value.length;
+}
+
 function share(){
 	//readfile();
 	var score = $('#star').raty('score');
 	var con = document.getElementsByName('textarea');
 	$.ajax({type:'POST', url:'https://api.weibo.com/2/statuses/update.json',data:{access_token:access_token,uid:uid,client_id:"3943049038",status:"我在"+shopname+"，"+con[0].value+" ，评分："+star[score-1],lat:31.176173,long:121.127916}});
-	/*var check = document.getElementsByName('CheckboxGroup');	
-	for(i=0;i<check.length;i++){
-		if(check[i].checked){
-			if(check[i].id=="QQ_share"){
-				$.ajax({type:'POST',async:false, url:'https://graph.qq.com/t/add_t',data:{access_token:"40E4FBB667C41EBD4656236CB917EFC4",oauth_consumer_key:"100284268",openid:"D08D45C9F3E2F67A5B96EA312FFF61D8",content:"我正在某某地干嘛"+con[0].value+"  "+star[score-1]}});
-			}
-			if(check[i].id=="sina_share"){
-				$.ajax({type:'POST',async:false, url:'https://api.weibo.com/2/statuses/update.json',data:{access_token:"2.00zf_UtBILdqSE750dcc0906gRNEaE",uid:"1736056791",client_id:"3943049038",status:"我在这里xxxx，我觉得"+con[0].value+" ，我打"+star[score-1],lat:31.176173,long:121.127916}});
-			}
-		}
-	}*/
+	//$.ajax({type:'POST', url:'https://graph.qq.com/t/add_t',data:{access_token:"40E4FBB667C41EBD4656236CB917EFC4",oauth_consumer_key:"100284268",openid:"D08D45C9F3E2F67A5B96EA312FFF61D8",content:"我正在某某地干嘛"+con[0].value+"  "+star[score-1]}});
+	
 	$.ajax({type:'POST',async:false, url:'http://ihavecar.sinaapp.com/postcomment.php?shopid=1&userid='+uid+'&score='+score+'&content="'+con[0].value+'"'});
 
 	window.location.href ='shopinfo.html';
