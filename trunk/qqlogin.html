@@ -62,7 +62,7 @@ window.onmessage=function(e) {
 	var uid = json_str.openid;
 	var image = json_str.figureurl_1;
 	var nickname = json_str.nickname;
-	$.ajax({type:'POST',async:false, url:'http://ihavecar.sinaapp.com/postuser.php?nickname='+nickname+'&photo='+image+'&qq='+uid});
+	$.ajax({type:'POST',async:false, url:'http://ihavecar.sinaapp.com/postuser.php?nickname='+nickname+'&photo='+image+'&qq='+uid+'&uid='+uid+'&sina=0'});
 	writefile();
 	window.location.href =encodeURI('logined.html?img='+image+'&name='+nickname);
 	
