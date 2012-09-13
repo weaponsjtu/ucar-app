@@ -157,7 +157,7 @@ function settings(){
 	$("#infobox").popup("close");
 	self.location = "login.html";	
 }
-
+/*
 $(document).ready(function() {
 	map = new BMap.Map("container");
 	$("#container").css("height", document.body.clientHeight - $("#container").offset().top - $("#footer").height());
@@ -172,7 +172,25 @@ $(document).ready(function() {
 	}
 	getGPS();
 });
-
+*/
+    
+function init_index() {
+     map = new BMap.Map("container");
+     $("#container").css("height", document.body.clientHeight - $("#container").offset().top - $("#footer").height());
+     var type = request("type");
+     if(type.indexOf("1") != -1){
+         //改变标题
+         $("#title  .ui-btn-text").html("保养与维修");
+     }
+     if(type.indexOf("2") != -1){
+         //改变标题
+         $("#title  .ui-btn-text").html("加油站");
+     }
+     getGPS();
+}
+     
+    
+    
 $(window).load(function() {
 	var lng = request("lng");
 	var lat = request("lat");
@@ -207,12 +225,13 @@ ac.addEventListener("onconfirm", function(e) {    //鼠标点击下拉列表后�
     $("#search").blur();
 });
 
-   /*
-    document.addEventListener("deviceready", onDeviceReady, false);
-    function onDeviceReady()
-    {
-        checkConnection();
-    }
+   
+document.addEventListener("deviceready", onDeviceReady, false);
+function onDeviceReady()
+{
+    init_index();
+}
+    /*
     function checkConnection()
     {
         var networkState = navigator.network.connection.type;
