@@ -1,6 +1,6 @@
 ﻿var shFinish = -1;//-1初始化值，1在上海，0不在上海，－2无法获悉行政区域
 
-var DEBUG = true; //控制是否为测试模式
+var DEBUG = false; //控制是否为测试模式
 
 var ClickTime = 0;
 
@@ -88,7 +88,7 @@ function showgps_debug(position)
     
 function getGPS()
 {
-	if (true || DEBUG) {
+	if (DEBUG) {
 		showgps_debug();
 	} else {
 		var gps = navigator.geolocation;

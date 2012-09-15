@@ -157,22 +157,7 @@ function settings(){
 	$("#infobox").popup("close");
 	self.location = "login.html";	
 }
-/*
-$(document).ready(function() {
-	map = new BMap.Map("container");
-	$("#container").css("height", document.body.clientHeight - $("#container").offset().top - $("#footer").height());
-	var type = request("type");
-	if(type.indexOf("1") != -1){
-		//改变标题
-		$("#title  .ui-btn-text").html("保养与维修");
-	} 
-	if(type.indexOf("2") != -1){
-		//改变标题
-		$("#title  .ui-btn-text").html("加油站");
-	}
-	getGPS();
-});
-*/
+
     
 function init_index() {
      map = new BMap.Map("container");
@@ -225,13 +210,19 @@ ac.addEventListener("onconfirm", function(e) {    //鼠标点击下拉列表后�
     $("#search").blur();
 });
 
-   
+
 document.addEventListener("deviceready", onDeviceReady, false);
 function onDeviceReady()
 {
     init_index();
 }
-    /*
+/*
+$(document).ready(function(){
+	init_index();	
+});
+*/
+
+    
     function checkConnection()
     {
         var networkState = navigator.network.connection.type;
@@ -240,7 +231,7 @@ function onDeviceReady()
          else
             alert ("联网了"); 
     }
-    */
+    
 </script>
 
 <style type="text/css">
@@ -298,6 +289,18 @@ div#shopbox {
 td#wrap {
 	width: 190px;
 }
+
+img#logo {
+	 position: absolute;
+	 width: 50px;
+	 height: 42px;
+	 margin-top: 4px;
+	 margin-left: 5px;
+}
+/*
+div#header {
+	 height: 50px;
+}*/
 </style>
 
 </head>
@@ -306,11 +309,16 @@ td#wrap {
 
 <div data-role="page" id="main_menu">
     <div data-role="header" id="header" data-theme="b">
-        <a href="#" onclick="self.location='index.html'" data-role="content"><img src="img/LOGO.png" style="width: 60px; height:50px;"></a>
-        <h1><a href="#suspendBox"  data-rel="popup" data-role="button" data-position-to="window" id="title" data-transition="slidedown">首页</a></h1>
+    	  <img src="img/LOGO.png" id="logo">
+        <h1>
+        	  
+        	  <a href="#suspendBox"  data-rel="popup" data-role="button" data-position-to="window" id="title" data-transition="slidedown">首页</a>
+        </h1>
+		
+		
 		<div id="suspendBox" data-role="popup" data-theme="none" class="ui-content box">
-          <div>
-           <div id='repair' class='left' onclick='repair(map)'><img src='img/repair.png' class='icon'><div class='label center'>保养与维修</div></div>
+         <div>
+           <div id='repair' class='left' onclick='repair(map)'><img src='img/repair.png' class='icon'><div class='label center'>保养维修</div></div>
            <div id='gasoline' class='left' onclick='gasoline(map)'><img src='img/gasoline.png' class='icon' ><div class='label center'>加油站</div></div>
 	       <div id='park' class='left'><img src='img/park.png' class='icon'><div class='label center'>停车场</div></div>
 	       <div id='collect' class='left' onclick='collect()'><img src='img/collect.png' class='icon'><div class='label center'>我的收藏</div></div>
@@ -336,9 +344,9 @@ td#wrap {
         </div>
         
      <div data-role="footer" id="footer">
-     	<h3>
+     	<h5>
         <font style="color: white;">当前位置:&nbsp;&nbsp;<b id="current"></b></font>
-        </h3>
+        </h5>
      </div>
     
 </div>
