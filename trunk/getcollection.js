@@ -1,6 +1,6 @@
 function getcollection(uid) {
 	$(document).ready(function(){
-		var html='<table>';	
+		var html='<table id="table">';	
 		$.getJSON('http://ihavecar.sinaapp.com/collection.php?jasoncallback=?&uid='+uid+'&randomID='+Math.random(), function(json){
 		//random函数用来取消缓存影响,jsonp形式进行跨域传数据
 			$.each(json,function(entryIndex,entry){
