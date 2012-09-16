@@ -33,7 +33,7 @@ function back(){
 }
 
 $(document).ready(function(){
-	$("#content").css("min-height", document.body.clientHeight - $("#content").offset().top - $("#footer").height());
+	$("#content").css("min-height", document.body.clientHeight - $("#content").offset().top);
 	
 	//getGPS();
 	jQuery('body').live('swipeleft',function(event){
@@ -88,10 +88,7 @@ $('.ui-btn-back').live('tap',function() {
   <div><span style="float:right;">我要分享到&nbsp;&nbsp;<img id="sina"></img></span></div>
  </form>
  </div>
- 
- <div data-role="footer" id="footer">
-   <h4>当前位置:&nbsp;&nbsp;<b id="current"></b></h4>
- </div>
+
 
 <script type="text/javascript">
 var star=new Array("★","★★","★★★","★★★★","★★★★★");

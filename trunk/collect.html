@@ -56,7 +56,7 @@ function back(){
 }
 
 $(document).ready(function(){
-	$("#content").css("min-height", document.body.clientHeight - $("#content").offset().top - $("#footer").height());
+	$("#content").css("min-height", document.body.clientHeight - $("#content").offset().top);
 	
 	//getGPS();
 	
@@ -118,12 +118,7 @@ function shopDelete(e){
  <div  data-role="content" id="content">
     <div id="collection"></div>
  </div>
- 
- <div data-role="footer" id="footer">
-    <h3>
-        <font style="color: white;">当前位置:&nbsp;&nbsp;<b id="current"></b></font>
-    </h3>
- </div>
+
  
 <script type="text/javascript">
 var url=window.location.href;

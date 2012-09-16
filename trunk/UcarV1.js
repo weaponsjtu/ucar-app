@@ -7,6 +7,15 @@ var ClickTime = 0;
 
 function showYourPosition(map,point)
 {
+	//解决在用户移动状态下，定位出现多点问题，既我们的app会显示之前的定位点
+	overlays = map.getOverlays();
+	for (var i = 0; i < overlays.length; i++) {
+    if (overlays[i] instanceof BMap.Marker) {
+		  if (overlays[i].getTitle() == 'current') {
+		  	map.removeOverlay(overlays[i]);
+		  }
+	  }
+	}
 	var myIcon = new BMap.Icon("img/position.png", new BMap.Size(32, 32));
 	var marker =new BMap.Marker(point, {icon: myIcon, title: 'current'});
 	map.addOverlay(marker);
