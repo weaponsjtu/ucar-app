@@ -27,6 +27,7 @@ a.delete {
 	text-decoration: none;
 	cursor: pointer;
 	margin-right: 10px;
+	margin-left: -60px;
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;
 	-moz-box-shadow: 0 1px 3px rgba(0,0,0,0.5);
@@ -44,6 +45,10 @@ a.delete {
 	background:url("img/back.jpg") repeat;
 }
 
+div#wrap_delete{
+	
+}
+
 </style>
 
 <script type="text/javascript">
@@ -57,7 +62,8 @@ function back(){
 
 $(document).ready(function(){
 	$("#content").css("min-height", document.body.clientHeight - $("#content").offset().top);
-	
+	//$("#wrap_delete").css("min-width", $("table").width());
+	//$("#wrap_delete").css("height", $("table").height());
 	//getGPS();
 	
 	jQuery('body').live('swipeleft',function(event){
@@ -82,9 +88,11 @@ function edit(e){
 	node = e.target
 	if (node.innerText == "编辑") {
 	  $("a.delete").css("display", "inline");
+	  $("table").css("color", "gray");
 	  node.innerText = "完成";
 	} else {
 		$("a.delete").css("display", "none");
+		$("table").css("color", "");
 		node.innerText = "编辑";
 	}
 }

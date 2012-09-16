@@ -210,17 +210,17 @@ ac.addEventListener("onconfirm", function(e) {    //鼠标点击下拉列表后�
     $("#search").blur();
 });
 
-
-document.addEventListener("deviceready", onDeviceReady, false);
-function onDeviceReady()
-{
+if(DEBUG) {
+	$(document).ready(function(){
+	  init_index();	
+  });
+} else {
+  document.addEventListener("deviceready", onDeviceReady, false);
+  function onDeviceReady()
+  {
     init_index();
+  }
 }
-/*
-$(document).ready(function(){
-	init_index();	
-});
-*/
 
     
     function checkConnection()
