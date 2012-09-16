@@ -105,13 +105,13 @@ function ucar(map, type, lng, lat) {
 		div.style.cursor = "pointer";
 		div.onclick = function (e) {
 			getGPS();
-			if (type == 1) {
+			/*if (type == 1) {
 				showRepairPlace(map);
 			} else if (type == 2) {
 				showGasolinePlace(map);
 			} else {
 				alert("Wrong type");
-			}
+			}*/
 		}
 		map.getContainer().appendChild(div);
 		return div;

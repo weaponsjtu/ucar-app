@@ -46,6 +46,7 @@
 		
 			
 			infobox.addEventListener("close", function(e) {
+				overlays = map.getOverlays();
 				for (var i = 0; i < overlays.length; i++) {
     		  if (overlays[i] instanceof BMap.Marker) {
 						if (overlays[i].getTitle() != 'current' && overlays[i].getTitle() != 'search') {
