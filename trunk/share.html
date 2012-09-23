@@ -92,7 +92,7 @@ $('.ui-btn-back').live('tap',function() {
 
 <script type="text/javascript">
 var star=new Array("★","★★","★★★","★★★★","★★★★★");
-var access_token="2.00zf_UtBILdqSE009e65d2e9d_jVUB";
+var access_token;
 var shopname="西北偏北";
 var uid="1736056791";
 
@@ -102,7 +102,8 @@ function countChar(textareaName,spanName)
 }
 
 function share(){
-	//readfile();
+	readfile();
+	alert(access_token);
 	var score = $('#star').raty('score');
 	var con = document.getElementsByName('textarea');
 	$.ajax({type:'POST', url:'https://api.weibo.com/2/statuses/update.json',data:{access_token:access_token,uid:uid,client_id:"3943049038",status:"我在"+shopname+"，"+con[0].value+" ，评分："+star[score-1],lat:31.176173,long:121.127916}});
@@ -139,15 +140,11 @@ function readfile() {
             //console.log("Read as text");
             //console.log(evt.target.result);
 			var arg=evt.target.result.split(";");
-			for(i=0;i<3;i++){
-				var arg1=arg[i].split("=");
-				if(arg1[0]=="sina_accesstoken"){
-					sina_accesstoken=arg1[1];
-				}
-				if(arg1[0]=="sina_openid"){
-					sina_openid=arg1[1];
-				}
-			}
+			//for(i=0;i<2;i++){
+				var arg1=arg[0].split("=");
+				var arg2=arg[1].split("=");
+				access_token=arg2[1];
+			//}
         };
         reader.readAsText(file);
     }
