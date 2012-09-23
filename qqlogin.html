@@ -50,7 +50,7 @@ $('.ui-btn-back').live('tap',function() {
    </div>
    <div date-role="content">
      <iframe id="qqframe"
-	     src="http://ihavecar.sinaapp.com/oauth/qq_login.php">
+	     src="https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id=100284268&redirect_uri=http://ihavecar.sinaapp.com/oauth/qq_callback.php&scope=get_user_info,add_share,list_album,add_album,upload_pic,add_topic,add_one_blog,add_weibo">
      </iframe>
    </div>
 </div>
@@ -60,10 +60,8 @@ window.onmessage=function(e) {
 	var json_str = e.data;
 	var access_token = json_str.access_token;
 	var uid = json_str.uid;
-	alert(access_token);
-	alert(uid);
-	//var image = json_str.figureurl_1;
-	//var nickname = json_str.nickname;
+	var image = json_str.image;
+	var nickname = json_str.name;
 	$.ajax({type:'POST',async:false, url:'http://ihavecar.sinaapp.com/postuser.php?nickname='+nickname+'&photo='+image+'&qq='+uid+'&uid='+uid+'&sina=0'});
 	//writefile();
 	window.location.href =encodeURI('logined.html?img='+image+'&name='+nickname);
