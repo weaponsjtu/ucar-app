@@ -11,7 +11,7 @@
 
 			var infohtml = "<div id='shopbox' style='opacity: 0.95;'><table><tr><td id='wrap'>" +
 			"<div class='label'>" + entry['企业名称'] + "</div>" +
-			"<div class='label' style='font-size: 12px;'>" + entry['企业地址'] + "</div>" +
+			//"<div class='label' style='font-size: 12px;'>" + entry['企业地址'] + "</div>" +
 			"<div id='star'></div></td>" +
 			"<td id='shopinfo'>&nbsp;&nbsp;&nbsp;&nbsp;</td></tr></table>" +
 			"</div>";
@@ -27,54 +27,89 @@
 			});
 		
 			
-			infobox.addEventListener("close", function(e) {
-				overlays = map.getOverlays();
-				for (var i = 0; i < overlays.length; i++) {
-    		  if (overlays[i] instanceof BMap.Marker) {
-						if (overlays[i].getTitle() != 'current' && overlays[i].getTitle() != 'search') {
-							overlays[i].setIcon(myIcon_Y);
-						}
-				  }
-			  }
-			});
-			
 			RepairMarker.addEventListener("click", function(){
-			 ClickTime += 1;
-			 if (ClickTime%2 == 1) {
-				overlays = map.getOverlays();
-				for (var i = 0; i < overlays.length; i++) {
-					if (overlays[i] instanceof BMapLib.InfoBox) {
-						overlays[i].close();
-					}
-					if (overlays[i] instanceof BMap.Marker) {
-						if (overlays[i].getTitle() != 'current' && overlays[i].getTitle() != 'search') {
-							overlays[i].setIcon(myIcon_Y);
-						}
-					}
-				}
-				//alert("marker start");
-				RepairMarker.setIcon(myIcon_R);
-				infobox.open(RepairPoint);
-				$(function(){
-					$('#star').raty({readOnly: true,start: entry['评分']});
+				var flag = false;
+        overlays = map.getOverlays();
+        for (var i = 0; i < overlays.length; i++) {
+        	 if (overlays[i] instanceof BMap.Marker) {
+        	 	  if (overlays[i].getTitle() == 'open') {
+        	 	  	 flag = true;
+        	 	  	 break;
+        	 	  }
+        	 }
+        }
+        
+        if (!flag) {
+        	 RepairMarker.setIcon(myIcon_R);
+        	 RepairMarker.setTitle("open");
+        	 infobox.open(RepairPoint);
+        	 $(function(){
+					        $('#star').raty({readOnly: true,start: entry['评分']});
 				  
-				  if (DEBUG) {
-						$("td#wrap").click(function(){
-						   window.location = "shopinfo.html?type=1&shopid="+entry['序号'];
-					  });
-					} else {
-					  $("td#wrap").live('tap',function(){
-						  window.location = "shopinfo.html?type=1&shopid="+entry['序号'];
-					  }).live('click',function(){
-						  window.location = "shopinfo.html?type=1&shopid="+entry['序号'];
-					  });
-				  }
+				          if (DEBUG) {
+						         $("td#wrap").click(function(){
+						             window.location = "shopinfo.html?type=1&shopid="+entry['序号'];
+					           });
+					        } else {
+					            $("td#wrap").live('tap',function(){
+						             window.location = "shopinfo.html?type=1&shopid="+entry['序号'];
+					            }).live('click',function(){
+						             window.location = "shopinfo.html?type=1&shopid="+entry['序号'];
+					            });
+				          }
+				    });
+        } else {
+        	 if (RepairMarker.getTitle() == 'open') {
+        	 	  RepairMarker.setTitle('');
+        	 	  overlays = map.getOverlays();
+				      for (var i = 0; i < overlays.length; i++) {
+					      if (overlays[i] instanceof BMapLib.InfoBox) {
+						       overlays[i].close();
+					      }
+					      if (overlays[i] instanceof BMap.Marker) {
+						       if (overlays[i].getTitle() != 'current' && overlays[i].getTitle() != 'search') {
+							        overlays[i].setIcon(myIcon_Y);
+						       }
+					      }
+				      }
+        	 } else {
+        	 	  overlays = map.getOverlays();
+				      for (var i = 0; i < overlays.length; i++) {
+					      if (overlays[i] instanceof BMapLib.InfoBox) {
+						       overlays[i].close();
+					      }
+					      if (overlays[i] instanceof BMap.Marker) {
+						       if (overlays[i].getTitle() != 'current' && overlays[i].getTitle() != 'search') {
+							        overlays[i].setIcon(myIcon_Y);
+						       }
+						       if (overlays[i].getTitle() == 'open') {
+						       	  overlays[i].setTitle('');
+						       }
+					      }
+				      }
+				      
+				      RepairMarker.setIcon(myIcon_R);
+				      RepairMarker.setTitle("open");
+				      infobox.open(RepairPoint);
+				      
+				      $(function(){
+					        $('#star').raty({readOnly: true,start: entry['评分']});
 				  
-				});
-			 } else {
-			 	infobox.close();
-			 }
-				//alert("marker end");
+				          if (DEBUG) {
+						         $("td#wrap").click(function(){
+						             window.location = "shopinfo.html?type=1&shopid="+entry['序号'];
+					           });
+					        } else {
+					            $("td#wrap").live('tap',function(){
+						             window.location = "shopinfo.html?type=1&shopid="+entry['序号'];
+					            }).live('click',function(){
+						             window.location = "shopinfo.html?type=1&shopid="+entry['序号'];
+					            });
+				          }
+				  
+				      });
+				    }
+				 }
 			});
 		});
 	});

@@ -10,22 +10,9 @@
 			var GasolineMarker =new BMap.Marker(GasolinePoint, {icon: myIcon_Y});
 			map.addOverlay(GasolineMarker);
 			
-			/*var infohtml = "<div id='shopbox'>" +
-			"<table style='padding: 5px;'>" +
-			"<tr>" +
-			  "<td>" + 
-			     "<div class='label' style='font-size: 14px'>" + entry['企业名称'] + "</div>" +
-				 "<div class='label' style='color: #ddd;'>" + entry['企业地址'] + "</div>" +
-				 "<div id='star'></div>" +
-			  "</td>" +
-			  "<td   id='shopinfo'>" + 
-			     "<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>" +
-			  "</td>" + 
-			 "</tr>" +
-			 "</table></div>";*/
 			 var infohtml = "<div id='shopbox' style='opacity: 0.95;'><table><tr><td id='wrap'>" +
 			"<div class='label'>" + entry['企业名称'] + "</div>" +
-			"<div class='label' style='font-size: 12px;'>" + entry['企业地址'] + "</div>" +
+			//"<div class='label' style='font-size: 12px;'>" + entry['企业地址'] + "</div>" +
 			"<div id='star'></div></td>" +
 			"<td id='shopinfo'>&nbsp;&nbsp;&nbsp;&nbsp;</td></tr></table>" +
 			"</div>";
@@ -40,50 +27,90 @@
 			,align: INFOBOX_AT_BOTTOM
 			});
 			
-			infobox.addEventListener("close", function(e) {
-				for (var i = 0; i < overlays.length; i++) {
-    		  if (overlays[i] instanceof BMap.Marker) {
-						if (overlays[i].getTitle() != 'current' && overlays[i].getTitle() != 'search') {
-							overlays[i].setIcon(myIcon_Y);
-						}
-				  }
-			  }
-			});
 			
 			GasolineMarker.addEventListener("click", function(){
-			 ClickTime += 1;
-			 if (ClickTime%2 == 1) {
-				overlays = map.getOverlays();
-				for (var i = 0; i < overlays.length; i++) {
-					if (overlays[i] instanceof BMapLib.InfoBox) {
-						overlays[i].close();
-					}
-					if (overlays[i] instanceof BMap.Marker) {
-						if (overlays[i].getTitle() != 'current' && overlays[i].getTitle() != 'search') {
-							overlays[i].setIcon(myIcon_Y);
-						}
-					}
-				}
-				GasolineMarker.setIcon(myIcon_R);
-				infobox.open(GasolinePoint);
-				$(function(){
-					$('#star').raty({readOnly: true,start: entry['评分']});
+				var flag = false;
+        overlays = map.getOverlays();
+        for (var i = 0; i < overlays.length; i++) {
+        	 if (overlays[i] instanceof BMap.Marker) {
+        	 	  if (overlays[i].getTitle() == 'open') {
+        	 	  	 flag = true;
+        	 	  	 break;
+        	 	  }
+        	 }
+        }
+        
+        if (!flag) {
+        	 GasolineMarker.setIcon(myIcon_R);
+        	 GasolineMarker.setTitle("open");
+        	 infobox.open(GasolinePoint);
+        	 $(function(){
+					        $('#star').raty({readOnly: true,start: entry['评分']});
 				  
-				  if (DEBUG) {
-						$("td#wrap").click(function(){
-						   window.location = "shopinfo.html?type=2&shopid="+entry['序号'];
-					  });
-					} else {
-					  $("td#wrap").live('tap',function(){
-						  window.location = "shopinfo.html?type=2&shopid="+entry['序号'];
-					  }).live('click',function(){
-						  window.location = "shopinfo.html?type=2&shopid="+entry['序号'];
-					  });
-				  }
-				});
-			 } else {
-			 	infobox.close();
-			 }
+				          if (DEBUG) {
+						         $("td#wrap").click(function(){
+						             window.location = "shopinfo.html?type=1&shopid="+entry['序号'];
+					           });
+					        } else {
+					            $("td#wrap").live('tap',function(){
+						             window.location = "shopinfo.html?type=1&shopid="+entry['序号'];
+					            }).live('click',function(){
+						             window.location = "shopinfo.html?type=1&shopid="+entry['序号'];
+					            });
+				          }
+				    });
+        } else {
+        	 if (GasolineMarker.getTitle() == 'open') {
+        	 	  GasolineMarker.setTitle('');
+        	 	  overlays = map.getOverlays();
+				      for (var i = 0; i < overlays.length; i++) {
+					      if (overlays[i] instanceof BMapLib.InfoBox) {
+						       overlays[i].close();
+					      }
+					      if (overlays[i] instanceof BMap.Marker) {
+						       if (overlays[i].getTitle() != 'current' && overlays[i].getTitle() != 'search') {
+							        overlays[i].setIcon(myIcon_Y);
+						       }
+					      }
+				      }
+        	 } else {
+        	 	  overlays = map.getOverlays();
+				      for (var i = 0; i < overlays.length; i++) {
+					      if (overlays[i] instanceof BMapLib.InfoBox) {
+						       overlays[i].close();
+					      }
+					      if (overlays[i] instanceof BMap.Marker) {
+						       if (overlays[i].getTitle() != 'current' && overlays[i].getTitle() != 'search') {
+							        overlays[i].setIcon(myIcon_Y);
+						       }
+						       if (overlays[i].getTitle() == 'open') {
+						       	  overlays[i].setTitle('');
+						       }
+					      }
+				      }
+				      
+				      GasolineMarker.setIcon(myIcon_R);
+				      GasolineMarker.setTitle("open");
+				      infobox.open(GasolinePoint);
+				      
+				      $(function(){
+					        $('#star').raty({readOnly: true,start: entry['评分']});
+				  
+				          if (DEBUG) {
+						         $("td#wrap").click(function(){
+						             window.location = "shopinfo.html?type=1&shopid="+entry['序号'];
+					           });
+					        } else {
+					            $("td#wrap").live('tap',function(){
+						             window.location = "shopinfo.html?type=1&shopid="+entry['序号'];
+					            }).live('click',function(){
+						             window.location = "shopinfo.html?type=1&shopid="+entry['序号'];
+					            });
+				          }
+				  
+				      });
+				    }
+				 }
 			});
 		});
 	});
