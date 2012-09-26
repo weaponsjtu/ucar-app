@@ -55,19 +55,21 @@ function translateCallback (point) {
 	isInShanghai(point);
 	
 	if(map) {
-  map.centerAndZoom(point, 15);
+   map.centerAndZoom(point, 15);
 	
 	//给地图添加监听器，移除信息框
  	//map.addEventListener("click", mapClick);
 	
-	map.enablePinchToZoom();
+	 map.enablePinchToZoom();
 	
-	showYourPosition(map,point);
+	 showYourPosition(map,point);
 	
-	//打开首页悬浮框
-	if($("#title  .ui-btn-text").html() == "首页"){
-		$("#suspendBox").popup("open");
-	} 
+	 //打开首页悬浮框
+	 map.addEventListener("tilesloaded", function(){
+	  if($("#title  .ui-btn-text").html() == "首页"){
+		 $("#suspendBox").popup("open");
+	  } 
+	 });
   }
 }
 
@@ -97,7 +99,7 @@ function showgps_debug(position)
     
 function getGPS()
 {
-	if (DEBUG) {
+	if (true || DEBUG) {
 		showgps_debug();
 	} else {
 		var gps = navigator.geolocation;

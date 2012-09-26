@@ -8,31 +8,13 @@
 			var RepairPoint = new BMap.Point(entry['经度'],entry['纬度']);
 			var RepairMarker =new BMap.Marker(RepairPoint, {icon: myIcon_Y});
 			map.addOverlay(RepairMarker);
-			
-			/*var infohtml = "<div id='shopbox'>" +
-			"<table style='padding: 20px;'>" +
-			"<tr><td>" + 
-			     "<div class='label' style='font-size: 14px'>" + entry['企业名称'] + "</div>" +
-			"</td></tr>" + 
-			"<tr><td>" + 
-			     "<div class='label' style='color: #ddd;'>" + entry['企业地址'] + "</div>" +
-			"</td></tr>" + 
-			"<tr><td>" + 
-			     "<div id='star'></div>" +
-			"</td></tr>" + 
-			 "</table></div>";*/
+
 			var infohtml = "<div id='shopbox' style='opacity: 0.95;'><table><tr><td id='wrap'>" +
 			"<div class='label'>" + entry['企业名称'] + "</div>" +
 			"<div class='label' style='font-size: 12px;'>" + entry['企业地址'] + "</div>" +
 			"<div id='star'></div></td>" +
 			"<td id='shopinfo'>&nbsp;&nbsp;&nbsp;&nbsp;</td></tr></table>" +
 			"</div>";
-			 
-			/*var infoWindow = new BMap.InfoWindow(infohtml);  // 创建信息窗口对象
-
-			RepairMarker.addEventListener("click", function(){          
-  			 this.openInfoWindow(infoWindow);  
-			});*/
 			
 			var infobox = new BMapLib.InfoBox(map, infohtml, {
 				boxStyle:{
