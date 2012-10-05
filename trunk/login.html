@@ -44,8 +44,8 @@ function back(){
 }
 
 $(document).ready(function(){
-	$("#content").css("min-height", document.body.clientHeight - $("#content").offset().top - $("#footer").height());
-	$("#content").hide();
+	$("#logbox").css("min-height", document.body.clientHeight - $("#logbox").offset().top - $("#footer").height());
+	$("#logbox").hide();
 	$("#userinfo").hide();
 	
 	//getGPS();
@@ -61,12 +61,14 @@ $(document).ready(function(){
 });
 
 $('.ui-btn-back').live('tap',function() {
-	back();
+	window.location.href ='index.html';
 	return false;
 }).live('click',function() {
-	back();
+	window.location.href ='index.html';
 	return false;
 });
+
+
 
 </script>
 
@@ -76,14 +78,21 @@ $('.ui-btn-back').live('tap',function() {
 
 <div id="main" data-role="page">
  <div data-role="header"  data-theme="b">
-   <a href="#" class="ui-btn-back">返回</a>
+   <a href="#" class="ui-btn-back">主页</a>
    <h1><a href="#" data-role="button">账号设置</a></h1>
  </div>
  
+ 
  <div id="userinfo">
+ 	<div id="nickimg"></div>
+    <a href="#" onClick="logout()" data-role="button">注销账号</a>
+   
+   <div id="legal2">  
+   <p style="text-align: right;">您可以随时关闭与合作平台的分享设置</p>
+   </div>
  </div>
  
- <div data-role="content" id="content">
+ <div data-role="content" id="logbox">
    <h1>快速登录</h1>
    <p>请使用新浪微博账号进行登录与绑定</p>
    <div id="account">
@@ -93,16 +102,18 @@ $('.ui-btn-back').live('tap',function() {
      </ul>
    </div>
    
+   <div id="legal1">  
    <p style="text-align: right;">您可以随时关闭与合作平台的分享设置</p>
-   
+   </br>
+   </br>
    <p class="center">点击阅读隐私声明</p>
    <p class="center">如您选择登录即视为同意并愿意遵守原则</p>
- </div>
+ 	</div>
  
-  <div data-role="footer" id="footer">
-   <h3>当前位置:<b id="current"></b></h3>
  </div>
-</div>
+  
+
+
 
 
 <script type="text/javascript">
@@ -119,6 +130,9 @@ function qqlogin(){
 	//qq登录v1暂时不做
 	window.location.href ='qqlogin.html';
 }
+
+
+//读取登录文件，若读取成功则认为已登录，显示已登录信息；反之显示登录框
 function readfile() {
 	document.addEventListener("deviceready", onDeviceReady, false);
     // PhoneGap is ready
@@ -149,7 +163,7 @@ function readfile() {
 
             if (arg==""){
                 // Empty file. Not Logined.
-                $("#content").show();
+                $("#logbox").show();
             }else{
                 //Read Loginfile
                 var arg1=arg[0].split("=");
@@ -163,9 +177,9 @@ function readfile() {
 
             html='<table>';
             html+='<tr><td><img src='+image+' width="60" 		height="60"></td>';
-            html+='<td>'+nickname+' </td>';
-            html+='</tr></table></br><h1><a href="#" onClick="logout()" data-role="button">注销账号</a></h1>';
-            $('#userinfo').html(html);
+            html+='<td><b>'+nickname+' </b></td>';
+            html+='</tr></table></br>';
+            $('#nickimg').html(html);
             $("#userinfo").show();            
 			}
         };
@@ -175,13 +189,13 @@ function readfile() {
     }
 
     function fail(evt) {
-		$("#content").show();
+		$("#logbox").show();
 		console.log("Detect as NOT logined.");
         console.log(evt.target.error.code);
     }
 }
 
-
+//注销账户，清空用户文件中的内容（暂时无法彻底删除）
 function logout(fileEntry) {
     function fail(error) {
     	alert('Error Logout: ' + error.code);
