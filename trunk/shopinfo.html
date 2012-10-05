@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <title>商户信息</title>
-<link href="jquery-mobile/jquery.mobile-1.1.1.css" rel="stylesheet" type="text/css"/>
+<link href="jquery-mobile/jquery.mobile-1.2.0-alpha.1.css" rel="stylesheet" type="text/css"/>
 <script src="jquery-mobile/jquery-1.7.2.js" type="text/javascript"></script>
-<script src="jquery-mobile/jquery.mobile-1.1.1.js" type="text/javascript"></script>
+<script src="jquery-mobile/jquery.mobile-1.2.0-alpha.1.js" type="text/javascript"></script>
 
 <script src="cordova.js" type="text/javascript"></script>
 <script src="getcomment.js"></script>
@@ -73,9 +73,9 @@ table td {
 <div id="main" data-role="page">
 
 <div data-role="header" data-theme="b">
- <a href="" id="back" rel="external">返回</a>
-    <h1></h1>
- <a href="./collect.html">收藏</a>
+    <a href="" id="back" rel="external">返回</a>
+    <h1><a href="#" data-role="button">商铺详情</a></h1>
+    <a href="./collect.html">收藏</a>
 </div>
 
 <div data-role="content">
@@ -104,16 +104,11 @@ table td {
 </div>
 <script type="text/javascript">
 	$("#shopdiv").css("max-width", document.body.clientWidth + 'px');
-	console.log(document.body.clientWidth);
 	var shopid = request("shopid");
 	var type = request("type");
 	showshop(shopid, type);
 	showcomment(1);
 </script>
-<div data-role="footer" id="footer">
-   <h3>当前位置:<b id="current"></b></h3>
- </div>
 </div>
 </body>
 </html>
-

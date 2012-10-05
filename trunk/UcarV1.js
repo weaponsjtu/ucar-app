@@ -137,3 +137,45 @@ function  allPrpos(obj) {
     // 最后显示所有的属性
 		alert(props);
 }
+
+
+//读取文件
+function readfile() {
+	document.addEventListener("deviceready", onDeviceReady, false);
+    // PhoneGap is ready
+    function onDeviceReady() {
+        window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, gotFS, fail);
+    }
+
+    function gotFS(fileSystem) {
+        fileSystem.root.getFile("ucar/DataFile.txt", {create: true}, gotFileEntry, fail);
+    }
+
+    function gotFileEntry(fileEntry) {
+        fileEntry.file(gotFile, fail);
+    }
+
+    function gotFile(file){
+        readAsText(file);
+    }
+
+    function readAsText(file) {
+				//alert("hello");
+        var reader = new FileReader();
+        reader.onloadend = function(evt) {
+            //console.log("Read as text");
+            //console.log(evt.target.result);
+			var arg=evt.target.result.split(";");
+			//for(i=0;i<2;i++){
+				var arg1=arg[0].split("=");
+				var arg2=arg[1].split("=");
+				access_token=arg2[1];
+			//}
+        };
+        reader.readAsText(file);
+    }
+
+    function fail(evt) {
+        console.log(evt.target.error.code);
+    }
+}
