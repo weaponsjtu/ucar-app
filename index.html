@@ -171,6 +171,16 @@ function init_index() {
          //改变标题
          $("#title  .ui-btn-text").html("加油站");
      }
+     
+     /*
+     //主页上的用户显示
+     var userInfo = isLogin();
+     if (userInfo) {
+         $("currentUser").html(userImg);
+         $("nickname").html(nickname);
+         $("userStatus").html(status);
+     }
+     */
      getGPS();
 }
      
@@ -320,19 +330,19 @@ div#header {
          <div>
            <div id='repair' class='left' onclick='repair(map)'><img src='img/repair.png' class='icon'><div class='label center'>保养维修</div></div>
            <div id='gasoline' class='left' onclick='gasoline(map)'><img src='img/gasoline.png' class='icon' ><div class='label center'>加油站</div></div>
-	       <div id='park' class='left'><img src='img/park.png' class='icon'><div class='label center'>停车场</div></div>
-	       <div id='collect' class='left' onclick='collect()'><img src='img/collect.png' class='icon'><div class='label center'>我的收藏</div></div>
-	       <div id='setting' class='left' onclick='settings()'><img src='img/settings.png' class='icon'><div class='label center'>设置</div></div>
-	       <div class='clear'></div>
-          </div>
-          <div style="float: right">
-             <div style="float: right"><img src='img/unlogin.png' class='icon'></div>
-             <div style="float: right;">
-               <div class='label' style="font-size: 16px;">未登录</div>
-               <div class='label'>点击登录</div>
+	         <div id='park' class='left'><img src='img/park.png' class='icon'><div class='label center'>停车场</div></div>
+	         <div id='collect' class='left' onclick='collect()'><img src='img/collect.png' class='icon'><div class='label center'>我的收藏</div></div>
+	         <div id='setting' class='left' onclick='settings()'><img src='img/settings.png' class='icon'><div class='label center'>设置</div></div>
+	         <div class='clear'></div>
+         </div>
+         <div style="float: right">
+             <div style="float: right"><img id="currentUser" src='img/unlogin.png' class='icon'></div>
+             <div style="float: right; margin-top: 20px; margin-right: 10px;">
+               <div class='label' style="font-size: 16px;"><b id="nickname">未登录</b></div>
+               <div class='label' style="font-size: 10px;" id="userStatus">点击登录</div>
              </div>
-          </div>
-          <div class='clear'></div>
+         </div>
+         <div class='clear'></div>
 		</div>
 	</div>
     
