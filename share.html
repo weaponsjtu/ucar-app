@@ -1,6 +1,7 @@
 <!DOCTYPE html> 
 <html>
 <head>
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no"/>
 <meta charset="utf-8">
 <title>分享页面</title>
 <link href="jquery-mobile/jquery.mobile-1.2.0-alpha.1.css" rel="stylesheet" type="text/css"/>
@@ -89,30 +90,18 @@ $('.ui-btn-back').live('tap',function() {
 
 
 <script type="text/javascript">
-var star=new Array("★","★★","★★★","★★★★","★★★★★");
-var access_token;
+var star=new Array(" ","★","★★","★★★","★★★★","★★★★★");
 var shopname="西北偏北";
-var uid="1736056791";
+checklogin();
+
 
 function countChar(textareaName,spanName)
 {
 	document.getElementById(spanName).innerHTML = 140 - document.getElementById(textareaName).value.length;
 }
 
-function share(){
-	readfile();
-	alert(access_token);
-	var score = $('#star').raty('score');
-	var con = document.getElementsByName('textarea');
-	$.ajax({type:'POST', url:'https://api.weibo.com/2/statuses/update.json',data:{access_token:access_token,uid:uid,client_id:"3943049038",status:"我在"+shopname+"，"+con[0].value+" ，评分："+star[score-1],lat:31.176173,long:121.127916}});
-	//$.ajax({type:'POST', url:'https://graph.qq.com/t/add_t',data:{access_token:"40E4FBB667C41EBD4656236CB917EFC4",oauth_consumer_key:"100284268",openid:"D08D45C9F3E2F67A5B96EA312FFF61D8",content:"我正在某某地干嘛"+con[0].value+"  "+star[score-1]}});
-	
-	$.ajax({type:'POST',async:false, url:'http://ihavecar.sinaapp.com/postcomment.php?shopid=1&userid='+uid+'&score='+score+'&content="'+con[0].value+'"'});
 
-	window.location.href ='shopinfo.html';
-}
-
-function readfile() {
+function share() {
 	document.addEventListener("deviceready", onDeviceReady, false);
     // PhoneGap is ready
     function onDeviceReady() {
@@ -138,16 +127,79 @@ function readfile() {
             //console.log("Read as text");
             //console.log(evt.target.result);
 			var arg=evt.target.result.split(";");
-			//for(i=0;i<2;i++){
-				var arg1=arg[0].split("=");
-				var arg2=arg[1].split("=");
-				access_token=arg2[1];
-			//}
+			 if (arg==""){
+                window.location.href ='login.html';
+			 }else{
+				 var arg1=arg[0].split("=");
+				 var arg2=arg[1].split("=");
+				 var uid=arg1[1];
+				 var access_token=arg2[1];
+				 
+				
+				var score = $('#star').raty('score');
+				if (score== ""){
+					score=0;
+				}
+				var con = document.getElementsByName('textarea');
+				
+//开始分享	
+				$.ajax({type:'POST', url:'https://api.weibo.com/2/statuses/update.json',data:{access_token:access_token,uid:uid,client_id:"3943049038",status:"我在"+shopname+"，"+con[0].value+" ，评分："+star[score-1],lat:31.176173,long:121.127916}});
+				//$.ajax({type:'POST', url:'https://graph.qq.com/t/add_t',data:{access_token:"40E4FBB667C41EBD4656236CB917EFC4",oauth_consumer_key:"100284268",openid:"D08D45C9F3E2F67A5B96EA312FFF61D8",content:"我正在某某地干嘛"+con[0].value+"  "+star[score-1]}});
+	
+				$.ajax({type:'POST',async:false, url:'http://ihavecar.sinaapp.com/postcomment.php?shopid=1&userid='+uid+'&score='+score+'&content="'+con[0].value+'"'});
+
+				window.location.href ='shopinfo.html';
+			}
         };
         reader.readAsText(file);
     }
 
     function fail(evt) {
+        console.log(evt.target.error.code);
+		window.location.href ='login.html';
+    }
+}
+
+function checklogin() {
+	document.addEventListener("deviceready", onDeviceReady, false);
+    // PhoneGap is ready
+    function onDeviceReady() {
+        window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, gotFS, fail);
+    }
+
+    function gotFS(fileSystem) {
+        fileSystem.root.getFile("ucar/DataFile.txt", {create: true}, gotFileEntry, fail);
+    }
+
+    function gotFileEntry(fileEntry) {
+        fileEntry.file(gotFile, fail);
+    }
+
+    function gotFile(file){
+        readAsText(file);
+    }
+
+    function readAsText(file) {
+		var reader = new FileReader();
+        reader.onloadend = function(evt) {
+            var arg=evt.target.result.split(";");
+			
+
+            if (arg==""){
+                // Empty file. Not Logined.
+                alert("您仍未登录，请先登录，才可以进行点评与分享");
+				window.location.href ='login.html';
+            }
+        };
+        reader.readAsText(file);	
+		
+		
+    }
+
+    function fail(evt) {
+		alert("您仍未登录，请先登录，才可以进行点评与分享");
+		window.location.href ='login.html';
+		console.log("Detect as NOT logined.");
         console.log(evt.target.error.code);
     }
 }
