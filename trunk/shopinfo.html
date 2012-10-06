@@ -93,7 +93,7 @@ table td {
  	  	
  
  <div>
-   <input type="button" data-theme="e" value="分享与点评" onclick="self.location='share.html'" />
+   <input type="button" data-theme="e" value="分享与点评" onclick="share()" />
  </div>
  
   <div id="comment"></div>
@@ -110,7 +110,11 @@ var type=arg2[0];
 var shopid=arg1[2];
 	$("#shopdiv").css("max-width", document.body.clientWidth + 'px');
 	showshop(shopid, type);
-	showcomment(shopid, type); 
+	showcomment(shopid, type);
+
+function share(){ 
+	self.location='share.html?type='+type+'&shopid='+shopid;
+}
 </script>
 </div>
 </body>

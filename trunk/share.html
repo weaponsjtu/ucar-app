@@ -90,10 +90,15 @@ $('.ui-btn-back').live('tap',function() {
 
 
 <script type="text/javascript">
+var url=window.location.href;
+var arg1=url.split("=");
+var arg2=arg1[1].split("&");
+var type=arg2[0];
+var shopid=arg1[2];
+
 var star=new Array(" ","★","★★","★★★","★★★★","★★★★★");
 var shopname="西北偏北";
 checklogin();
-
 
 function countChar(textareaName,spanName)
 {
@@ -145,10 +150,9 @@ function share() {
 //开始分享	
 				$.ajax({type:'POST',async:false, url:'https://api.weibo.com/2/statuses/update.json',data:{access_token:access_token1,uid:uid1,client_id:"3943049038",status:"我在"+shopname+"，"+con[0].value+" ，评分："+star[score-1],lat:31.176173,long:121.127916}});
 				//$.ajax({type:'POST', url:'https://graph.qq.com/t/add_t',data:{access_token:"40E4FBB667C41EBD4656236CB917EFC4",oauth_consumer_key:"100284268",openid:"D08D45C9F3E2F67A5B96EA312FFF61D8",content:"我正在某某地干嘛"+con[0].value+"  "+star[score-1]}});
-	
-				$.ajax({type:'POST',async:false, url:'http://ihavecar.sinaapp.com/postcomment.php?shopid=1&userid='+uid1+'&score='+score+'&content="'+con[0].value+'"'});
+				$.ajax({type:'POST',async:false, url:'http://ihavecar.sinaapp.com/postcomment.php?shopid='+shopid+'&type='+type+'&userid='+uid1+'&score='+score+'&content="'+con[0].value+'"'});
 
-				window.location.href ='shopinfo.html';
+				window.location.href ='shopinfo.html?type='+type+'&shopid='+shopid;
 			}
         };
         reader.readAsText(file);
