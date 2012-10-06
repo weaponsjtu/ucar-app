@@ -1,9 +1,9 @@
-function showcomment(shop)
+function showcomment(shopid, type)
 	{
 $(document).ready(function(){
 	var count=0;
 	var html='<table>';	
-	$.getJSON('http://ihavecar.sinaapp.com/usercomment.php?shop_id='+shop+'&jasoncallback=?&randomID='+Math.random(), function(json){
+	$.getJSON('http://ihavecar.sinaapp.com/usercomment.php?shop_id='+shopid+'&type='+type+'&jasoncallback=?&randomID='+Math.random(), function(json){
 		//random函数用来取消缓存影响,jsonp形式进行跨域传数据
 		$.each(json,function(entryIndex,entry){
 			if(count<5){
@@ -22,11 +22,11 @@ $(document).ready(function(){
 }
 		// JavaScript Document
 		
-function showall(shop)
+function showall(shopid, type)
 	{
 $(document).ready(function(){
 	var html='<table>';	
-	$.getJSON('http://ihavecar.sinaapp.com/usercomment.php?shop_id='+shop+'&jasoncallback=?&randomID='+Math.random(), function(json){
+	$.getJSON('http://ihavecar.sinaapp.com/usercomment.php?shop_id='+shopid+'&type='+type+'&jasoncallback=?&randomID='+Math.random(), function(json){
 		//random函数用来取消缓存影响,jsonp形式进行跨域传数据
 		$.each(json,function(entryIndex,entry){
 				html+='<tr><td><img style="padding: 10px;" src="'+entry['image']+'" width="60" height="60"></td>';

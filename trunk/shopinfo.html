@@ -97,17 +97,20 @@ table td {
  </div>
  
   <div id="comment"></div>
-  <div><input type="button" data-theme="e" value="所有评论" onclick=showall(1) /></div>
+ <div><input type="button" data-theme="e" value="所有评论" onclick=showall(shopid, type) /></div>
   <div id="lng" style="display:none"></div>
   <div id="lat" style="display:none"></div>
   
 </div>
 <script type="text/javascript">
+var url=window.location.href;
+var arg1=url.split("=");
+var arg2=arg1[1].split("&");
+var type=arg2[0];
+var shopid=arg1[2];
 	$("#shopdiv").css("max-width", document.body.clientWidth + 'px');
-	var shopid = request("shopid");
-	var type = request("type");
 	showshop(shopid, type);
-	showcomment(1);
+	showcomment(shopid, type); 
 </script>
 </div>
 </body>
