@@ -151,6 +151,7 @@ function gasoline(map) {
 function collect(){
 	$("#suspendBox").popup("close");
 	//读取登录文件，若读取成功则认为已登录，显示已登录信息；反之显示登录框
+	readfile();
 function readfile() {
 	document.addEventListener("deviceready", onDeviceReady, false);
     // PhoneGap is ready
@@ -225,9 +226,10 @@ function init_index() {
          //改变标题
          $("#title  .ui-btn-text").html("加油站");
      }
-     
-    document.addEventListener("deviceready", onDeviceReady, false);
-    
+
+readfile1();
+function readfile1() {
+	document.addEventListener("deviceready", onDeviceReady, false);
     // PhoneGap is ready
     function onDeviceReady() {
         window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, gotFS, fail);
@@ -256,7 +258,7 @@ function init_index() {
 
             if (arg==""){
                 // Empty file. Not Logined.
-                
+                $("#logbox").show();
             }else{
                 //Read Loginfile
                 var arg1=arg[0].split("=");
@@ -264,18 +266,19 @@ function init_index() {
 				var arg3=arg[2].split("=");
 				var arg4=arg[3].split("=");
             
-				access_token=arg2[1];
-				nickname=arg3[1];
-				image=arg4[1];
-
+				var uid=arg1[1];
+				
+        var nickname=arg3[1];
+				var image=arg4[1];
             
-         $("currentUser").html(image);
-         $("nickname").html(nickname);
-         //$("userStatus").html(status);
-                
+         $("#nickname").html(nickname); 
+         $("#userStatus").css("display", "none");
+         $("#currentUser").attr("src",image);          
 			}
         };
         reader.readAsText(file);	
+		
+		
     }
 
     function fail(evt) {
@@ -283,6 +286,7 @@ function init_index() {
 		console.log("Detect as NOT logined.");
         console.log(evt.target.error.code);
     }
+}	
      getGPS();
 }
      
