@@ -26,7 +26,7 @@
 
 <script type="text/javascript">
 function ucar(map, type, lng, lat) {
-	//显示搜索�?
+	//显示搜索框
 	$("#searchBox").css("display", "block");
 	
 	$("#container").css("height", document.body.clientHeight - $("#container").offset().top - $("#footer").height());
@@ -51,14 +51,14 @@ function ucar(map, type, lng, lat) {
 	
 	if (type == 1) {
 		//改变标题
-		$("#title  .ui-btn-text").html("保养与维�?);
-		//显示汽修�?
+		$("#title  .ui-btn-text").html("保养与维修");
+		//显示汽修店
 		showRepairPlace(map);
 	}  else if (type == 2) {
 		//改变标题
-		$("#title  .ui-btn-text").html("加油�?);
+		$("#title  .ui-btn-text").html("加油站");
 		
-		//显示加油�?
+		//显示加油站
 		showGasolinePlace(map);
 	} else {
 		alert("Wrong type");
@@ -219,15 +219,15 @@ function init_index() {
      var type = request("type");
      if(type.indexOf("1") != -1){
          //改变标题
-         $("#title  .ui-btn-text").html("保养与维�?);
+         $("#title  .ui-btn-text").html("保养与维修");
      }
      if(type.indexOf("2") != -1){
          //改变标题
-         $("#title  .ui-btn-text").html("加油�?);
+         $("#title  .ui-btn-text").html("加油站");
      }
      
-function readfile() {
-	document.addEventListener("deviceready", onDeviceReady, false);
+    document.addEventListener("deviceready", onDeviceReady, false);
+    
     // PhoneGap is ready
     function onDeviceReady() {
         window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, gotFS, fail);
@@ -276,8 +276,6 @@ function readfile() {
 			}
         };
         reader.readAsText(file);	
-		
-		
     }
 
     function fail(evt) {
@@ -285,8 +283,6 @@ function readfile() {
 		console.log("Detect as NOT logined.");
         console.log(evt.target.error.code);
     }
-}
-
      getGPS();
 }
      
@@ -316,9 +312,9 @@ var searchValue;
 ac.addEventListener("onconfirm", function(e) {    //鼠标点击下拉列表后的事件
 	  var _value = e.item.value;
     searchValue = _value.province +  _value.city +  _value.district +  _value.street + _value.business;
-    if (_value.province !="上海�? && _value.city!="上海�? && _value.province!="")
+    if (_value.province !="上海市" && _value.city!="上海市" && _value.province!="")
         alert("超出上海");  
-    if ($("#title  .ui-btn-text").html() == "保养与维�?) {              
+    if ($("#title  .ui-btn-text").html() == "保养与维修") {              
       SearchRepairPlace(map,searchValue);
     } else {
     	SearchGasolinePlace(map,searchValue);
@@ -345,7 +341,7 @@ if(DEBUG || true) {
         if (networkState == Connection.NONE)
             alert ("没有联网");
          else
-            alert ("联网�?); 
+            alert ("联网了"); 
     }
     
 </script>
@@ -394,7 +390,7 @@ div#shopbox .label {
 	font-size: 14px;
 }
 
-/*信息�?/
+/*信息框*/
 div#shopbox {
 	background: url("img/infobox.png") no-repeat;
 	width: 220px;
@@ -435,8 +431,8 @@ div#header {
 		<div id="suspendBox" data-role="popup" data-theme="none" class="ui-content box">
          <div>
            <div id='repair' class='left' onclick='repair(map)'><img src='img/repair.png' class='icon'><div class='label center'>保养维修</div></div>
-           <div id='gasoline' class='left' onclick='gasoline(map)'><img src='img/gasoline.png' class='icon' ><div class='label center'>加油�?/div></div>
-	         <div id='park' class='left'><img src='img/park.png' class='icon'><div class='label center'>停车�?/div></div>
+           <div id='gasoline' class='left' onclick='gasoline(map)'><img src='img/gasoline.png' class='icon' ><div class='label center'>加油站</div></div>
+	         <div id='park' class='left'><img src='img/park.png' class='icon'><div class='label center'>停车场</div></div>
 	         <div id='collect' class='left' onclick='collect()'><img src='img/collect.png' class='icon'><div class='label center'>我的收藏</div></div>
 	         <div id='setting' class='left' onclick='settings()'><img src='img/settings.png' class='icon'><div class='label center'>设置</div></div>
 	         <div class='clear'></div>
@@ -444,7 +440,7 @@ div#header {
          <div style="float: right">
              <div style="float: right"><img id="currentUser" src='img/unlogin.png' class='icon'></div>
              <div style="float: right; margin-top: 20px; margin-right: 10px;">
-               <div class='label' style="font-size: 16px;"><b id="nickname">未登�?/b></div>
+               <div class='label' style="font-size: 16px;"><b id="nickname">未登录</b></div>
                <div class='label' style="font-size: 10px;" id="userStatus">点击登录</div>
              </div>
          </div>
