@@ -94,11 +94,9 @@ var url=window.location.href;
 var arg1=url.split("=");
 var arg2=arg1[1].split("&");
 var type=arg2[0];
-var arg3=arg2[1].split("=");
-var arg4=arg3[1].split("&");
-var shopid=arg4[0];
-var arg5=arg4[1].split("=");
-var shopname=arg5[1];
+var arg3=arg1[2].split("&");
+var shopid=arg3[0];
+var shopname=decodeURI(arg1[3]);
 
 var star=new Array(" ","★","★★","★★★","★★★★","★★★★★");
 alert(shopid);
