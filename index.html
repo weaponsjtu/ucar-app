@@ -182,9 +182,11 @@ function readfile() {
 
             if (arg==""){
                 // Empty file. Not Logined.
-                $("#logbox").show();
+                alert("您必须先登录，才能使用收藏功能");
+				$("#logbox").show();
             }else{
                 //Read Loginfile
+                
                 var arg1=arg[0].split("=");
 				var arg2=arg[1].split("=");
 				var arg3=arg[2].split("=");
@@ -201,6 +203,7 @@ function readfile() {
     }
 
     function fail(evt) {
+		alert("您必须先登录，才能使用收藏功能");
 		$("#logbox").show();
 		console.log("Detect as NOT logined.");
         console.log(evt.target.error.code);
@@ -267,6 +270,7 @@ function readfile1() {
 				var arg4=arg[3].split("=");
             
 				var uid=arg1[1];
+                
 				
         var nickname=arg3[1];
 				var image=arg4[1];
