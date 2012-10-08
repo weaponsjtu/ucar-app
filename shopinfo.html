@@ -75,7 +75,7 @@ table td {
 <div data-role="header" data-theme="b">
     <a href="" id="back" rel="external">返回</a>
     <h1><a href="#" data-role="button">商铺详情</a></h1>
-    <a href="./collect.html">收藏</a>
+    <a href="#" onclick=postcollect()>收藏</a>
 </div>
 
 <div data-role="content">
@@ -113,10 +113,13 @@ var shopname="默认店铺名";
 	$("#shopdiv").css("max-width", document.body.clientWidth + 'px');
 	showshop(shopid, type);
 	showcomment(shopid, type);
+	
+function postcollect(){
+  $.ajax({type:'POST',async:false, url:'http://ihavecar.sinaapp.com/postcollect.php?shopid=1&type=1&userid=2789058604'});
+}
 
 function share(){ 
-	alert(shopname);
-	self.location='share.html?type='+type+'&shopid='+shopid+'&shopname='+shopname;
+	window.location.href=encodeURI('share.html?type='+type+'&shopid='+shopid+'&shopname='+shopname);
 }
 </script>
 </div>
