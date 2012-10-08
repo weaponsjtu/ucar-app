@@ -108,12 +108,15 @@ var arg1=url.split("=");
 var arg2=arg1[1].split("&");
 var type=arg2[0];
 var shopid=arg1[2];
+var shopname="默认店铺名";
+
 	$("#shopdiv").css("max-width", document.body.clientWidth + 'px');
 	showshop(shopid, type);
 	showcomment(shopid, type);
 
 function share(){ 
-	self.location='share.html?type='+type+'&shopid='+shopid;
+	alert(shopname);
+	self.location='share.html?type='+type+'&shopid='+shopid+'&shopname='+shopname;
 }
 </script>
 </div>

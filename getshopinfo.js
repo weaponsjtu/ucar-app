@@ -6,6 +6,8 @@ $(document).ready(function(){
 	$.getJSON('http://ihavecar.sinaapp.com/shopinfo.php?shop_id='+shop+'&type='+type+'&jasoncallback=?&randomID='+Math.random(), function(json){
 		//random函数用来取消缓存影响,jsonp形式进行跨域传数据
 		$.each(json,function(entryIndex,entry){
+			
+			shopname=entry['企业名称'];
 			if (type == '1') {
 	      html+='<div style="font-size: 14px; padding-top: 5px;"><b>'+entry['企业名称']+'</b></div>'; 
 				html+='<hr size="1" color="#AAA"   align="center" />';
