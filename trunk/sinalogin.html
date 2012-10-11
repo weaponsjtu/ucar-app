@@ -62,6 +62,8 @@ var access_token;
 var uid;
 var image;
 var nickname;
+var expires_time;
+
 
 // iframe内的数据与本地phonegap数据跨域通讯
 window.onmessage=function(e){
@@ -70,6 +72,7 @@ window.onmessage=function(e){
 	 uid = json_str.uid;
 	 image = json_str.image;
 	 nickname = json_str.name;
+	 expires_time= json_str.current_time+json_str.expires_in;
 	 
 //用户数据上传至SAE数据库，不传输access_token
 	$.ajax({type:'POST',async:false, url:'http://ihavecar.sinaapp.com/postuser.php?nickname='+nickname+'&photo='+image+'&sina='+uid+'&uid='+uid+'&qq=0'});
@@ -108,7 +111,7 @@ function writefile(){
 		writer.onwrite = function(evt) {
 			//alert("write success");
 		};
-		writer.write("uid="+uid+";accesstoken="+access_token+";nickname="+nickname+";image="+image+";");
+		writer.write("uid="+uid+";accesstoken="+access_token+";nickname="+nickname+";image="+image+";expires_time="+expires_time+";");
 	}
 
 	function fail(error) {
