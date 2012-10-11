@@ -1,6 +1,6 @@
 ﻿var shFinish = -1;//-1初始化值，1在上海，0不在上海，－2无法获悉行政区域
 
-var DEBUG = false; //控制是否为测试模式
+var DEBUG = true; //控制是否为测试模式
 
 var ClickTime = 0;
 
@@ -57,8 +57,8 @@ function translateCallback (point) {
 	if(map) {
    map.centerAndZoom(point, 15);
 	
-	//给地图添加监听器，移除信息框
- 	//map.addEventListener("click", mapClick);
+	//给地图添加监听器，移除刷新框
+ 	//map.addEventListener("click", function(){});
 	
 	 map.enablePinchToZoom();
 	
@@ -69,6 +69,18 @@ function translateCallback (point) {
 	  if($("#title  .ui-btn-text").html() == "首页"){
 		 $("#suspendBox").popup("open");
 	  } 
+	  
+	  var flag = false;
+        overlays = map.getOverlays();
+        for (var i = 0; i < overlays.length; i++) {
+        	 if (overlays[i] instanceof BMap.Marker) {
+        	 	  flag = true; 
+        	 	  break;
+        	 }
+        }	
+        if (flag) {
+           $("#refreshBox").popup("close");		
+     }
 	 });
   }
 }
