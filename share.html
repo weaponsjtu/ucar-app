@@ -58,7 +58,8 @@ $('.ui-btn-back').live('tap',function() {
 
 <style type="text/css">
 #sina {
-	background: url('img/ucar_icon.gif') 0 0 no-repeat;
+	background: url('img/ucar_icon.gif') no-repeat;
+	background-position: 0 0;
 	width: 16px;
 	height: 16px;
 }
@@ -99,8 +100,6 @@ var shopid=arg3[0];
 var shopname=decodeURI(arg1[3]);
 
 var star=new Array(" ","★","★★","★★★","★★★★","★★★★★");
-alert(shopid);
-alert(shopname);
 
 checklogin();
 
@@ -195,19 +194,19 @@ function checklogin() {
 
             if (arg==""){
                 // Empty file. Not Logined.
+                $("#sina").css("background-position", "0 -16px");
                 alert("您仍未登录，请先登录，才可以进行点评与分享");
-				window.location.href ='login.html';
+								window.location.href ='login.html';
             }
         };
         reader.readAsText(file);	
-		
-		
     }
 
     function fail(evt) {
-		alert("您仍未登录，请先登录，才可以进行点评与分享");
-		window.location.href ='login.html';
-		console.log("Detect as NOT logined.");
+    		$("#sina").css("background-position", "0 -16px");
+				alert("您仍未登录，请先登录，才可以进行点评与分享");
+				window.location.href ='login.html';
+				console.log("Detect as NOT logined.");
         console.log(evt.target.error.code);
     }
 }

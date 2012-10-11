@@ -76,7 +76,7 @@ function ucar(map, type, lng, lat) {
 	ZoomControl_TR.prototype = new BMap.Control();
 	ZoomControl_TR.prototype.initialize = function(map) {
 		var div = document.createElement("div");
-		div.innerHTML = "<img style='width: 45px; height: 44px;' src='img/loading.png'>";
+		div.innerHTML = "<a href='#refreshBox'  data-rel='popup' data-role='button' data-position-to='window' data-transition='slidedown'><img style='width: 45px; height: 44px;' src='img/loading.png'></a>";
 		div.style.cursor = "pointer";
 		div.onclick = function (e) {
 			if (type == 1) {
@@ -101,6 +101,7 @@ function ucar(map, type, lng, lat) {
 	ZoomControl_BR.prototype = new BMap.Control();
 	ZoomControl_BR.prototype.initialize = function(map) {
 		var div = document.createElement("div");
+		
 		div.innerHTML = "<img style='width: 45px; height: 44px;' src='img/pin.png'>";
 		div.style.cursor = "pointer";
 		div.onclick = function (e) {
@@ -292,6 +293,10 @@ function readfile1() {
     }
 }	
      getGPS();
+   	 
+   	 $("#refreshCancel").click(function(){
+   	 	  $("#refreshBox").popup("close");	
+   	 });
 }
      
     
@@ -385,8 +390,10 @@ if(DEBUG || true) {
 }
 
 div#suspendBox .icon {
-	height: 114px;
-	width: 114px;
+	/*height: 114px;
+	width: 114px;*/
+	height: 57px;
+	width: 57px;
 }
 
 #title {
@@ -417,6 +424,25 @@ img#logo {
 	 margin-top: 4px;
 	 margin-left: 5px;
 }
+
+#refreshCancel {
+	width: 80px;
+	height: 30px;
+	background-color: #444;
+	color: white;
+	margin-left: 25px;
+	font-weight: bold;
+	text-decoration: none;
+	cursor: pointer;
+	padding: 8px 10px;
+	margin-right: 10px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-moz-box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+	-webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+	text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.25);
+	font-size: 12pt;
+}
 /*
 div#header {
 	 height: 50px;
@@ -435,7 +461,7 @@ div#header {
         	  <a href="#suspendBox"  data-rel="popup" data-role="button" data-position-to="window" id="title" data-transition="slidedown">首页</a>
         </h1>
 		
-		
+		<!-- 首页悬浮框内容 -->
 		<div id="suspendBox" data-role="popup" data-theme="none" class="ui-content box">
          <div>
            <div id='repair' class='left' onclick='repair(map)'><img src='img/repair.png' class='icon'><div class='label center'>保养维修</div></div>
@@ -454,6 +480,13 @@ div#header {
          </div>
          <div class='clear'></div>
 		</div>
+	</div>
+	
+	<!-- 刷新提示框内容 -->
+	<div id="refreshBox" data-role="popup" data-theme="none" class="ui-content box" style="width: 100px; height: 100px;">
+		 <div class='label center'>正在努力刷新，请等待...</div>
+		 <br><br>
+		 <a style="color: white" id="refreshCancel">取消</a>
 	</div>
     
         <div id="searchBox" style="display:none">
