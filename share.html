@@ -91,6 +91,8 @@ $('.ui-btn-back').live('tap',function() {
 
 
 <script type="text/javascript">
+var d = new Date()
+var now=d.getTime()/1000;
 var url=window.location.href;
 var arg1=url.split("=");
 var arg2=arg1[1].split("&");
@@ -142,7 +144,12 @@ function share() {
 				 var arg2=arg[1].split("=");
 				 var uid1=arg1[1];
 				 var access_token1=arg2[1];
-				 
+				 var arg4=arg[4].split("=");
+				 var expire=arg4[1];				 
+				
+				if(expire<now){
+					window.location.href ='sinalogin.html';
+				}else{
 				
 				var score = $('#star').raty('score');
 				if (score== ""){
@@ -165,6 +172,7 @@ function share() {
         console.log(evt.target.error.code);
 		window.location.href ='login.html';
     }
+	}
 }
 
 function checklogin() {
