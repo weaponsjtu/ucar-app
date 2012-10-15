@@ -106,8 +106,8 @@ table td {
 var url=window.location.href;
 var arg1=url.split("=");
 var arg2=arg1[1].split("&");
-type=arg2[0];
-shopid=arg1[2];
+var type=arg2[0];
+var shopid=arg1[2];
 var shopname="默认店铺名";
 
 	$("#shopdiv").css("max-width", document.body.clientWidth + 'px');
@@ -117,6 +117,7 @@ var shopname="默认店铺名";
 function postcollect(){
 	checklogin();
 }
+
 
 function checklogin() {
 	document.addEventListener("deviceready", onDeviceReady, false);
@@ -146,14 +147,17 @@ function checklogin() {
             if (arg==""){
                 // Empty file. Not Logined.
                 $("#sina").css("background-position", "0 -16px");
-                alert("您仍未登录，请先登录，才可以进行收藏");
+                alert("您仍未登录，请先登录，才可以进行点评与分享");
 								window.location.href ='login.html';
             }
 			
+			//在用户输入评论前先检查授权是否过期
 			 var arg1=arg[0].split("=");
 				 var arg2=arg[1].split("=");
 				 var uid1=arg1[1];
-				$.ajax({type:'POST',async:false, url:'http://ihavecar.sinaapp.com/postcollect.php?shopid='+shopid+'&type='+type+'&userid='+uid1});
+				 $.ajax({type:'POST',async:false, url:'http://ihavecar.sinaapp.com/postcollect.php?shopid='+shopid+'&type='+type+'&userid='+uid1});
+			
+        };
         reader.readAsText(file);	
     }
 
@@ -165,7 +169,6 @@ function checklogin() {
         console.log(evt.target.error.code);
     }
 }
-
 function share(){ 
 	window.location.href=encodeURI('share.html?type='+type+'&shopid='+shopid+'&shopname='+shopname);
 }
