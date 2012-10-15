@@ -85,7 +85,7 @@ $('.ui-btn-back').live('tap',function() {
   <label for="textarea-a">发表评论: <span id="counter" style="float:right;">140字</span></label>
 	<textarea name="textarea" id="textarea-a" autofocus onkeydown='countChar("textarea-a","counter");' onkeyup='countChar("textarea-a","counter");'></textarea>
     
-  <div><span style="float:right;">我要分享到&nbsp;&nbsp;<img id="sina"></img></span></div>
+  <div onClick="setshare()"><span style="float:right;">我要分享到&nbsp;&nbsp;<img id="sina"></img></span></div>
  </form>
  </div>
 
@@ -100,10 +100,24 @@ var type=arg2[0];
 var arg3=arg1[2].split("&");
 var shopid=arg3[0];
 var shopname=decodeURI(arg1[3]);
+var IFshare=1;
 
 var star=new Array(" ","★","★★","★★★","★★★★","★★★★★");
 
 checklogin();
+
+//可切换是否共享到SINA，默认允许共享
+function setshare(){
+	if (IFshare==1){
+		IFshare=0;
+		$("#sina").css("background-position", "0 -16px");
+	}else if (IFshare==0){
+		IFshare=1;
+		$("#sina").css("background-position", "0 0");
+	}else{
+		console.log("Wrong IFshare status. Check code");
+	}
+}
 
 function countChar(textareaName,spanName)
 {
@@ -147,9 +161,7 @@ function share() {
 				 var arg4=arg[4].split("=");
 				 var expire=arg4[1];				 
 				
-				if(expire<now){
-					window.location.href ='sinalogin.html';
-				}else{
+				
 				
 				var score = $('#star').raty('score');
 				if (score== ""){
@@ -158,12 +170,14 @@ function share() {
 				var con = document.getElementsByName('textarea');
 				
 //开始分享	
+				if (IFshare==1){
 				$.ajax({type:'POST',async:false, url:'https://api.weibo.com/2/statuses/update.json',data:{access_token:access_token1,uid:uid1,client_id:"3943049038",status:"我在"+shopname+"，"+con[0].value+" ，评分："+star[score-1],lat:31.176173,long:121.127916}});
+				}
 				//$.ajax({type:'POST', url:'https://graph.qq.com/t/add_t',data:{access_token:"40E4FBB667C41EBD4656236CB917EFC4",oauth_consumer_key:"100284268",openid:"D08D45C9F3E2F67A5B96EA312FFF61D8",content:"我正在某某地干嘛"+con[0].value+"  "+star[score-1]}});
 				$.ajax({type:'POST',async:false, url:'http://ihavecar.sinaapp.com/postcomment.php?shopid='+shopid+'&type='+type+'&userid='+uid1+'&score='+score+'&content="'+con[0].value+'"'});
 
 				window.location.href ='shopinfo.html?type='+type+'&shopid='+shopid;
-			}
+			
         };
         reader.readAsText(file);
     }
@@ -206,6 +220,24 @@ function checklogin() {
                 alert("您仍未登录，请先登录，才可以进行点评与分享");
 								window.location.href ='login.html';
             }
+			
+			//在用户输入评论前先检查授权是否过期
+			 var arg1=arg[0].split("=");
+				 var arg2=arg[1].split("=");
+				 var uid1=arg1[1];
+				 var access_token1=arg2[1];
+				 var arg4=arg[4].split("=");
+				 var expire=arg4[1];				 
+				alert("EXP:"+expire);
+				alert("NOW:"+now);
+				if(expire<now){
+					alert("您的登录授权已经过期，请重新授权。谢谢！");
+					window.location.href ='sinalogin.html';
+					}
+			
+			
+			
+			
         };
         reader.readAsText(file);	
     }
