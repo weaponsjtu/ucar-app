@@ -153,8 +153,8 @@ function collect(){
 	$("#suspendBox").popup("close");
 	//读取登录文件，若读取成功则认为已登录，显示已登录信息；反之显示登录框
 	readfile();
-function readfile() {
-	document.addEventListener("deviceready", onDeviceReady, false);
+	function readfile() {
+	 document.addEventListener("deviceready", onDeviceReady, false);
     // PhoneGap is ready
     function onDeviceReady() {
         window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, gotFS, fail);
@@ -178,24 +178,24 @@ function readfile() {
         reader.onloadend = function(evt) {
             //console.log("Read as text");
             //console.log(evt.target.result);
-			var arg=evt.target.result.split(";");
+						var arg=evt.target.result.split(";");
 			
 
             if (arg==""){
                 // Empty file. Not Logined.
                 alert("您必须先登录，才能使用收藏功能");
-				$("#logbox").show();
+								$("#logbox").show();
             }else{
                 //Read Loginfile
                 
                 var arg1=arg[0].split("=");
-				var arg2=arg[1].split("=");
-				var arg3=arg[2].split("=");
-				var arg4=arg[3].split("=");
+								var arg2=arg[1].split("=");
+								var arg3=arg[2].split("=");
+								var arg4=arg[3].split("=");
             
-				var uid=arg1[1];
+								var uid=arg1[1];
 				
-           	self.location = "collect.html?uid="+uid;            
+           			self.location = "collect.html?uid="+uid;            
 			}
         };
         reader.readAsText(file);	
@@ -204,12 +204,12 @@ function readfile() {
     }
 
     function fail(evt) {
-		alert("您必须先登录，才能使用收藏功能");
-		$("#logbox").show();
-		console.log("Detect as NOT logined.");
+				alert("您必须先登录，才能使用收藏功能");
+				$("#logbox").show();
+				console.log("Detect as NOT logined.");
         console.log(evt.target.error.code);
     }
-}	
+ }	
 }
 
 function settings(){
@@ -287,8 +287,8 @@ function readfile1() {
     }
 
     function fail(evt) {
-		$("#logbox").show();
-		console.log("Detect as NOT logined.");
+				$("#logbox").show();
+				console.log("Detect as NOT logined.");
         console.log(evt.target.error.code);
     }
 }	
@@ -390,10 +390,8 @@ if(DEBUG || true) {
 }
 
 div#suspendBox .icon {
-	/*height: 114px;
-	width: 114px;*/
-	height: 57px;
-	width: 57px;
+	height: 114px;
+	width: 114px;
 }
 
 #title {
@@ -489,6 +487,7 @@ div#header {
 		 <a style="color: white" id="refreshCancel">取消</a>
 	</div>
     
+    <!-- 地图区域 -->
         <div id="searchBox" style="display:none">
     	  <input type="search" data-mini="true" placeholder="输入地址" id="search"  onKeyDown="enterSearch(map)"></input>
         </div>

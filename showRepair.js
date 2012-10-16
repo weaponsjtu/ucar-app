@@ -4,6 +4,9 @@
 		var myIcon_Y = new BMap.Icon("img/pinY.png", new BMap.Size(31, 48), {anchor: new BMap.Size(15,48)});
 		
 		var myIcon_R = new BMap.Icon("img/pinR.png", new BMap.Size(31, 48), {anchor: new BMap.Size(15,48)});
+		if (json.length > 0) {
+			$("#refreshBox").popup("close");
+		}
 		$.each(json,function(entryIndex,entry) {
 			var RepairPoint = new BMap.Point(entry['经度'],entry['纬度']);
 			var RepairMarker =new BMap.Marker(RepairPoint, {icon: myIcon_Y});
@@ -117,6 +120,7 @@
 
 function showRepairPlace(map)
 {
+	$("#refreshBox").popup("open");
 	var bounds = map.getBounds();
 	var sw = bounds.getSouthWest();
 	var ne = bounds.getNorthEast();
