@@ -109,6 +109,8 @@ var arg2=arg1[1].split("&");
 var type=arg2[0];
 var shopid=arg1[2];
 var shopname="默认店铺名";
+var lat=0;
+var lng=0;
 
 	$("#shopdiv").css("max-width", document.body.clientWidth + 'px');
 	showshop(shopid, type);
@@ -146,16 +148,16 @@ function checklogin() {
 
             if (arg==""){
                 // Empty file. Not Logined.
-                $("#sina").css("background-position", "0 -16px");
-                alert("您仍未登录，请先登录，才可以进行点评与分享");
+                 alert("您仍未登录，请先登录，才可以添加收藏");
 								window.location.href ='login.html';
             }
 			
-			//在用户输入评论前先检查授权是否过期
+			
 			 var arg1=arg[0].split("=");
 				 var arg2=arg[1].split("=");
 				 var uid1=arg1[1];
 				 $.ajax({type:'POST',async:false, url:'http://ihavecar.sinaapp.com/postcollect.php?shopid='+shopid+'&type='+type+'&userid='+uid1});
+				 alert("成功添加收藏");
 			
         };
         reader.readAsText(file);	
@@ -170,7 +172,7 @@ function checklogin() {
     }
 }
 function share(){ 
-	window.location.href=encodeURI('share.html?type='+type+'&shopid='+shopid+'&shopname='+shopname);
+	window.location.href=encodeURI('share.html?type='+type+'&shopid='+shopid+'&shopname='+shopname+'&lat='+lat+'&lng='+lng);
 }
 </script>
 </div>
