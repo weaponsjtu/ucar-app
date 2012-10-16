@@ -93,6 +93,7 @@ $('.ui-btn-back').live('tap',function() {
 
 
 <script type="text/javascript">
+//从商户页面获取微博共享所需要的商户信息
 var url=window.location.href;
 var arg1=url.split("=");
 var arg2=arg1[1].split("&");
@@ -103,14 +104,9 @@ var arg4=arg1[3].split("&");
 var shopname=decodeURI(arg4[0]);
 var arg5=arg1[4].split("&");
 var shoplat=arg5[0];
-var arg6=arg1[5].split("&");
-var shoplng=arg1[6];
+var shoplng=arg1[5];
 
-alert(shopname);
-alert(shoplat);
-alert(shoplng);
-
-
+//新浪微博选择开关
 var IFshare=1;
 
 var star=new Array(" ","★","★★","★★★","★★★★","★★★★★");
@@ -170,11 +166,7 @@ function share() {
 				 var arg2=arg[1].split("=");
 				 var uid1=arg1[1];
 				 var access_token1=arg2[1];
-				 var arg4=arg[4].split("=");
-				 var expire=arg4[1];				 
-				
-                 
-				
+			
 				var score = $('#star').raty('score');
 				if (score== ""){
 					score=0;
@@ -183,7 +175,7 @@ function share() {
 				
 //开始分享	
 				if (IFshare==1){
-				$.ajax({type:'POST',async:false, url:'https://api.weibo.com/2/statuses/update.json',data:{access_token:access_token1,uid:uid1,client_id:"3943049038",status:"我在"+shopname+"，"+con[0].value+" ，评分："+star[score-1],lat:shoplat,long:shoplng}});
+				$.ajax({type:'POST',async:false, url:'https://api.weibo.com/2/statuses/update.json',data:{access_token:access_token1,uid:uid1,client_id:"3943049038",status:"我在"+shopname+"，"+con[0].value+" ，评分："+star[score],lat:shoplat,long:shoplng}});
 				}
 				//$.ajax({type:'POST', url:'https://graph.qq.com/t/add_t',data:{access_token:"40E4FBB667C41EBD4656236CB917EFC4",oauth_consumer_key:"100284268",openid:"D08D45C9F3E2F67A5B96EA312FFF61D8",content:"我正在某某地干嘛"+con[0].value+"  "+star[score-1]}});
 				$.ajax({type:'POST',async:false, url:'http://ihavecar.sinaapp.com/postcomment.php?shopid='+shopid+'&type='+type+'&userid='+uid1+'&score='+score+'&content="'+con[0].value+'"'});
@@ -241,8 +233,8 @@ function checklogin() {
 				 var access_token1=arg2[1];
 				 var arg4=arg[4].split("=");
 				 var expire=arg4[1];
-				 var d = new Date()
-				var now=d.getTime()/1000;
+				 var d = new Date();
+				 var now=d.getTime()/1000;
 
 				if(expire<now){
 					alert("您的登录授权已经过期，请重新授权。谢谢！");
