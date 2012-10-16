@@ -32,6 +32,8 @@ $(document).ready(function(){
 			}
 			$('#lng').html(entry['经度']);
 			$('#lat').html(entry['纬度']);
+			lng=entry['经度'];
+			lat=entry['纬度'];
 	  });  
 	  $('#shopinfo').html(html); 
 		$('#shopstar').html(star);

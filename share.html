@@ -85,7 +85,9 @@ $('.ui-btn-back').live('tap',function() {
   <label for="textarea-a">发表评论: <span id="counter" style="float:right;">140字</span></label>
 	<textarea name="textarea" id="textarea-a" autofocus onkeydown='countChar("textarea-a","counter");' onkeyup='countChar("textarea-a","counter");'></textarea>
     
-  <div onClick="setshare()"><span style="float:right;">我要分享到&nbsp;&nbsp;<img id="sina"></img></span></div>
+  <div onClick="setshare()"><span style="float:right;">我要分享到&nbsp;&nbsp;<img id="sina"></img> </span>
+  
+  </div>
  </form>
  </div>
 
@@ -97,7 +99,18 @@ var arg2=arg1[1].split("&");
 var type=arg2[0];
 var arg3=arg1[2].split("&");
 var shopid=arg3[0];
-var shopname=decodeURI(arg1[3]);
+var arg4=arg1[3].split("&");
+var shopname=decodeURI(arg4[0]);
+var arg5=arg1[4].split("&");
+var shoplat=arg5[0];
+var arg6=arg1[5].split("&");
+var shoplng=arg1[6];
+
+alert(shopname);
+alert(shoplat);
+alert(shoplng);
+
+
 var IFshare=1;
 
 var star=new Array(" ","★","★★","★★★","★★★★","★★★★★");
@@ -152,6 +165,7 @@ function share() {
 			 if (arg==""){
                 window.location.href ='login.html';
 			 }else{
+                 
 				 var arg1=arg[0].split("=");
 				 var arg2=arg[1].split("=");
 				 var uid1=arg1[1];
@@ -159,7 +173,7 @@ function share() {
 				 var arg4=arg[4].split("=");
 				 var expire=arg4[1];				 
 				
-				
+                 
 				
 				var score = $('#star').raty('score');
 				if (score== ""){
@@ -169,12 +183,13 @@ function share() {
 				
 //开始分享	
 				if (IFshare==1){
-				$.ajax({type:'POST',async:false, url:'https://api.weibo.com/2/statuses/update.json',data:{access_token:access_token1,uid:uid1,client_id:"3943049038",status:"我在"+shopname+"，"+con[0].value+" ，评分："+star[score-1],lat:31.176173,long:121.127916}});
+				$.ajax({type:'POST',async:false, url:'https://api.weibo.com/2/statuses/update.json',data:{access_token:access_token1,uid:uid1,client_id:"3943049038",status:"我在"+shopname+"，"+con[0].value+" ，评分："+star[score-1],lat:shoplat,long:shoplng}});
 				}
 				//$.ajax({type:'POST', url:'https://graph.qq.com/t/add_t',data:{access_token:"40E4FBB667C41EBD4656236CB917EFC4",oauth_consumer_key:"100284268",openid:"D08D45C9F3E2F67A5B96EA312FFF61D8",content:"我正在某某地干嘛"+con[0].value+"  "+star[score-1]}});
 				$.ajax({type:'POST',async:false, url:'http://ihavecar.sinaapp.com/postcomment.php?shopid='+shopid+'&type='+type+'&userid='+uid1+'&score='+score+'&content="'+con[0].value+'"'});
 
 				window.location.href ='shopinfo.html?type='+type+'&shopid='+shopid;
+             }
 			
         };
         reader.readAsText(file);
@@ -184,7 +199,7 @@ function share() {
         console.log(evt.target.error.code);
 		window.location.href ='login.html';
     }
-	}
+	
 }
 
 function checklogin() {
@@ -228,15 +243,12 @@ function checklogin() {
 				 var expire=arg4[1];
 				 var d = new Date()
 				var now=d.getTime()/1000;
-				alert("EXP:"+expire);
-				alert("NOW:"+now);
+
 				if(expire<now){
 					alert("您的登录授权已经过期，请重新授权。谢谢！");
 					window.location.href ='sinalogin.html';
 					}
-			
-			
-			
+		
 			
         };
         reader.readAsText(file);	
