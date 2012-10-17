@@ -5,6 +5,7 @@ function getcollection(uid) {
 		//random函数用来取消缓存影响,jsonp形式进行跨域传数据
 			$.each(json,function(entryIndex,entry){
 				html+='<tr>';
+				//html+='<td><div id="shopIdType" style="display:none">'+entry['序号']+'#'+entry['shoptype']+'</div></td>';
 				html+='<td><img src="img/car.jpg" style="width: 100px; height: 100px"></td>';
 	            html+='<td><b style="font-size: 18px; margin: 10px 0;">'+entry['企业名称']+'</b><br>'; 
 				html+='<font>'+entry['企业地址']+' </font>'; 

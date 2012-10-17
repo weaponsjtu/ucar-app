@@ -17,7 +17,7 @@ $(document).ready(function(){
 				star += '<span id="star"></span><font style="float:right">共有' + entry['评分人数'] + '个评分</font><script type="text/javascript">$(function(){$("#star").raty({readOnly:	true,size:      24,'
 		+ 'starHalf:  "star-half-big.png",'
 		+ 'starOff:   "star-off-big.png",'
-		+ 'starOn:    "star-on-big.png", start: '+entry['评价']+'	});});</script>'; 
+		+ 'starOn:    "star-on-big.png", start: '+entry['评分']+'	});});</script>'; 
 			} 
 			if (type == '2') {
 				html+='<div style="font-size: 14px;"><b>'+entry['企业名称']+'</b></div>'; 
@@ -28,7 +28,7 @@ $(document).ready(function(){
 				star += '<span id="star"></span><font style="float:right">共有' + entry['评分人数'] + '个评分</font><script type="text/javascript">$(function(){$("#star").raty({readOnly:	true,size:      24,'
 		+ 'starHalf:  "star-half-big.png",'
 		+ 'starOff:   "star-off-big.png",'
-		+ 'starOn:    "star-on-big.png", start: '+entry['评价']+'	});});</script>'; 
+		+ 'starOn:    "star-on-big.png", start: '+entry['评分']+'	});});</script>'; 
 			}
 			$('#lng').html(entry['经度']);
 			$('#lat').html(entry['纬度']);
