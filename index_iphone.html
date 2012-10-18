@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no"/>
+<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+<link href="jquery-mobile/jquery.mobile-1.2.0-alpha.1.css" rel="stylesheet" type="text/css"/>
+<script src="jquery-mobile/jquery-1.7.2.js" type="text/javascript"></script>
+<script src="jquery-mobile/jquery.mobile-1.2.0-alpha.1.js" type="text/javascript"></script>
+
+<script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=1.3"></script>
+<script type="text/javascript" src="http://api.map.baidu.com/library/InfoBox/1.2/src/InfoBox_min.js"></script>
+<script type="text/javascript" src="http://dev.baidu.com/wiki/static/map/API/examples/script/convertor.js"></script>
+<script type="text/javascript" src="UcarV1.js"></script>
+
+<script src="showRepair.js" type="text/javascript"></script>
+<script src="showGasoline.js" type="text/javascript"></script>
+<script type="text/javascript" src="getUrlParam.js"></script>
+
+
+
+
+<script type="text/javascript" src="jquery.raty.js"></script>
+
+<title>Ucar</title>
+
+<script type="text/javascript">
+function ucar(map, type, lng, lat) {
+	//显示搜索框
+	$("#searchBox").css("display", "block");
+	
+	$("#container").css("height", document.body.clientHeight - $("#container").offset().top - $("#footer").height());
+	
+	map.clearOverlays();
+	
+	//显示当前位置
+	getGPS();
+	
+	if (lng != "" && lat != "") {
+		var newpoint = new BMap.Point(lng.valueOf(),lat.valueOf());
+		map.panTo(newpoint);
+		
+		/*var myIcon_Y = new BMap.Icon("img/pinY.png", new BMap.Size(61, 94));
+		var searchMarker =new BMap.Marker(newpoint, {icon: myIcon_Y});
+		map.addOverlay(searchMarker);
+		var searchLabel = new BMap.Label("经度: " + lng + ", 纬度: " + lat);
+		searchLabel.setOffset(new BMap.Size(10,-10));
+		searchMarker.setLabel(searchLabel);*/
+	}
+	
+	
+	if (type == 1) {
+		//改变标题
+		$("#title  .ui-btn-text").html("保养与维修");
+		//显示汽修店
+		showRepairPlace(map);
+	}  else if (type == 2) {
+		//改变标题
+		$("#title  .ui-btn-text").html("加油站");
+		
+		//显示加油站
+		showGasolinePlace(map);
+	} else {
+		alert("Wrong type");
+	}
+
+	//var opts = {type:BMAP_NAVIGATION_CONTROL_ZOOM}
+	//map.addControl(new BMap.NavigationControl(opts));
+	map.addControl(new BMap.ScaleControl());
+	
+	//添加刷新控件
+	function ZoomControl_TR(){
+		this.defaultAnchor = BMAP_ANCHOR_TOP_RIGHT;
+		this.defaultOffset = new BMap.Size(5,5);
+	}
+	ZoomControl_TR.prototype = new BMap.Control();
+	ZoomControl_TR.prototype.initialize = function(map) {
+		var div = document.createElement("div");
+		div.innerHTML = "<a href='#refreshBox'  data-rel='popup' data-role='button' data-position-to='window' data-transition='slidedown'><img style='width: 90px; height: 88px;' src='img/loading.png'></a>";
+		div.style.cursor = "pointer";
+		div.onclick = function (e) {
+			if (type == 1) {
+				showRepairPlace(map);
+			} else if (type == 2) {
+				showGasolinePlace(map);
+			} else {
+				alert("Wrong type");
+			}
+		}
+		map.getContainer().appendChild(div);
+		return div;
+	}
+	var myZoomCtrl_TR = new ZoomControl_TR();
+	map.addControl(myZoomCtrl_TR);
+	
+	//添加定位控件
+	function ZoomControl_BR(){
+		this.defaultAnchor = BMAP_ANCHOR_BOTTOM_RIGHT;
+		this.defaultOffset = new BMap.Size(5,5);
+	}
+	ZoomControl_BR.prototype = new BMap.Control();
+	ZoomControl_BR.prototype.initialize = function(map) {
+		var div = document.createElement("div");
+		
+		div.innerHTML = "<img style='width: 90px; height: 88px;' src='img/pin.png'>";
+		div.style.cursor = "pointer";
+		div.onclick = function (e) {
+			getGPS();
+			/*if (type == 1) {
+				showRepairPlace(map);
+			} else if (type == 2) {
+				showGasolinePlace(map);
+			} else {
+				alert("Wrong type");
+			}*/
+		}
+		map.getContainer().appendChild(div);
+		return div;
+	}
+	var myZoomCtrl_BR = new ZoomControl_BR();
+	map.addControl(myZoomCtrl_BR);
+	
+	//添加缩放控件
+	function ZoomControl_TL(){
+		this.defaultAnchor = BMAP_ANCHOR_TOP_LEFT;
+		this.defaultOffset = new BMap.Size(5,5);
+	}
+	ZoomControl_TL.prototype = new BMap.Control();
+	ZoomControl_TL.prototype.initialize = function(map) {		
+		div = document.createElement("div");
+		div.innerHTML = "<img src='img/zoomOut.png' style='cursor: pointer; width: 64px; height: 60px;' onclick='map.zoomIn()'><br>" +
+		"<img src='img/zoomIn.png' style='cursor: pointer; width: 64px; height: 60px;' onclick='map.zoomOut()'>";
+		map.getContainer().appendChild(div);
+		return div;
+	}
+	var myZoomCtrl_TL = new ZoomControl_TL();
+	map.addControl(myZoomCtrl_TL);
+	
+}
+
+
+function repair(map) {
+	$("#suspendBox").popup("close");
+	ucar(map, 1, "","");
+}
+
+function gasoline(map) {
+	$("#suspendBox").popup("close");
+	ucar(map, 2, "","");
+}
+
+function collect(){
+	$("#suspendBox").popup("close");
+	//读取登录文件，若读取成功则认为已登录，显示已登录信息；反之显示登录框
+	readfile();
+	function readfile() {
+	 document.addEventListener("deviceready", onDeviceReady, false);
+    // PhoneGap is ready
+    function onDeviceReady() {
+        window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, gotFS, fail);
+    }
+
+    function gotFS(fileSystem) {
+        fileSystem.root.getFile("ucar/DataFile.txt", {create: true}, gotFileEntry, fail);
+    }
+
+    function gotFileEntry(fileEntry) {
+        fileEntry.file(gotFile, fail);
+    }
+
+    function gotFile(file){
+        readAsText(file);
+    }
+
+    function readAsText(file) {
+				//alert("hello");
+        var reader = new FileReader();
+        reader.onloadend = function(evt) {
+            //console.log("Read as text");
+            //console.log(evt.target.result);
+						var arg=evt.target.result.split(";");
+			
+
+            if (arg==""){
+                // Empty file. Not Logined.
+                alert("您必须先登录，才能使用收藏功能");
+								$("#logbox").show();
+            }else{
+                //Read Loginfile
+                
+                var arg1=arg[0].split("=");
+								var arg2=arg[1].split("=");
+								var arg3=arg[2].split("=");
+								var arg4=arg[3].split("=");
+            
+								var uid=arg1[1];
+				
+           			self.location = "collect.html?uid="+uid;            
+			}
+        };
+        reader.readAsText(file);	
+		
+		
+    }
+
+    function fail(evt) {
+				alert("您必须先登录，才能使用收藏功能");
+				$("#logbox").show();
+				console.log("Detect as NOT logined.");
+        console.log(evt.target.error.code);
+    }
+ }	
+}
+
+function settings(){
+	$("#infobox").popup("close");
+	self.location = "login.html";	
+}
+
+    
+function init_index() {
+     map = new BMap.Map("container",{enableHighResolution:true});
+     $("#container").css("height", document.body.clientHeight - $("#container").offset().top - $("#footer").height());
+     var type = request("type");
+     if(type.indexOf("1") != -1){
+         //改变标题
+         $("#title  .ui-btn-text").html("保养与维修");
+     }
+     if(type.indexOf("2") != -1){
+         //改变标题
+         $("#title  .ui-btn-text").html("加油站");
+     }
+
+readfile1();
+function readfile1() {
+	document.addEventListener("deviceready", onDeviceReady, false);
+    // PhoneGap is ready
+    function onDeviceReady() {
+        window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, gotFS, fail);
+    }
+
+    function gotFS(fileSystem) {
+        fileSystem.root.getFile("ucar/DataFile.txt", {create: true}, gotFileEntry, fail);
+    }
+
+    function gotFileEntry(fileEntry) {
+        fileEntry.file(gotFile, fail);
+    }
+
+    function gotFile(file){
+        readAsText(file);
+    }
+
+    function readAsText(file) {
+				//alert("hello");
+        var reader = new FileReader();
+        reader.onloadend = function(evt) {
+            //console.log("Read as text");
+            //console.log(evt.target.result);
+			var arg=evt.target.result.split(";");
+			
+
+            if (arg==""){
+                // Empty file. Not Logined.
+                $("#logbox").show();
+            }else{
+                //Read Loginfile
+                var arg1=arg[0].split("=");
+				var arg2=arg[1].split("=");
+				var arg3=arg[2].split("=");
+				var arg4=arg[3].split("=");
+            
+				var uid=arg1[1];
+                
+				
+        var nickname=arg3[1];
+				var image=arg4[1];
+            
+         $("#nickname").html(nickname); 
+         $("#userStatus").css("display", "none");
+         $("#currentUser").attr("src",image);          
+			}
+        };
+        reader.readAsText(file);	
+		
+		
+    }
+
+    function fail(evt) {
+				$("#logbox").show();
+				console.log("Detect as NOT logined.");
+        console.log(evt.target.error.code);
+    }
+}	
+     getGPS();
+   	 
+   	 $("#refreshCancel").click(function(){
+   	 	  $("#refreshBox").popup("close");	
+   	 });
+}
+     
+    
+    
+$(window).load(function() {
+	var lng = request("lng");
+	var lat = request("lat");
+	
+	var type = request("type");
+	
+	if(type.indexOf("1") != -1){
+		ucar(map, 1, lng, lat);
+	}
+	if(type.indexOf("2") != -1){
+		ucar(map, 2, lng, lat);
+	} 
+});
+
+//自动联想
+var ac = new BMap.Autocomplete(    //建立一个自动完成的对象
+    {"input" : "search"
+    ,"location" : "上海"
+});
+
+var searchValue;
+ac.addEventListener("onconfirm", function(e) {    //鼠标点击下拉列表后的事件
+	  var _value = e.item.value;
+    searchValue = _value.province +  _value.city +  _value.district +  _value.street + _value.business;
+    if (_value.province !="上海市" && _value.city!="上海市" && _value.province!="")
+        alert("超出上海");  
+    if ($("#title  .ui-btn-text").html() == "保养与维修") {              
+      SearchRepairPlace(map,searchValue);
+    } else {
+    	SearchGasolinePlace(map,searchValue);
+    }
+    $("#search").blur();
+});
+
+if(DEBUG || true) {
+	$(document).ready(function(){
+	  init_index();	
+  });
+} else {
+  document.addEventListener("deviceready", onDeviceReady, false);
+  function onDeviceReady()
+  {
+    init_index();
+  }
+}
+
+    
+    function checkConnection()
+    {
+        var networkState = navigator.network.connection.type;
+        if (networkState == Connection.NONE)
+            alert ("没有联网");
+         else
+            alert ("联网了"); 
+    }
+    
+</script>
+
+<style type="text/css">
+.box {
+	background-color: #222;
+	/*opacity: 0.95;*/
+	border-radius: 15px;
+	border-style: solid;
+	border-color: white;
+	border-width: 1px;
+}
+
+.left {
+	float: left;
+	padding: 10px;
+}
+
+.clear {
+	clear: both;
+}
+
+.label {
+	color: white;
+	font-size: 24px;
+	padding: 2px;
+	font-family:"Courier New", Courier, monospace;
+}
+
+.center {
+	text-align:center;
+}
+
+div#suspendBox .icon {
+	height: 134px;
+	width: 134px;
+}
+
+#title {
+	font-size: 50px;
+}
+
+div#shopbox .label {
+	font-weight: bold;
+	font-size: 14px;
+}
+
+/*信息框*/
+div#shopbox {
+	background: url("img/infobox.png") no-repeat;
+	width: 220px;
+	height: 59px;
+	padding-left: 5px;
+}
+
+td#wrap {
+	width: 190px;
+}
+
+img#logo {
+	 position: absolute;
+	 width: 100px;
+	 height: 84px;
+	 margin-top: 4px;
+	 margin-left: 5px;
+}
+
+#refreshCancel {
+	width: 160px;
+	height: 60px;
+	background-color: #444;
+	color: white;
+	margin-left: 60px;
+	font-weight: bold;
+	text-decoration: none;
+	cursor: pointer;
+	padding: 8px 10px;
+	margin-right: 20px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-moz-box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+	-webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+	text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.25);
+	font-size: 24px;
+}
+
+div#header {
+	 height: 100px;
+}
+    div#footer{
+        height: 50px;
+    }
+
+</style>
+
+</head>
+	
+<body >
+
+<div data-role="page" id="main_menu">
+    <div data-role="header" id="header" data-theme="b">
+    	  <img src="img/LOGO.png" id="logo">
+        <h1>
+        	  
+        	  <a href="#suspendBox"  data-rel="popup" data-role="button" data-position-to="window" id="title" data-transition="slidedown"> 首页</a>
+        </h1>
+		
+		<!-- 首页悬浮框内容 -->
+		<div id="suspendBox" data-role="popup" data-theme="none" class="ui-content box">
+         <div>
+           <div id='repair' class='left' onclick='repair(map)'><img src='img/repair.png' class='icon'><div class='label center'>保养维修</div></div>
+           <div id='gasoline' class='left' onclick='gasoline(map)'><img src='img/gasoline.png' class='icon' ><div class='label center'>加油站</div></div>
+	         <div id='park' class='left'><img src='img/park.png' class='icon'><div class='label center'>停车场</div></div>
+	         <div id='collect' class='left' onclick='collect()'><img src='img/collect.png' class='icon'><div class='label center'>我的收藏</div></div>
+	         <div id='setting' class='left' onclick='settings()'><img src='img/settings.png' class='icon'><div class='label center'>设置</div></div>
+	         <div class='clear'></div>
+         </div>
+         <div style="float: right">
+             <div style="float: right"><img id="currentUser" src='img/unlogin.png' class='icon'></div>
+             <div style="float: right; margin-top: 20px; margin-right: 10px;">
+               <div class='label' style="font-size: 32px;"><b id="nickname">未登录</b></div>
+               <div class='label' style="font-size: 20px;" id="userStatus">点击登录</div>
+             </div>
+         </div>
+         <div class='clear'></div>
+		</div>
+	</div>
+	
+	<!-- 刷新提示框内容 -->
+	<div id="refreshBox" data-role="popup" data-theme="none" class="ui-content box" style="width: 200px; height: 160px;">
+		 <div class='label center'>正在努力刷新，请等待...</div>
+		 <br><br>
+		 <a style="color: white" id="refreshCancel">取消</a>
+	</div>
+    
+    <!-- 地图区域 -->
+        <div id="searchBox" style="display:none">
+    	  <input type="search" data-mini="true" placeholder="输入地址" id="search"  onKeyDown="enterSearch(map)"></input>
+        </div>
+        <div id="container">
+         
+        </div>
+        
+     <div data-role="footer" id="footer">
+     	<h5>
+        <font style="color: white;" size="6px">当前位置:&nbsp;&nbsp;<b id="current"></b></font>
+        </h5>
+     </div>
+    
+</div>
+
+</body>
+</html>
