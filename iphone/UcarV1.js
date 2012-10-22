@@ -122,7 +122,7 @@ function getGPS()
 			function (error)
 			{
 				//alert('got an error: ' + error.code + 'message: ' + error.message);
-	            alert ("未打开GPS");
+	            alert ("UCAR需要GPS定位来获取您的位置信息,请在系统设置中打开GPS.");
 			},
 			{timeout:20000,enableHighAccuracy: true});
 		}

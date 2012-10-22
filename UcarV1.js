@@ -111,7 +111,7 @@ function showgps_debug(position)
     
 function getGPS()
 {
-	if (true || DEBUG) {
+	if (false || DEBUG) {   //true开启固定坐标，false使用GPS
 		showgps_debug();
 	} else {
 		var gps = navigator.geolocation;
@@ -121,7 +121,7 @@ function getGPS()
 			function (error)
 			{
 				//alert('got an error: ' + error.code + 'message: ' + error.message);
-	            alert ("未打开GPS");
+	            alert ("UCAR需要GPS定位来获取您的位置信息。请在系统设置中打开GPS");
 			},
 			{timeout:20000,enableHighAccuracy: true});
 		}
