@@ -157,6 +157,7 @@ function collect(){
 	 document.addEventListener("deviceready", onDeviceReady, false);
     // PhoneGap is ready
     function onDeviceReady() {
+		checkConnection();
         window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, gotFS, fail);
     }
 
@@ -236,6 +237,7 @@ function readfile1() {
 	document.addEventListener("deviceready", onDeviceReady, false);
     // PhoneGap is ready
     function onDeviceReady() {
+		checkConnection();
         window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, gotFS, fail);
     }
 
@@ -335,15 +337,17 @@ ac.addEventListener("onconfirm", function(e) {    //鼠标点击下拉列表后�
     $("#search").blur();
 });
 
-if(DEBUG || true) {
+if(DEBUG || false) {
 	$(document).ready(function(){
+	  checkConnection();
 	  init_index();	
   });
 } else {
   document.addEventListener("deviceready", onDeviceReady, false);
   function onDeviceReady()
   {
-    init_index();
+    checkConnection();
+	init_index();
   }
 }
 
@@ -351,10 +355,11 @@ if(DEBUG || true) {
     function checkConnection()
     {
         var networkState = navigator.network.connection.type;
-        if (networkState == Connection.NONE)
-            alert ("没有联网");
+        if (networkState == Connection.NONE || networkState == Connection.UNKNOWN)
+            alert ("UCAR需要使用网络来加载数据.请确认您已经打开网络.");
          else
-            alert ("联网了"); 
+		 	console.log("Normal Network Connection.");
+            //alert ("联网了"); 
     }
     
 </script>

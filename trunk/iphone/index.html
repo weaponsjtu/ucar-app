@@ -25,6 +25,12 @@
 <title>Ucar</title>
 
 <script type="text/javascript">
+    document.addEventListener("deviceready", onDeviceReady, false);
+    function onDeviceReady()
+    {
+        checkConnection();
+    }
+    
 function ucar(map, type, lng, lat) {
 	//显示搜索框
 	$("#searchBox").css("display", "block");
@@ -34,6 +40,7 @@ function ucar(map, type, lng, lat) {
 	map.clearOverlays();
 	
 	//显示当前位置
+    
 	getGPS();
 	
 	if (lng != "" && lat != "") {
@@ -154,6 +161,7 @@ function collect(){
 	//读取登录文件，若读取成功则认为已登录，显示已登录信息；反之显示登录框
 	readfile();
 	function readfile() {
+        checkConnection();
 	 document.addEventListener("deviceready", onDeviceReady, false);
     // PhoneGap is ready
     function onDeviceReady() {
@@ -219,6 +227,7 @@ function settings(){
 
     
 function init_index() {
+
      map = new BMap.Map("container",{enableHighResolution:true});
      $("#container").css("height", document.body.clientHeight - $("#container").offset().top - $("#footer").height());
      var type = request("type");
@@ -236,6 +245,7 @@ function readfile1() {
 	document.addEventListener("deviceready", onDeviceReady, false);
     // PhoneGap is ready
     function onDeviceReady() {
+        checkConnection();
         window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, gotFS, fail);
     }
 
@@ -337,24 +347,32 @@ ac.addEventListener("onconfirm", function(e) {    //鼠标点击下拉列表后�
 
 if(DEBUG) {
 	$(document).ready(function(){
-	  init_index();	
+     checkConnection();
+    init_index();	
+	  
   });
 } else {
   document.addEventListener("deviceready", onDeviceReady, false);
   function onDeviceReady()
   {
-    init_index();
+      checkConnection();
+      init_index();
+	
   }
 }
 
     
+    
+    
     function checkConnection()
     {
         var networkState = navigator.network.connection.type;
-        if (networkState == Connection.NONE)
-            alert ("没有联网");
+        //alert(networkState);
+        
+        if (networkState == Connection.NONE || networkState == Connection.UNKNOWN)
+             alert ("UCAR需要使用网络来加载数据.请确认您已经打开网络.");
          else
-            alert ("联网了"); 
+		 	console.log("Normal Network Connection.");
     }
     
 </script>
