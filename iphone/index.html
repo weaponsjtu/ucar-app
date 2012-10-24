@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta name="viewport" content="initial-scale=1.0, user-scalable=no"/>
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no, target-densitydpi=device-dpi"/>
 <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
 <link href="jquery-mobile/jquery.mobile-1.2.0-alpha.1.css" rel="stylesheet" type="text/css"/>
 <script src="jquery-mobile/jquery-1.7.2.js" type="text/javascript"></script>
@@ -25,12 +25,6 @@
 <title>Ucar</title>
 
 <script type="text/javascript">
-    document.addEventListener("deviceready", onDeviceReady, false);
-    function onDeviceReady()
-    {
-        checkConnection();
-    }
-    
 function ucar(map, type, lng, lat) {
 	//显示搜索框
 	$("#searchBox").css("display", "block");
@@ -40,7 +34,6 @@ function ucar(map, type, lng, lat) {
 	map.clearOverlays();
 	
 	//显示当前位置
-    
 	getGPS();
 	
 	if (lng != "" && lat != "") {
@@ -161,10 +154,10 @@ function collect(){
 	//读取登录文件，若读取成功则认为已登录，显示已登录信息；反之显示登录框
 	readfile();
 	function readfile() {
-        checkConnection();
 	 document.addEventListener("deviceready", onDeviceReady, false);
     // PhoneGap is ready
     function onDeviceReady() {
+        checkConnection(); 
         window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, gotFS, fail);
     }
 
@@ -227,7 +220,6 @@ function settings(){
 
     
 function init_index() {
-
      map = new BMap.Map("container",{enableHighResolution:true});
      $("#container").css("height", document.body.clientHeight - $("#container").offset().top - $("#footer").height());
      var type = request("type");
@@ -245,7 +237,6 @@ function readfile1() {
 	document.addEventListener("deviceready", onDeviceReady, false);
     // PhoneGap is ready
     function onDeviceReady() {
-        checkConnection();
         window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, gotFS, fail);
     }
 
@@ -347,32 +338,27 @@ ac.addEventListener("onconfirm", function(e) {    //鼠标点击下拉列表后�
 
 if(DEBUG) {
 	$(document).ready(function(){
-     checkConnection();
-    init_index();	
-	  
+      checkConnection();
+	  init_index();	
   });
 } else {
   document.addEventListener("deviceready", onDeviceReady, false);
   function onDeviceReady()
   {
-      checkConnection();
-      init_index();
-	
+    checkConnection();
+    init_index();
   }
 }
 
     
-    
-    
     function checkConnection()
     {
         var networkState = navigator.network.connection.type;
-        //alert(networkState);
-        
         if (networkState == Connection.NONE || networkState == Connection.UNKNOWN)
-             alert ("UCAR需要使用网络来加载数据.请确认您已经打开网络.");
-         else
-		 	console.log("Normal Network Connection.");
+            alert ("UCAR需要使用网络来加载数据.请确认您已经打开网络.");
+        else
+            console.log("Normal Network Connection.");
+    
     }
     
 </script>
@@ -389,7 +375,9 @@ if(DEBUG) {
 
 .left {
 	float: left;
-	padding: 10px;
+	padding: 10px 10px 10px 10px;
+    margin-left: 20px;
+    margin-top:15px;
 }
 
 .clear {
@@ -415,22 +403,25 @@ div#suspendBox .icon {
 #title {
 	font-size: 50px;
 }
+    #title .ui-btn-text{
+        font-size:25px;
+    }
 
 div#shopbox .label {
 	font-weight: bold;
-	font-size: 14px;
+	font-size: 20px;
 }
 
 /*信息框*/
 div#shopbox {
-	background: url("img/infobox.png") no-repeat;
-	width: 220px;
-	height: 59px;
+	background: url("img/infobox_bak.jpg") no-repeat;
+	width: 300px;
+	height: 80px;
 	padding-left: 5px;
 }
 
 td#wrap {
-	width: 190px;
+	width: 280px;
 }
 
 img#logo {
@@ -478,7 +469,7 @@ div#header {
     	  <img src="img/LOGO.png" id="logo">
         <h1>
         	  
-        	  <a href="#suspendBox"  data-rel="popup" data-role="button" data-position-to="window" id="title" data-transition="slidedown"> 首页</a>
+        	  <a href="#suspendBox"  data-rel="popup" data-role="button" data-position-to="window" id="title" data-transition="slidedown">首页</a>
         </h1>
 		
 		<!-- 首页悬浮框内容 -->
