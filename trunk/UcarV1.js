@@ -1,6 +1,6 @@
 ﻿var shFinish = -1;//-1初始化值，1在上海，0不在上海，－2无法获悉行政区域
 
-var DEBUG = false; //控制是否为测试模式
+var DEBUG = true; //控制是否为测试模式
 
 var ClickTime = 0;
 
@@ -111,7 +111,7 @@ function showgps_debug(position)
     
 function getGPS()
 {
-	if (false || DEBUG) {   //true开启固定坐标，false使用GPS
+	if (DEBUG) {   //true开启固定坐标，false使用GPS
 		showgps_debug();
 	} else {
 		var gps = navigator.geolocation;
