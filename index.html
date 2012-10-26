@@ -337,9 +337,9 @@ ac.addEventListener("onconfirm", function(e) {    //鼠标点击下拉列表后�
     $("#search").blur();
 });
 
-if(DEBUG || false) {
+if(DEBUG || true) {
 	$(document).ready(function(){
-	  checkConnection();
+	  //	checkConnection();
 	  init_index();	
   });
 } else {
@@ -347,7 +347,7 @@ if(DEBUG || false) {
   function onDeviceReady()
   {
     checkConnection();
-	init_index();
+		init_index();
   }
 }
 
@@ -358,7 +358,7 @@ if(DEBUG || false) {
         if (networkState == Connection.NONE || networkState == Connection.UNKNOWN)
             alert ("UCAR需要使用网络来加载数据.请确认您已经打开网络.");
          else
-		 	console.log("Normal Network Connection.");
+		 				console.log("Normal Network Connection.");
             //alert ("联网了"); 
     }
     
@@ -377,6 +377,7 @@ if(DEBUG || false) {
 .left {
 	float: left;
 	padding: 10px;
+	cursor: pointer;
 }
 
 .clear {
@@ -395,12 +396,12 @@ if(DEBUG || false) {
 }
 
 div#suspendBox .icon {
-	height: 114px;
-	width: 114px;
+	height: 57px;
+	width: 57px;
 }
 
 #title {
-	font-size: 20px;
+	/*font-size: 20px;*/
 }
 
 div#shopbox .label {
@@ -469,7 +470,7 @@ div#header {
          <div>
            <div id='repair' class='left' onclick='repair(map)'><img src='img/repair.png' class='icon'><div class='label center'>保养维修</div></div>
            <div id='gasoline' class='left' onclick='gasoline(map)'><img src='img/gasoline.png' class='icon' ><div class='label center'>加油站</div></div>
-	         <div id='park' class='left'><img src='img/park.png' class='icon'><div class='label center'>停车场</div></div>
+	         <div id='park' class='left' onclick='park()'><img src='img/park.png' class='icon'><div class='label center'>停车场</div></div>
 	         <div id='collect' class='left' onclick='collect()'><img src='img/collect.png' class='icon'><div class='label center'>我的收藏</div></div>
 	         <div id='setting' class='left' onclick='settings()'><img src='img/settings.png' class='icon'><div class='label center'>设置</div></div>
 	         <div class='clear'></div>
@@ -478,7 +479,7 @@ div#header {
              <div style="float: right"><img id="currentUser" src='img/unlogin.png' class='icon'></div>
              <div style="float: right; margin-top: 20px; margin-right: 10px;">
                <div class='label' style="font-size: 16px;"><b id="nickname">未登录</b></div>
-               <div class='label' style="font-size: 10px;" id="userStatus">点击登录</div>
+               <div class='label' style="font-size: 10px; float:right; cursor: pointer;" id="userStatus" onclick="window.location.href='login.html'">点击登录</div>
              </div>
          </div>
          <div class='clear'></div>
