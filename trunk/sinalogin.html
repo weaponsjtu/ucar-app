@@ -27,7 +27,6 @@ $(document).ready(function(){
 		window.history.forward();
 		//event.preventDefault();
 	});
-	
 	$("#sinaframe").css('width', document.body.clientWidth);
 	$("#sinaframe").css('height', document.body.clientHeight - $("#sinaframe").offset().top);
 });
@@ -51,7 +50,8 @@ $('.ui-btn-back').live('tap',function() {
     <h1><a href="#" data-role="button">新浪授权</a></h1>
    </div>
    <div date-role="content">
-     <iframe id="sinaframe" scrolling="yes" src="https://api.weibo.com/oauth2/authorize?client_id=3943049038&redirect_uri=http://ihavecar.sinaapp.com/callback.php&response_type=code">
+     <iframe id="sinaframe" scrolling="yes" src="https://api.weibo.com/oauth2/authorize?client_id=3943049038&redirect_uri=http://ihavecar.sinaapp.com/callback.php&response_type=code&display=mobile">
+     </iframe>
      </iframe>
    </div>
 </div>
