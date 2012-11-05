@@ -72,13 +72,16 @@ window.onmessage=function(e){
 	 image = json_str.image;
 	 nickname = json_str.name;
 	 expires_time= json_str.current_time+json_str.expires_in;
+	 alert('before post');
 	 
 //用户数据上传至SAE数据库，不传输access_token
 	$.ajax({type:'POST',async:false, url:'http://ihavecar.sinaapp.com/postuser.php?nickname='+nickname+'&photo='+image+'&sina='+uid+'&uid='+uid+'&qq=0'});
+	alert('post ok');
 	
 //写入文件
 	writefile();
 	
+	alert('write file close');
 //返回登录页面	
 	window.location.href ='login.html';
 	//window.location.href =encodeURI('logined.html?img='+image+'&name='+nickname);
@@ -89,29 +92,34 @@ function writefile(){
 
 	// PhoneGap加载完毕
 	function onDeviceReady() {
+		alert('device ready');
 		window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, gotFS, fail);
 	}
          //获取newFile目录，如果不存在则创建该目录
 	function gotFS(fileSystem) {
-		newFile = fileSystem.root.getDirectory("ucar", {create : true,exclusive : false}, writerFile, fail);		
+		console.log('got fs' + fileSystem.name);
+		newFile = fileSystem.root.getDirectory("ucar", {create : true,exclusive : false}, writerFile, fail);	
 	}
 	//获取newFile目录下面的dataFile.txt文件，如果不存在则创建此文件
 	function writerFile(newFile) {
+		console.log('writer file');
 		newFile.getFile("DataFile.txt", {create : true,exclusive : false}, gotFileEntry, fail);
 	}
 	
 	function gotFileEntry(fileEntry) {
+		console.log('get file entry');
 		fileEntry.createWriter(gotFileWriter, fail);
 	}
 
 	function gotFileWriter(writer) {
 		writer.onwrite = function(evt) {
-			//alert("write success");
+			alert("write success");
 		};
 		writer.write("uid="+uid+";accesstoken="+access_token+";nickname="+nickname+";image="+image+";expires_time="+expires_time+";");
 	}
 
 	function fail(error) {
+		alert('error');
 		alert("Failed to write file:" + error.code);
 	}
 	// 检索一个已存在的文件，如果该文件不存在时则创建该文件
