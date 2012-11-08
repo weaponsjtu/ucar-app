@@ -60,8 +60,13 @@ function ucar(map, type, lng, lat) {
 		
 		//显示加油站
 		showGasolinePlace(map);
-	} else {
-		alert("Wrong type");
+	} else if (type ==3) {
+        //改变标题
+        $("#title .ui-btn-text").html("停车场");
+        //显示停车场
+        showParkPlace(map);
+    } else {
+		alert('wrong type');
 	}
 
 	//var opts = {type:BMAP_NAVIGATION_CONTROL_ZOOM}
@@ -84,7 +89,7 @@ function ucar(map, type, lng, lat) {
 			} else if (type == 2) {
 				showGasolinePlace(map);
 			} else {
-				alert("Wrong type");
+				showParkPlace(map);
 			}
 		}
 		map.getContainer().appendChild(div);
@@ -149,6 +154,10 @@ function gasoline(map) {
 	ucar(map, 2, "","");
 }
 
+function park(map){
+    $("#suspendBox").popup("close");
+    ucar(map, 3, "","");
+}
 function collect(){
 	$("#suspendBox").popup("close");
 	//读取登录文件，若读取成功则认为已登录，显示已登录信息；反之显示登录框
@@ -231,6 +240,10 @@ function init_index() {
          //改变标题
          $("#title  .ui-btn-text").html("加油站");
      }
+    if(type.indexOf("3") != -1){
+        //改变标题
+        $("#title  .ui-btn-text").html("停车场");
+    }
 
 readfile1();
 function readfile1() {
@@ -313,7 +326,10 @@ $(window).load(function() {
 	}
 	if(type.indexOf("2") != -1){
 		ucar(map, 2, lng, lat);
-	} 
+	}
+    if(type.indexOf("3") != -1){
+        ucar(map, 3, lng, lat);
+    }
 });
 
 //自动联想
@@ -330,8 +346,10 @@ ac.addEventListener("onconfirm", function(e) {    //鼠标点击下拉列表后�
         alert("超出上海");  
     if ($("#title  .ui-btn-text").html() == "保养与维修") {              
       SearchRepairPlace(map,searchValue);
-    } else {
+    } else if ($("#title .ui-btn-text").html() == "加油站") {
     	SearchGasolinePlace(map,searchValue);
+    } else {
+        SearchParkPlace(map,searchValue);
     }
     $("#search").blur();
 });
