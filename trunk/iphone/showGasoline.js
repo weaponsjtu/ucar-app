@@ -152,7 +152,7 @@ function SearchGasolinePlace(map, searchContent)
             var searchPoint = searchResult.point;
             map.clearOverlays();
             map.centerAndZoom(searchPoint,15);
-            var searchMarker = new BMap.Marker(searchPoint);
+            var searchMarker = new BMap.Marker(searchPoint, {title:'search'});
             map.addOverlay(searchMarker);
             /*var searchLabel = new BMap.Label(searchContent);
             searchLabel.setOffset(new BMap.Size(10,-10));
