@@ -30,6 +30,15 @@ $(document).ready(function(){
 		+ 'starOff:   "star-off-big.png",'
 		+ 'starOn:    "star-on-big.png", start: '+entry['评分']+'	});});</script>'; 
 			}
+			if (type == '3') {
+				html+='<div style="font-size: 14px;"><b>'+entry['企业名称']+'</b></div>'; 
+				html+='<hr size="1" color="#AAA"   align="center" />';
+	            html+='<div>地址：'+entry['企业地址']+'</div>';   
+				star += '<span id="star"></span><font style="float:right">共有' + entry['评分人数'] + '个评分</font><script type="text/javascript">$(function(){$("#star").raty({readOnly:	true,size:      24,'
+		+ 'starHalf:  "star-half-big.png",'
+		+ 'starOff:   "star-off-big.png",'
+		+ 'starOn:    "star-on-big.png", start: '+entry['评分']+'	});});</script>'; 
+			}
 			$('#lng').html(entry['经度']);
 			$('#lat').html(entry['纬度']);
 			lng=entry['经度'];
