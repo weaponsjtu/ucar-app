@@ -1,4 +1,4 @@
-function showPark(map,minlng,maxlng,minlat,maxlat)
+Ôªøfunction showPark(map,minlng,maxlng,minlat,maxlat)
 {
 	$.getJSON("http://ihavecar.sinaapp.com/getParkPlace.php?jasoncallback=?&randomID="+Math.random()+"&minlng="+minlng+"&maxlng="+maxlng+"&minlat="+minlat+"&maxlat="+maxlat,function (json) {
 		var myIcon_Y = new BMap.Icon("img/pinY.png", new BMap.Size(31, 48), {anchor: new BMap.Size(15,48)});
@@ -8,13 +8,13 @@ function showPark(map,minlng,maxlng,minlat,maxlat)
 			$("#refreshBox").popup("close");
 		}
 		$.each(json,function(entryIndex,entry) {
-			var ParkPoint = new BMap.Point(entry['æ≠∂»'],entry['Œ≥∂»']);
+			var ParkPoint = new BMap.Point(entry['ÁªèÂ∫¶'],entry['Á∫¨Â∫¶']);
 			var ParkMarker =new BMap.Marker(ParkPoint, {icon: myIcon_Y});
 			map.addOverlay(ParkMarker);
 
 			var infohtml = "<div id='shopbox' style='opacity: 0.95;'><table><tr><td id='wrap'>" +
-			"<div class='label'>" + entry['∆Û“µ√˚≥∆'] + "</div>" +
-			//"<div class='label' style='font-size: 12px;'>" + entry['∆Û“µµÿ÷∑'] + "</div>" +
+			"<div class='label'>" + entry['‰ºÅ‰∏öÂêçÁß∞'] + "</div>" +
+			//"<div class='label' style='font-size: 12px;'>" + entry['‰ºÅ‰∏öÂú∞ÂùÄ'] + "</div>" +
 			"<div id='star'></div></td>" +
 			"<td id='shopinfo'>&nbsp;&nbsp;&nbsp;&nbsp;</td></tr></table>" +
 			"</div>";
@@ -47,17 +47,17 @@ function showPark(map,minlng,maxlng,minlat,maxlat)
         	 ParkMarker.setTitle("open");
         	 infobox.open(ParkPoint);
         	 $(function(){
-					        $('#star').raty({readOnly: true,start: entry['∆¿∑÷']});
+					        $('#star').raty({readOnly: true,start: entry['ËØÑÂàÜ']});
 				  
 				          if (DEBUG) {
 						         $("td#wrap").click(function(){
-						             window.location = "shopinfo.html?type=3&shopid="+entry['–Ú∫≈'];
+						             window.location = "shopinfo.html?type=3&shopid="+entry['Â∫èÂè∑'];
 					           });
 					        } else {
 					            $("td#wrap").live('tap',function(){
-						             window.location = "shopinfo.html?type=3&shopid="+entry['–Ú∫≈'];
+						             window.location = "shopinfo.html?type=3&shopid="+entry['Â∫èÂè∑'];
 					            }).live('click',function(){
-						             window.location = "shopinfo.html?type=3&shopid="+entry['–Ú∫≈'];
+						             window.location = "shopinfo.html?type=3&shopid="+entry['Â∫èÂè∑'];
 					            });
 				          }
 				    });
@@ -96,17 +96,17 @@ function showPark(map,minlng,maxlng,minlat,maxlat)
 				      infobox.open(ParkPoint);
 				      
 				      $(function(){
-					        $('#star').raty({readOnly: true,start: entry['∆¿∑÷']});
+					        $('#star').raty({readOnly: true,start: entry['ËØÑÂàÜ']});
 				  
 				          if (DEBUG) {
 						         $("td#wrap").click(function(){
-						             window.location = "shopinfo.html?type=3&shopid="+entry['–Ú∫≈'];
+						             window.location = "shopinfo.html?type=3&shopid="+entry['Â∫èÂè∑'];
 					           });
 					        } else {
 					            $("td#wrap").live('tap',function(){
-						             window.location = "shopinfo.html?type=3&shopid="+entry['–Ú∫≈'];
+						             window.location = "shopinfo.html?type=3&shopid="+entry['Â∫èÂè∑'];
 					            }).live('click',function(){
-						             window.location = "shopinfo.html?type=3&shopid="+entry['–Ú∫≈'];
+						             window.location = "shopinfo.html?type=3&shopid="+entry['Â∫èÂè∑'];
 					            });
 				          }
 				  
@@ -158,9 +158,9 @@ function SearchParkPlace(map, searchContent)
             showParkPlace(map);
         }
         else
-            alert("’“≤ªµΩ∏√Œª÷√");
+            alert("Êâæ‰∏çÂà∞ËØ•‰ΩçÁΩÆ");
         
     }
-    var local = new BMap.LocalSearch("…œ∫£",{onSearchComplete: searchComplete});
+    var local = new BMap.LocalSearch("‰∏äÊµ∑",{onSearchComplete: searchComplete});
     local.search(searchContent);
 }
