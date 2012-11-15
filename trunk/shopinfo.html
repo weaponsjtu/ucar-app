@@ -61,10 +61,14 @@ table td {
 	clear: both;
 }
 
-#shopinfo {
+#shopdetails {
 	background-color: white; 
 	border-radius: 15px;
 	border: solid gray 1px;
+}
+
+#moreComment {
+	height: 114px;
 }
 </style>
 </head>
@@ -97,7 +101,7 @@ table td {
  </div>
  
   <div id="comment"></div>
- <div><input type="button" data-theme="e" value="所有评论" onclick=showall(shopid, type) /></div>
+ <div><button id="moreComment" onclick=showall(shopid, type)>所有评论</button></div>
   <div id="lng" style="display:none"></div>
   <div id="lat" style="display:none"></div>
   

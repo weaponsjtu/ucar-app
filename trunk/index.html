@@ -15,6 +15,7 @@
 
 <script src="showRepair.js" type="text/javascript"></script>
 <script src="showGasoline.js" type="text/javascript"></script>
+<script src="showPark.js" type="text/javascript"></script>
 <script type="text/javascript" src="getUrlParam.js"></script>
 
 
@@ -327,7 +328,7 @@ $(window).load(function() {
 	if(type.indexOf("2") != -1){
 		ucar(map, 2, lng, lat);
 	} 
-	if(type.indexOf("2") != -1){
+	if(type.indexOf("3") != -1){
 		ucar(map, 3, lng, lat);
 	} 
 });
@@ -487,7 +488,7 @@ div#header {
          <div>
            <div id='repair' class='left' onclick='repair(map)'><img src='img/repair.png' class='icon'><div class='label center'>保养维修</div></div>
            <div id='gasoline' class='left' onclick='gasoline(map)'><img src='img/gasoline.png' class='icon' ><div class='label center'>加油站</div></div>
-	         <div id='park' class='left' onclick='park()'><img src='img/park.png' class='icon'><div class='label center'>停车场</div></div>
+	         <div id='park' class='left' onclick='park(map)'><img src='img/park.png' class='icon'><div class='label center'>停车场</div></div>
 	         <div id='collect' class='left' onclick='collect()'><img src='img/collect.png' class='icon'><div class='label center'>我的收藏</div></div>
 	         <div id='setting' class='left' onclick='settings()'><img src='img/settings.png' class='icon'><div class='label center'>设置</div></div>
 	         <div class='clear'></div>
