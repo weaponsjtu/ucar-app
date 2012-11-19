@@ -22,6 +22,7 @@
 <title>Ucar</title>
 
 <script type="text/javascript">
+	var map;
 function ucar(map, type, lng, lat) {
 	//显示搜索框
 	$("#searchBox").css("display", "block");
@@ -225,20 +226,31 @@ function settings(){
 
     
 function init_index() {
+		console.log("window ready");
      map = new BMap.Map("container",{enableHighResolution:true});
      $("#container").css("height", document.body.clientHeight - $("#container").offset().top - $("#footer").height());
-     var type = request("type");
+     
+     var lng = request("lng");
+	var lat = request("lat");
+	
+	var type = request("type");
+     
      if(type.indexOf("1") != -1){
          //改变标题
          $("#title  .ui-btn-text").html("保养与维修");
+         ucar(map, 1, lng, lat);
      }
-     if(type.indexOf("2") != -1){
+     else if(type.indexOf("2") != -1){
          //改变标题
          $("#title  .ui-btn-text").html("加油站");
+         ucar(map, 2, lng, lat);
      }
-     if(type.indexOf("3") != -1){
+     else if(type.indexOf("3") != -1){
          //改变标题
          $("#title  .ui-btn-text").html("停车场");
+         ucar(map, 3, lng, lat);
+     } else {
+     		getGPS();
      }
 
 readfile1();
@@ -303,7 +315,7 @@ function readfile1() {
         console.log(evt.target.error.code);
     }
 }	
-     getGPS();
+     
    	 
    	 $("#refreshCancel").click(function(){
    	 	  $("#refreshBox").popup("close");	
@@ -311,8 +323,9 @@ function readfile1() {
 }
      
     
-    
+/* 
 $(window).load(function() {
+	console.log("window loaded");
 	var lng = request("lng");
 	var lat = request("lat");
 	
@@ -328,6 +341,7 @@ $(window).load(function() {
 		ucar(map, 3, lng, lat);
 	} 
 });
+*/
 
 //自动联想
 var ac = new BMap.Autocomplete(    //建立一个自动完成的对象
