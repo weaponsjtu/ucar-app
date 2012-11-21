@@ -1,20 +1,19 @@
-﻿function showGasoline(map,minlng,maxlng,minlat,maxlat)
+﻿function showShop(map,minlng,maxlng,minlat,maxlat,type)
 {
-	$.getJSON("http://ihavecar.sinaapp.com/getGasolinePlace.php?jasoncallback=?&randomID="+Math.random()+"&minlng="+minlng+"&maxlng="+maxlng+"&minlat="+minlat+"&maxlat="+maxlat,function (json) {
+	$.getJSON("http://ihavecar.sinaapp.com/getShopPlace.php?jasoncallback=?&randomID="+Math.random()+"&minlng="+minlng+"&maxlng="+maxlng+"&minlat="+minlat+"&maxlat="+maxlat+"&type=" +type,function (json) {
 		var myIcon_Y = new BMap.Icon("img/pinY.png", new BMap.Size(31, 48), {anchor: new BMap.Size(15,48)});
 		
 		var myIcon_R = new BMap.Icon("img/pinR.png", new BMap.Size(31, 48), {anchor: new BMap.Size(15,48)});
-	  if (json.length > 0) {
+		if (json.length > 0) {
 			$("#refreshBox").popup("close");
 		}
 		$.each(json,function(entryIndex,entry) {
-			var GasolinePoint = new BMap.Point(entry['经度'],entry['纬度']);
-			var GasolineMarker =new BMap.Marker(GasolinePoint, {icon: myIcon_Y});
-			map.addOverlay(GasolineMarker);
-			
-			 var infohtml = "<div id='shopbox' style='opacity: 0.95;'><table><tr><td id='wrap'>" +
+			var ShopPoint = new BMap.Point(entry['经度'],entry['纬度']);
+			var ShopMarker =new BMap.Marker(ShopPoint, {icon: myIcon_Y});
+			map.addOverlay(ShopMarker);
+
+			var infohtml = "<div id='shopbox' style='opacity: 0.95;'><table><tr><td id='wrap'>" +
 			"<div class='label'>" + entry['企业名称'] + "</div>" +
-			//"<div class='label' style='font-size: 12px;'>" + entry['企业地址'] + "</div>" +
 			"<div id='star'></div></td>" +
 			"<td id='shopinfo'>&nbsp;&nbsp;&nbsp;&nbsp;</td></tr></table>" +
 			"</div>";
@@ -28,9 +27,9 @@
 			,enableAutoPan: true
 			,align: INFOBOX_AT_BOTTOM
 			});
+		
 			
-			
-			GasolineMarker.addEventListener("click", function(){
+			ShopMarker.addEventListener("click", function(){
 				var flag = false;
         overlays = map.getOverlays();
         for (var i = 0; i < overlays.length; i++) {
@@ -43,27 +42,25 @@
         }
         
         if (!flag) {
-        	 GasolineMarker.setIcon(myIcon_R);
-        	 GasolineMarker.setTitle("open");
-        	 infobox.open(GasolinePoint);
-        	 $(function(){
+        	 ShopMarker.setIcon(myIcon_R);
+        	 ShopMarker.setTitle("open");
+        	 infobox.open(ShopPoint);
 					        $('#star').raty({readOnly: true,start: entry['评分']});
 				  
 				          if (DEBUG) {
 						         $("td#wrap").click(function(){
-						             window.location = "shopinfo.html?type=2&shopid="+entry['序号'];
+						             window.location = "shopinfo.html?type="+type+"&shopid="+entry['序号'];
 					           });
 					        } else {
 					            $("td#wrap").live('tap',function(){
-						             window.location = "shopinfo.html?type=2&shopid="+entry['序号'];
+						             window.location = "shopinfo.html?type="+type+"&shopid="+entry['序号'];
 					            }).live('click',function(){
-						             window.location = "shopinfo.html?type=2&shopid="+entry['序号'];
+						             window.location = "shopinfo.html?type="+type+"&shopid="+entry['序号'];
 					            });
 				          }
-				    });
         } else {
-        	 if (GasolineMarker.getTitle() == 'open') {
-        	 	  GasolineMarker.setTitle('');
+        	 if (ShopMarker.getTitle() == 'open') {
+        	 	  ShopMarker.setTitle('');
         	 	  overlays = map.getOverlays();
 				      for (var i = 0; i < overlays.length; i++) {
 					      if (overlays[i] instanceof BMapLib.InfoBox) {
@@ -91,26 +88,23 @@
 					      }
 				      }
 				      
-				      GasolineMarker.setIcon(myIcon_R);
-				      GasolineMarker.setTitle("open");
-				      infobox.open(GasolinePoint);
+				      ShopMarker.setIcon(myIcon_R);
+				      ShopMarker.setTitle("open");
+				      infobox.open(ShopPoint);
 				      
-				      $(function(){
 					        $('#star').raty({readOnly: true,start: entry['评分']});
 				  
 				          if (DEBUG) {
 						         $("td#wrap").click(function(){
-						             window.location = "shopinfo.html?type=2&shopid="+entry['序号'];
+						             window.location = "shopinfo.html?type="+type+"&shopid="+entry['序号'];
 					           });
 					        } else {
 					            $("td#wrap").live('tap',function(){
-						             window.location = "shopinfo.html?type=2&shopid="+entry['序号'];
+						             window.location = "shopinfo.html?type="+type+"&shopid="+entry['序号'];
 					            }).live('click',function(){
-						             window.location = "shopinfo.html?type=2&shopid="+entry['序号'];
+						             window.location = "shopinfo.html?type="+type+"&shopid="+entry['序号'];
 					            });
 				          }
-				  
-				      });
 				    }
 				 }
 			});
@@ -118,7 +112,7 @@
 	});
 }
 
-function showGasolinePlace(map)
+function showShopPlace(map, type)
 {
 	$("#refreshBox").popup("open");
 	var bounds = map.getBounds();
@@ -128,21 +122,19 @@ function showGasolinePlace(map)
 	var maxlng=ne.lng;
 	var minlat=sw.lat;
 	var maxlat=ne.lat;
-	showGasoline(map,minlng,maxlng,minlat,maxlat);
-
-	
+	showShop(map,minlng,maxlng,minlat,maxlat, type);
 }
 
-function enterSearch(map)
+function enterSearch(map, type)
 {
 	if (event.keyCode == 13)
 	{
 		var enterContent = document.getElementById("search").value;
-		SearchGasolinePlace(map,enterContent);
+		SearchShopPlace(map,enterContent, type);
 	}
 }
 
-function SearchGasolinePlace(map, searchContent)
+function SearchShopPlace(map, searchContent, type)
 {
     function searchComplete()
     {
@@ -152,12 +144,9 @@ function SearchGasolinePlace(map, searchContent)
             var searchPoint = searchResult.point;
             map.clearOverlays();
             map.centerAndZoom(searchPoint,15);
-            var searchMarker = new BMap.Marker(searchPoint);
+            var searchMarker = new BMap.Marker(searchPoint, {title: 'search'});
             map.addOverlay(searchMarker);
-            var searchLabel = new BMap.Label(searchContent);
-            searchLabel.setOffset(new BMap.Size(10,-10));
-            searchMarker.setLabel(searchLabel);
-            showGasolinePlace(map);
+            showShopPlace(map, type);
         }
         else
             alert("找不到该位置");
@@ -166,5 +155,6 @@ function SearchGasolinePlace(map, searchContent)
     var local = new BMap.LocalSearch("上海",{onSearchComplete: searchComplete});
     local.search(searchContent);
 }
+
 
 // JavaScript Document
