@@ -74,17 +74,10 @@ window.onmessage=function(e){
 	 expires_time= json_str.current_time+json_str.expires_in;
 	// alert('before post');
 	 
-//用户数据上传至SAE数据库，不传输access_token
-	$.ajax({type:'POST',async:false, url:'http://ihavecar.sinaapp.com/postuser.php?nickname='+nickname+'&photo='+image+'&sina='+uid+'&uid='+uid+'&qq=0'});
+//用户数据上传至SAE数据库，不传输access_token，必须在success后写文件
+	$.ajax({type:'POST',async:false, url:'http://ihavecar.sinaapp.com/postuser.php?nickname='+nickname+'&photo='+image+'&sina='+uid+'&uid='+uid+'&qq=0'}, writefile() );
 	//alert('post ok');
-	
-//写入文件
-	writefile();
-	
-	//alert('write file close');
-//返回登录页面	
-	window.location.href ='login.html';
-	//window.location.href =encodeURI('logined.html?img='+image+'&name='+nickname);
+
 	
 function writefile(){
 	//等待加载PhoneGap
@@ -113,7 +106,9 @@ function writefile(){
 
 	function gotFileWriter(writer) {
 		writer.onwrite = function(evt) {
-			//alert("write success");
+			//返回登录页面,必须确保返回前已经写文件完成	
+			window.location.href ='login.html';
+			
 		};
 		writer.write("uid="+uid+";accesstoken="+access_token+";nickname="+nickname+";image="+image+";expires_time="+expires_time+";");
 	}
