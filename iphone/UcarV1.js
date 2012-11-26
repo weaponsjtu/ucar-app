@@ -1,4 +1,4 @@
-var shFinish = -1;//-1初始化值，1在上海，0不在上海，－2无法获悉行政区域
+﻿var shFinish = -1;//-1初始化值，1在上海，0不在上海，－2无法获悉行政区域
 
 var DEBUG = false; //控制是否为测试模式
 
@@ -16,7 +16,7 @@ function showYourPosition(map,point)
 		  }
 	  }
 	}
-	var myIcon = new BMap.Icon("img/position.png", new BMap.Size(40, 40));
+	var myIcon = new BMap.Icon("img/position.png", new BMap.Size(32, 32));
 	var marker =new BMap.Marker(point, {icon: myIcon, title: 'current'});
 	map.addOverlay(marker);
 }
@@ -44,7 +44,7 @@ function isInShanghai(point)
             }
             else
             {
-                alert("找不到你的位置");
+                alert("找不到您的位置");
                 shFinish = -2;
             }
         });
@@ -55,20 +55,17 @@ function translateCallback (point) {
 	isInShanghai(point);
 	
 	if(map) {
-   map.centerAndZoom(point, 15);
+		
+	   map.centerAndZoom(point, 15);
 	
-	//给地图添加监听器，移除刷新框
- 	//map.addEventListener("click", function(){});
-	
-	 map.enablePinchToZoom();
-	
-	 showYourPosition(map,point);
+	 	 map.enablePinchToZoom();
+	 	 $("#container").css("height", document.body.clientHeight - $("#container").offset().top - $("#footer").height());
+	   showYourPosition(map,point);
 	
 	 //打开首页悬浮框
-	 map.addEventListener("tilesloaded", function(){
+	 /*map.addEventListener("tilesloaded", function(){	 	
 	  if($("#title  .ui-btn-text").html() == "首页"){
 		 $("#suspendBox").popup("open");
-                        
 	  } 
 	  
 	  var flag = false;
@@ -82,7 +79,7 @@ function translateCallback (point) {
         if (flag) {
            $("#refreshBox").popup("close");		
      }
-	 });
+	 });*/
   }
 }
 
@@ -112,7 +109,7 @@ function showgps_debug(position)
     
 function getGPS()
 {
-	if (DEBUG) {
+	if (DEBUG) {   //true开启固定坐标，false使用GPS
 		showgps_debug();
 	} else {
 		var gps = navigator.geolocation;
@@ -121,8 +118,7 @@ function getGPS()
 			gps.getCurrentPosition(showgps_product,
 			function (error)
 			{
-				//alert('got an error: ' + error.code + 'message: ' + error.message);
-	            alert ("UCAR需要GPS定位来获取您的位置信息。请在系统设置中打开GPS");
+	        alert ("UCAR需要GPS定位来获取您的位置信息。请在系统设置中打开GPS");
 			},
 			{timeout:20000,enableHighAccuracy: true});
 		}
@@ -133,28 +129,109 @@ function getGPS()
 	}
 }
 
+function ucar(map, type, lng, lat) {
+	//显示搜索框
+	$("#searchBox").css("display", "block");
+	
+	$("#container").css("height", document.body.clientHeight - $("#container").offset().top - $("#footer").height());
+	
+	map.clearOverlays();
+	
+	
+	//显示当前位置
+	getGPS();
+	
+	if (lng != "" && lat != "") {
+		var newpoint = new BMap.Point(lng.valueOf(),lat.valueOf());
+		map.panTo(newpoint);
+	}
+
+	map.addControl(new BMap.ScaleControl());
+	
+	//添加刷新控件
+	function ZoomControl_TR(){
+		this.defaultAnchor = BMAP_ANCHOR_TOP_RIGHT;
+		this.defaultOffset = new BMap.Size(5,5);
+	}
+	ZoomControl_TR.prototype = new BMap.Control();
+	ZoomControl_TR.prototype.initialize = function(map) {
+		var div = document.createElement("div");
+		div.innerHTML = "<a href='#refreshBox'  data-rel='popup' data-role='button' data-position-to='window' data-transition='slidedown'><img style='width: 90px; height: 88px;' src='img/loading.png'></a>";
+		div.style.cursor = "pointer";
+		div.onclick = function (e) {
+			showShopPlace(map,type);
+		}
+		map.getContainer().appendChild(div);
+		return div;
+	}
+	var myZoomCtrl_TR = new ZoomControl_TR();
+	map.addControl(myZoomCtrl_TR);
+	
+	//添加定位控件
+	function ZoomControl_BR(){
+		this.defaultAnchor = BMAP_ANCHOR_BOTTOM_RIGHT;
+		this.defaultOffset = new BMap.Size(5,5);
+	}
+	ZoomControl_BR.prototype = new BMap.Control();
+	ZoomControl_BR.prototype.initialize = function(map) {
+		var div = document.createElement("div");
+		
+		div.innerHTML = "<img style='width: 90px; height: 88px;' src='img/pin.png'>";
+		div.style.cursor = "pointer";
+		div.onclick = function (e) {
+			getGPS();
+		}
+		map.getContainer().appendChild(div);
+		return div;
+	}
+	var myZoomCtrl_BR = new ZoomControl_BR();
+	map.addControl(myZoomCtrl_BR);
+	
+	//添加缩放控件
+	function ZoomControl_TL(){
+		this.defaultAnchor = BMAP_ANCHOR_TOP_LEFT;
+		this.defaultOffset = new BMap.Size(5,5);
+	}
+	ZoomControl_TL.prototype = new BMap.Control();
+	ZoomControl_TL.prototype.initialize = function(map) {		
+		div = document.createElement("div");
+		div.innerHTML = "<img src='img/zoomOut.png' style='cursor: pointer; width: 64px; height: 60px;' onclick='map.zoomIn()'><br>" +
+		"<img src='img/zoomIn.png' style='cursor: pointer; width: 64px; height: 60px;' onclick='map.zoomOut()'>";
+		map.getContainer().appendChild(div);
+		return div;
+	}
+	var myZoomCtrl_TL = new ZoomControl_TL();
+	map.addControl(myZoomCtrl_TL);
+
+	showShopPlace(map, type);
+	if (type == 1) {
+		$("#title  .ui-btn-text").html("保养与维修");
+	}  else if (type == 2) {
+		$("#title  .ui-btn-text").html("加油站");
+	} else if (type == 3) {
+		$("#title  .ui-btn-text").html("停车场");
+	} else {
+		alert('wrong type');
+	}
+
+}
+
 //打印对象的所有值
 function  allPrpos(obj) {
-    // 用来保存所有的属性名称和值
     var   props = "" ;
-    // 开始遍历
     for ( var   p in obj ){
-        // 方法
         if ( typeof ( obj [ p ]) == " function " ){
             obj [ p ]() ;
         } else {
-            // p 为属性名称，obj[p]为对应属性的值
             props += "Obj."+p + " = " + obj [ p ] + " \t<br /> " ;
         }
     }
-    // 最后显示所有的属性
 		alert(props);
 }
 
 
 //读取文件
-function readfile() {
-    
+function readfile(msg) {
 	document.addEventListener("deviceready", onDeviceReady, false);
     // PhoneGap is ready
     function onDeviceReady() {
@@ -177,22 +254,29 @@ function readfile() {
 				//alert("hello");
         var reader = new FileReader();
         reader.onloadend = function(evt) {
-            //console.log("Read as text");
-            //console.log(evt.target.result);
-			var arg=evt.target.result.split(";");
-			//for(i=0;i<2;i++){
-				var arg1=arg[0].split("=");
-				var arg2=arg[1].split("=");
-				access_token=arg2[1];
-			//}
+					if (arg==""){
+                alert(msg);
+								window.location.href ='login.html';
+            }else{
+                //Read Loginfile
+                
+                var arg1=arg[0].split("=");
+								var arg2=arg[1].split("=");
+								var arg3=arg[2].split("=");
+								var arg4=arg[3].split("=");
+            
+								var uid=arg1[1];
+				
+           			self.location = "collect.html?uid="+uid;            
+					}
         };
         reader.readAsText(file);
     }
 
     function fail(evt) {
-        console.log(evt.target.error.code);
+        alert(msg);
+        window.location.href ='login.html';
     }
-    
 }
 
 function request(strName) { 
