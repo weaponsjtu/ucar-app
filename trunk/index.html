@@ -47,6 +47,20 @@ function settings(){
 	self.location = "login.html";	
 }
 
+if(DEBUG) {
+	$(document).ready(function(){
+	  //checkConnection();
+	  init_index();
+  });
+} else {
+  document.addEventListener("deviceready", onDeviceReady, false);
+  function onDeviceReady()
+  {
+    checkConnection();
+		init_index();
+  }
+}
+
     
 function init_index() {
 	   var lng = request("lng");
@@ -63,6 +77,9 @@ function init_index() {
 		 }
      
      map.enablePinchToZoom();
+     /*map.addEventListener("click", function(evt){
+     	  	alert(evt.overlay);
+     });*/
 
    	 tilesTime = 1;
 	 map.addEventListener("tilesloaded", function(){ 	
@@ -208,20 +225,6 @@ ac.addEventListener("onconfirm", function(e) {    //鼠标点击下拉列表后�
     }
     $("#search").blur();
 });
-
-if(DEBUG) {
-	$(document).ready(function(){
-	  //checkConnection();
-	  init_index();
-  });
-} else {
-  document.addEventListener("deviceready", onDeviceReady, false);
-  function onDeviceReady()
-  {
-    checkConnection();
-		init_index();
-  }
-}
 
     
     function checkConnection()
