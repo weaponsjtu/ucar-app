@@ -22,8 +22,6 @@
 
 <script type="text/javascript">
 	var map;
-
-
 function repair(map) {
 	$("#suspendBox").popup("close");
 	ucar(map, 1, "","");
@@ -51,14 +49,25 @@ function settings(){
 
     
 function init_index() {
+	   var lng = request("lng");
+		 var lat = request("lat");
+		 
      map = new BMap.Map("container",{enableHighResolution:true});
      
-     $("#container").css("height", document.body.clientHeight - $("#container").offset().top - $("#footer").height());
+     if (lng != "" && lat != "") {
+		    var newpoint = new BMap.Point(parseFloat(lng),parseFloat(lat));
+		    map.centerAndZoom(newpoint, 15);
+		 } else {
+		 	  map.centerAndZoom("上海", 15);
+		 	  getGPS();
+		 }
      
-     	var lng = request("lng");
-			var lat = request("lat");
-	
-			var type = request("type");
+     map.enablePinchToZoom();
+
+   	 tilesTime = 1;
+	 map.addEventListener("tilesloaded", function(){ 	
+	  if (tilesTime == 1) {
+		 var type = request("type");
 			
      if(type.indexOf("1") != -1){
          //改变标题
@@ -75,9 +84,46 @@ function init_index() {
          $("#title  .ui-btn-text").html("停车场");
          ucar(map, 3, lng, lat);
      } else {
-     		$("#suspendBox").popup("open");
-     		getGPS();
+     		//$("#suspendBox").popup("open");
+     		//getGPS();
      }
+	  
+	  
+	  
+	  /*var flag = false;
+        overlays = map.getOverlays();
+        for (var i = 0; i < overlays.length; i++) {
+        	 if (overlays[i] instanceof BMap.Marker) {
+        	 	  flag = true; 
+        	 	  break;
+        	 }
+        }	
+        if (flag) {
+           $("#refreshBox").popup("close");		
+     }*/
+    }
+    tilesTime += 1;
+	 });
+	 	  
+     
+     $("#container").css("height", document.body.clientHeight - $("#container").offset().top - $("#footer").height());
+     
+     $("#refreshCancel").click(function(){
+   	 	  $("#refreshBox").popup("close");	
+   	 });
+   	 
+   	 $("#search").keydown(function(){
+   	 	if ($("#title  .ui-btn-text").html() == "保养与维修") {              
+      	enterSearch(map, 1);	
+    	} else if($("#title  .ui-btn-text").html() == "加油站") {
+    		enterSearch(map, 2);	
+    	} else if($("#title  .ui-btn-text").html() == "停车场") {
+    		enterSearch(map, 3);	
+    	} else {
+    		alert("wrong opertation");	
+    	}
+   	 });
+    
 
 readfile1();
 function readfile1() {
@@ -139,21 +185,6 @@ function readfile1() {
         console.log(evt.target.error.code);
     }
 }	
-     
-   	 
-   	 $("#refreshCancel").click(function(){
-   	 	  $("#refreshBox").popup("close");	
-   	 });
-   	 
-   	 $("#search").keydown(function(){
-   	 	if ($("#title  .ui-btn-text").html() == "保养与维修") {              
-      	enterSearch(map, 1);	
-    	} else if($("#title  .ui-btn-text").html() == "加油站") {
-    		enterSearch(map, 2);	
-    	} else {
-    		enterSearch(map, 3);	
-    	}
-   	 });
 }
      
 //自动联想
@@ -241,9 +272,9 @@ div#suspendBox .icon {
 	width: 57px;
 }
 
-#title {
-	/*font-size: 20px;*/
-}
+/*#title .ui-btn-text{
+   font-size:20px;
+}*/
 
 div#shopbox .label {
 	font-weight: bold;
@@ -343,7 +374,7 @@ div#header {
         
      <div data-role="footer" id="footer">
      	<h5>
-        <font style="color: white;">当前位置:&nbsp;&nbsp;<b id="current"></b></font>
+        <font style="color: white;"><b id="current"></b></font>
         </h5>
      </div>
     

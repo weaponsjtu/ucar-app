@@ -1,9 +1,9 @@
 ﻿function showShop(map,minlng,maxlng,minlat,maxlat,type)
 {
 	$.getJSON("http://ihavecar.sinaapp.com/getShopPlace.php?jasoncallback=?&randomID="+Math.random()+"&minlng="+minlng+"&maxlng="+maxlng+"&minlat="+minlat+"&maxlat="+maxlat+"&type=" +type,function (json) {
-		var myIcon_Y = new BMap.Icon("img/pinY.png", new BMap.Size(31, 48), {anchor: new BMap.Size(15,48)});
+		var myIcon_Y = new BMap.Icon("img/pinY.png", new BMap.Size(45, 69), {anchor: new BMap.Size(22,69)});
 		
-		var myIcon_R = new BMap.Icon("img/pinR.png", new BMap.Size(31, 48), {anchor: new BMap.Size(15,48)});
+		var myIcon_R = new BMap.Icon("img/pinR.png", new BMap.Size(45, 69), {anchor: new BMap.Size(22,69)});
 		if (json.length > 0) {
 			$("#refreshBox").popup("close");
 		}
@@ -49,13 +49,17 @@
 				  
 				          if (DEBUG) {
 						         $("td#wrap").click(function(){
-						             window.location = "shopinfo.html?type="+type+"&shopid="+entry['序号'];
+						             window.location = "shopinfo.html?type="+type+"&shopid="+entry['序号'] +
+						             "&shopName="+entry['企业名称']+"&phone="+entry['联系电话']+"&shopAddress="+
+						             entry['企业地址']+"&rate="+entry['评分']+"&rateNum="+entry['评分人数']+
+						             "&lng="+entry['经度']+"&lat="+entry['纬度'];
 					           });
 					        } else {
 					            $("td#wrap").live('tap',function(){
-						             window.location = "shopinfo.html?type="+type+"&shopid="+entry['序号'];
-					            }).live('click',function(){
-						             window.location = "shopinfo.html?type="+type+"&shopid="+entry['序号'];
+						             window.location = "shopinfo.html?type="+type+"&shopid="+entry['序号'] +
+						             "&shopName="+entry['企业名称']+"&phone="+entry['联系电话']+"&shopAddress="+
+						             entry['企业地址']+"&rate="+entry['评分']+"&rateNum="+entry['评分人数']+
+						             "&lng="+entry['经度']+"&lat="+entry['纬度'];
 					            });
 				          }
         } else {
@@ -96,13 +100,17 @@
 				  
 				          if (DEBUG) {
 						         $("td#wrap").click(function(){
-						             window.location = "shopinfo.html?type="+type+"&shopid="+entry['序号'];
+						             window.location = "shopinfo.html?type="+type+"&shopid="+entry['序号'] +
+						             "&shopName="+entry['企业名称']+"&phone="+entry['联系电话']+"&shopAddress="+
+						             entry['企业地址']+"&rate="+entry['评分']+"&rateNum="+entry['评分人数']+
+						             "&lng="+entry['经度']+"&lat="+entry['纬度'];
 					           });
 					        } else {
 					            $("td#wrap").live('tap',function(){
-						             window.location = "shopinfo.html?type="+type+"&shopid="+entry['序号'];
-					            }).live('click',function(){
-						             window.location = "shopinfo.html?type="+type+"&shopid="+entry['序号'];
+						             window.location = "shopinfo.html?type="+type+"&shopid="+entry['序号'] +
+						             "&shopName="+entry['企业名称']+"&phone="+entry['联系电话']+"&shopAddress="+
+						             entry['企业地址']+"&rate="+entry['评分']+"&rateNum="+entry['评分人数']+
+						             "&lng="+entry['经度']+"&lat="+entry['纬度'];
 					            });
 				          }
 				    }

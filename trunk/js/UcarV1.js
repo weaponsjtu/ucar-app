@@ -32,7 +32,7 @@ function isInShanghai(point)
             {
                 if (geoResult.addressComponents.province == "上海市" || geoResult.addressComponents.city == "上海市")
                 {
-                	$("#current").html(geoResult.address);
+                	$("#current").html("当前位置:&nbsp;&nbsp;" + geoResult.address);
                 	shFinish = 1;
                     /* alert ("在上海"); */
                 }
@@ -56,30 +56,9 @@ function translateCallback (point) {
 	
 	if(map) {
 		
-	   map.centerAndZoom(point, 15);
-	
-	 	 map.enablePinchToZoom();
-	 	 $("#container").css("height", document.body.clientHeight - $("#container").offset().top - $("#footer").height());
+	   map.panTo(point);
+	 	 //$("#container").css("height", document.body.clientHeight - $("#container").offset().top - $("#footer").height());
 	   showYourPosition(map,point);
-	
-	 //打开首页悬浮框
-	 /*map.addEventListener("tilesloaded", function(){	 	
-	  if($("#title  .ui-btn-text").html() == "首页"){
-		 $("#suspendBox").popup("open");
-	  } 
-	  
-	  var flag = false;
-        overlays = map.getOverlays();
-        for (var i = 0; i < overlays.length; i++) {
-        	 if (overlays[i] instanceof BMap.Marker) {
-        	 	  flag = true; 
-        	 	  break;
-        	 }
-        }	
-        if (flag) {
-           $("#refreshBox").popup("close");		
-     }
-	 });*/
   }
 }
 
@@ -92,7 +71,6 @@ function showgps_product(position)
 		var longitude = position.coords.longitude;
 		var gpspoint = new BMap.Point(longitude,latitude);
 		BMap.Convertor.translate(gpspoint,0,translateCallback);
-
 	}
 	else
 		alert("无法获取位置");
@@ -137,15 +115,6 @@ function ucar(map, type, lng, lat) {
 	
 	map.clearOverlays();
 	
-	
-	//显示当前位置
-	getGPS();
-	
-	if (lng != "" && lat != "") {
-		var newpoint = new BMap.Point(lng.valueOf(),lat.valueOf());
-		map.panTo(newpoint);
-	}
-
 	map.addControl(new BMap.ScaleControl());
 	
 	//添加刷新控件
@@ -156,7 +125,7 @@ function ucar(map, type, lng, lat) {
 	ZoomControl_TR.prototype = new BMap.Control();
 	ZoomControl_TR.prototype.initialize = function(map) {
 		var div = document.createElement("div");
-		div.innerHTML = "<a href='#refreshBox'  data-rel='popup' data-role='button' data-position-to='window' data-transition='slidedown'><img style='width: 45px; height: 44px;' src='img/loading.png'></a>";
+		div.innerHTML = "<a href='#refreshBox'  data-rel='popup' data-role='button' data-position-to='window' data-transition='slidedown'><img style='width: 68px; height: 65px;' src='img/loading.png'></a>";
 		div.style.cursor = "pointer";
 		div.onclick = function (e) {
 			showShopPlace(map,type);
@@ -176,7 +145,7 @@ function ucar(map, type, lng, lat) {
 	ZoomControl_BR.prototype.initialize = function(map) {
 		var div = document.createElement("div");
 		
-		div.innerHTML = "<img style='width: 45px; height: 44px;' src='img/pin.png'>";
+		div.innerHTML = "<img style='width: 68px; height: 65px;' src='img/pin.png'>";
 		div.style.cursor = "pointer";
 		div.onclick = function (e) {
 			getGPS();
@@ -195,8 +164,8 @@ function ucar(map, type, lng, lat) {
 	ZoomControl_TL.prototype = new BMap.Control();
 	ZoomControl_TL.prototype.initialize = function(map) {		
 		div = document.createElement("div");
-		div.innerHTML = "<img src='img/zoomOut.png' style='cursor: pointer; width: 32px; height: 30px;' onclick='map.zoomIn()'><br>" +
-		"<img src='img/zoomIn.png' style='cursor: pointer; width: 32px; height: 30px;' onclick='map.zoomOut()'>";
+		div.innerHTML = "<img src='img/zoomOut.png' style='cursor: pointer; width: 64px; height: 61px; margin-top: 4px;' onclick='map.zoomIn()'><br>" +
+		"<img src='img/zoomIn.png' style='cursor: pointer; width: 64px; height: 61px; margin-top: 8px;' onclick='map.zoomOut()'>";
 		map.getContainer().appendChild(div);
 		return div;
 	}
@@ -213,7 +182,6 @@ function ucar(map, type, lng, lat) {
 	} else {
 		alert('wrong type');
 	}
-
 }
 
 //打印对象的所有值
@@ -254,6 +222,7 @@ function readfile(msg) {
 				//alert("hello");
         var reader = new FileReader();
         reader.onloadend = function(evt) {
+        	alert("arg "+ arg);
 					if (arg==""){
                 alert(msg);
 								window.location.href ='login.html';
@@ -266,8 +235,8 @@ function readfile(msg) {
 								var arg4=arg[3].split("=");
             
 								var uid=arg1[1];
-				
-           			self.location = "collect.html?uid="+uid;            
+								alert("uid" + uid);
+           			window.location.href = "collect.html?uid="+uid;            
 					}
         };
         reader.readAsText(file);
