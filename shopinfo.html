@@ -20,11 +20,16 @@
 
 <script type="text/javascript">
 $(window).load(function() {
-	$('#back').attr("href", "index.html?type=" + request("type") + "&lng=" + $("#lng").html() + "&lat=" + $("#lat").html());
+	//$('#back').attr("href", "index.html?type=" + request("type") + "&lng=" + $("#lng").html() + "&lat=" + $("#lat").html());
 });
 
 $(document).ready(function(){
-	 //getGPS();
+	 $("#shopName").html(decodeURI(request("shopName")));
+	 $("#shopAddress").html(decodeURI(request("shopAddress")));
+	 $("#phone").attr("href", "tel: "+request("phone"));
+	 $("#phone").html("电话：" + request("phone"));
+	 $("#rate").html("共有" + request("rateNum") + "个评分");
+	 $('#back').attr("href", "index.html?type=" + request("type") + "&lng=" + request("lng") + "&lat=" + request("lat"));
 });
 </script>
 
@@ -84,12 +89,26 @@ table td {
 
 <div data-role="content">
  <div>
-   <div id="shopstar"></div>
+   <div id="shopstar">
+   	<span id="star"></span><font style="float:right" id="rate"></font>
+   	<script type="text/javascript">$(function(){$("#star").raty({readOnly:	true,size: 24,
+   		starHalf:  "star-half-big.png",
+			starOff:   "star-off-big.png",
+			starOn:    "star-on-big.png", start: request("rate")	});});
+		</script>
+   </div>
  </div>
  <div>
     <table>
      <tr>
-      <td id="shopinfo"></td>
+      <td id="shopinfo">
+        <div style="font-size: 24px; "><b id="shopName"></b></div><br> 
+			  <div id="shopdetails">
+			  	<div><br><a href="" id="phone" style="font-size: 18px; padding: 10px 0 0 10px;"></a></div>
+				  <hr size="1" color="#AAA"   align="center" />
+	        <div style="font-size: 18px; padding: 0 0 10px 10px;">地址：<span id="shopAddress"></span></div>	
+      	</div> 
+      </td>
      </tr>
     </table>
  </div>
@@ -113,7 +132,7 @@ var lat=0;
 var lng=0;
 
 	$("#shopdiv").css("max-width", document.body.clientWidth + 'px');
-	showshop(shopid, type);
+	//showshop(shopid, type);
 	showcomment(shopid, type);
 	
 function postcollect(){
