@@ -108,7 +108,8 @@ var IFshare=1;
 
 var star=new Array(" ","★","★★","★★★","★★★★","★★★★★");
 
-checklogin();
+//checklogin();
+readfile(0);
 
 //可切换是否共享到SINA，默认允许共享
 function setshare(){
@@ -130,7 +131,16 @@ function countChar(textareaName,spanName)
 
 
 function share() {
-	window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, gotFS, fail);
+	readfile(1);
+}
+
+function readfile(flag) {
+	document.addEventListener("deviceready", onDeviceReady, false);
+    // PhoneGap is ready
+    function onDeviceReady() {
+				//checkConnection();
+        window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, gotFS, fail);
+    }
 
     function gotFS(fileSystem) {
         fileSystem.root.getFile("ucar/DataFile.txt", {create: true}, gotFileEntry, fail);
@@ -148,12 +158,28 @@ function share() {
 				//alert("hello");
         var reader = new FileReader();
         reader.onloadend = function(evt) {
-            var arg=evt.target.result.split(";");
-			 if (arg==""){
-                window.location.href ='login.html';
-			 }else{
-                 
-				 var arg1=arg[0].split("=");
+            //console.log("Read as text");
+            //console.log(evt.target.result);
+			var arg=evt.target.result.split(";");
+            if (arg==""){
+                // Empty file. Not Logined.
+                $("#sina").css("background-position", "0 -16px");
+                alert("哎呀，请你先登录，才可以进行点评与分享");
+								window.location.href ='login.html';
+            }
+			if(!flag){
+			//在用户输入评论前先检查授权是否过期
+				 var arg4=arg[4].split("=");
+				 var expire=arg4[1];
+				 var d = new Date();
+				 var now=d.getTime()/1000;
+
+				if(expire<now){
+					alert("哎呀，你的登录授权已经过期，请重新授权~");
+					window.location.href ='login.html';
+				}
+			}else{
+				var arg1=arg[0].split("=");
 				 var arg2=arg[1].split("=");
 				 var uid1=arg1[1];
 				 var access_token1=arg2[1];
@@ -178,68 +204,13 @@ function share() {
 				function returnshop(){
 				window.location.href ='shopinfo.html?type='+type+'&shopid='+shopid;
 				}
-             }
-			
-        };
-        reader.readAsText(file);
-    }
-
-    function fail(evt) {
-        console.log(evt.target.error.code);
-    }
-	
-}
-
-function checklogin() {
-	document.addEventListener("deviceready", onDeviceReady, false);
-    // PhoneGap is ready
-    function onDeviceReady() {
-        window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, gotFS, fail);
-    }
-
-    function gotFS(fileSystem) {
-        fileSystem.root.getFile("ucar/DataFile.txt", {create: true}, gotFileEntry, fail);
-    }
-
-    function gotFileEntry(fileEntry) {
-        fileEntry.file(gotFile, fail);
-    }
-
-    function gotFile(file){
-        readAsText(file);
-    }
-
-    function readAsText(file) {
-		var reader = new FileReader();
-        reader.onloadend = function(evt) {
-            var arg=evt.target.result.split(";");
-            if (arg==""){
-                // Empty file. Not Logined.
-                $("#sina").css("background-position", "0 -16px");
-                alert("哎呀，请你先登录，才可以进行点评与分享");
-								window.location.href ='login.html';
-            }
-			
-			//在用户输入评论前先检查授权是否过期
-				 var arg4=arg[4].split("=");
-				 var expire=arg4[1];
-				 var d = new Date();
-				 var now=d.getTime()/1000;
-
-				if(expire<now){
-					alert("哎呀，你的登录授权已经过期，请重新授权~");
-					window.location.href ='login.html';
-					}
-		
-			
+			}
         };
         reader.readAsText(file);	
     }
 
     function fail(evt) {
-    		$("#sina").css("background-position", "0 -16px");
-				alert("哎呀，请你先登录，才可以进行点评与分享");
-				window.location.href ='login.html';
+				$("#logbox").show();
 				console.log("Detect as NOT logined.");
         console.log(evt.target.error.code);
     }

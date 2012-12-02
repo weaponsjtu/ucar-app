@@ -39,7 +39,8 @@ function park(map) {
 
 function collect(){
 	$("#suspendBox").popup("close");
-	readfile("您必须先登录，才能使用收藏功能");
+	readfile1(1);
+	//readfile("您必须先登录，才能使用收藏功能");
 }
 
 function settings(){
@@ -142,8 +143,11 @@ function init_index() {
    	 });
     
 
-readfile1();
-function readfile1() {
+readfile1(0);
+
+}
+
+function readfile1(flag) {
 	document.addEventListener("deviceready", onDeviceReady, false);
     // PhoneGap is ready
     function onDeviceReady() {
@@ -171,7 +175,7 @@ function readfile1() {
             //console.log(evt.target.result);
 			  var arg=evt.target.result.split(";");
 			
-
+			
             if (arg==""){
                 // Empty file. Not Logined.
                 $("#logbox").show();
@@ -182,17 +186,18 @@ function readfile1() {
 				var arg3=arg[2].split("=");
 				var arg4=arg[3].split("=");
             
-				var uid=arg1[1];
-                
-				
-        var nickname=arg3[1];
+				var uid=arg1[1];			
+        		var nickname=arg3[1];
 				var image=arg4[1];
-            
-         $("#nickname").html(nickname); 
-         $("#userStatus").css("display", "none");
-         $("#currentUser").attr("src",image);          
-			  }
-       };
+         		if(!flag){
+					$("#nickname").html(nickname);
+         		$("#userStatus").css("display", "none");
+         		$("#currentUser").attr("src",image);
+				}else{
+				self.location = "collect.html?uid="+uid;
+				}
+			}
+		};
        reader.readAsText(file);	
     }
 
@@ -202,7 +207,6 @@ function readfile1() {
         console.log(evt.target.error.code);
     }
 }	
-}
      
 //自动联想
 var ac = new BMap.Autocomplete(    //建立一个自动完成的对象
