@@ -167,6 +167,8 @@ function share() {
 				//开始分享，必须等待上一步已经完成才切换到下一步	
 				if (IFshare==1){
 				$.ajax({type:'POST',async:false, url:'https://api.weibo.com/2/statuses/update.json',data:{access_token:access_token1,uid:uid1,client_id:"3943049038",status:"我在"+shopname+"，"+con[0].value+" ，评分："+star[score],lat:shoplat,long:shoplng}}, postserver() );
+				}else {
+					postserver();
 				}
 				
 				function postserver(){
