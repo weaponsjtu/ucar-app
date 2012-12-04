@@ -13,6 +13,7 @@
 <script type="text/javascript" src="js/baiduAPI.js"></script>  
 <script type="text/javascript" src="js/InfoBox_min.js"></script>  
 <script type="text/javascript" src="js/convertor.js"></script>  
+<script type="text/javascript" src="js/BaiduLoc.js"></script> 
 
 <script src="js/showShopByType.js" type="text/javascript"></script>
 
@@ -71,10 +72,10 @@ function init_index() {
      
      if (lng != "" && lat != "") {
 		    var newpoint = new BMap.Point(parseFloat(lng),parseFloat(lat));
-		    map.centerAndZoom(newpoint, 15);
+		    map.centerAndZoom(newpoint, 16);
 		 } else {
-		 	  map.centerAndZoom("上海", 15);
-		 	  getGPS();
+		 	  map.centerAndZoom("上海", 16);
+		 	  //getGPS();
 		 }
      
      map.enablePinchToZoom();
@@ -102,8 +103,8 @@ function init_index() {
          $("#title  .ui-btn-text").html("停车场");
          ucar(map, 3, lng, lat);
      } else {
-     		//$("#suspendBox").popup("open");
-     		//getGPS();
+     	  getGPS();
+     		$("#suspendBox").popup("open");
      }
 	  
 	  
@@ -189,12 +190,12 @@ function readfile1(flag) {
 				var uid=arg1[1];			
         		var nickname=arg3[1];
 				var image=arg4[1];
-         		if(!flag){
-					$("#nickname").html(nickname);
+        if(!flag){
+					  $("#nickname").html(nickname);
          		$("#userStatus").css("display", "none");
          		$("#currentUser").attr("src",image);
 				}else{
-				self.location = "collect.html?uid="+uid;
+				    self.location = "collect.html?uid="+uid;
 				}
 			}
 		};
