@@ -51,26 +51,20 @@ function isInShanghai(point)
         
 }
 
-function translateCallback (point) {	
-	isInShanghai(point);
-	
-	if(map) {
-		
-	   map.panTo(point);
-	 	 //$("#container").css("height", document.body.clientHeight - $("#container").offset().top - $("#footer").height());
-	   showYourPosition(map,point);
-  }
-}
-
 //移动版
 function showgps_product(position)
 {
 	if (position)
 	{
-		var latitude = position.coords.latitude;
-		var longitude = position.coords.longitude;
+		var latitude = position.Latitude;
+		var longitude = position.Longitude;
 		var gpspoint = new BMap.Point(longitude,latitude);
-		BMap.Convertor.translate(gpspoint,0,translateCallback);
+		isInShanghai(gpspoint);
+	
+	  if(map) {
+	    map.panTo(gpspoint);
+	    showYourPosition(map,gpspoint);
+    }
 	}
 	else
 		alert("无法获取位置");
@@ -84,28 +78,16 @@ function showgps_debug(position)
 		var gpspoint = new BMap.Point(121.42559,31.01726);
 		BMap.Convertor.translate(gpspoint,0,translateCallback);
 }
-    
-function getGPS()
-{
-	if (DEBUG) {   //true开启固定坐标，false使用GPS
-		showgps_debug();
-	} else {
-		var gps = navigator.geolocation;
-		if (gps)
-		{
-			gps.getCurrentPosition(showgps_product,
-			function (error)
-			{
-	        alert ("UCAR需要GPS定位来获取您的位置信息。请在系统设置中打开GPS");
-			},
-			{timeout:20000,enableHighAccuracy: true});
-		}
-		else
-		{
-			showgps_product();
-		}
+
+function getGPS(){
+	if(DEBUG){
+		showgps_debug();	
+	}	else {
+		window.Location(showgps_product,alert);
 	}
 }
+
+
 
 function ucar(map, type, lng, lat) {
 	//显示搜索框

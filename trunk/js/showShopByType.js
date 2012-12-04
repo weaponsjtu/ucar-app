@@ -49,17 +49,11 @@
 				  
 				          if (DEBUG) {
 						         $("td#wrap").click(function(){
-						             window.location = "shopinfo.html?type="+type+"&shopid="+entry['序号'] +
-						             "&shopName="+entry['企业名称']+"&phone="+entry['联系电话']+"&shopAddress="+
-						             entry['企业地址']+"&rate="+entry['评分']+"&rateNum="+entry['评分人数']+
-						             "&lng="+entry['经度']+"&lat="+entry['纬度'];
+						             window.location = "shopinfo.html?type="+type+"&shopid="+entry['序号'];
 					           });
 					        } else {
 					            $("td#wrap").live('tap',function(){
-						             window.location = "shopinfo.html?type="+type+"&shopid="+entry['序号'] +
-						             "&shopName="+entry['企业名称']+"&phone="+entry['联系电话']+"&shopAddress="+
-						             entry['企业地址']+"&rate="+entry['评分']+"&rateNum="+entry['评分人数']+
-						             "&lng="+entry['经度']+"&lat="+entry['纬度'];
+						             window.location = "shopinfo.html?type="+type+"&shopid="+entry['序号'];
 					            });
 				          }
         } else {
@@ -100,17 +94,11 @@
 				  
 				          if (DEBUG) {
 						         $("td#wrap").click(function(){
-						             window.location = "shopinfo.html?type="+type+"&shopid="+entry['序号'] +
-						             "&shopName="+entry['企业名称']+"&phone="+entry['联系电话']+"&shopAddress="+
-						             entry['企业地址']+"&rate="+entry['评分']+"&rateNum="+entry['评分人数']+
-						             "&lng="+entry['经度']+"&lat="+entry['纬度'];
+						             window.location = "shopinfo.html?type="+type+"&shopid="+entry['序号'];
 					           });
 					        } else {
 					            $("td#wrap").live('tap',function(){
-						             window.location = "shopinfo.html?type="+type+"&shopid="+entry['序号'] +
-						             "&shopName="+entry['企业名称']+"&phone="+entry['联系电话']+"&shopAddress="+
-						             entry['企业地址']+"&rate="+entry['评分']+"&rateNum="+entry['评分人数']+
-						             "&lng="+entry['经度']+"&lat="+entry['纬度'];
+						             window.location = "shopinfo.html?type="+type+"&shopid="+entry['序号'];
 					            });
 				          }
 				    }
