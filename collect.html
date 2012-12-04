@@ -95,13 +95,12 @@ function edit(e){
 }
 
 //ajax 删除收藏的商户
-function shopDelete(e){
-	var arg=$("#shopIdType").html();
+function shopDelete(e, shopid){
+	var arg=$("#shopIdType"+shopid).html();
 	a=arg.split("#");
 	uid=a[0];
 	shopid=a[1];
 	type=a[2];
-	alert(a);
 	$.ajax({type:'POST',async:false, url:'http://ihavecar.sinaapp.com/deletecollect.php?shopid='+shopid+'&type='+type+'&userid='+uid});	/*$.getJSON('http://ihavecar.sinaapp.com/collection.php?jasoncallback=?&randomID='+Math.random(), function(json){
 		//random函数用来取消缓存影响,jsonp形式进行跨域传数据
 			$.each(json,function(entryIndex,entry){
