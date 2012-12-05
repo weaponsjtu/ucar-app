@@ -36,118 +36,172 @@
             
             function collect(){
                 $("#suspendBox").popup("close");
-                readfile("您必须先登录，才能使用收藏功能");
+                readfile1(1);
+                //readfile("您必须先登录，才能使用收藏功能");
             }
-                
+            
             function settings(){
                 $("#infobox").popup("close");
                 self.location = "login.html";
             }
+            
+            if(DEBUG) {
+                $(document).ready(function(){
+                                  //checkConnection();
+                                  init_index();
+                                  });
+            } else {
+                    document.addEventListener("deviceready", onDeviceReady, false);
+            }
+            function onDeviceReady()
+            {
+                checkConnection();
+                init_index();
+            }
+            
+
     
             function init_index() {
-                map = new BMap.Map("container",{enableHighResolution:true});
-                $("#container").css("height", document.body.clientHeight - $("#container").offset().top - $("#footer").height());
-                
                 var lng = request("lng");
                 var lat = request("lat");
-                var type = request("type");
                 
-                if(type.indexOf("1") != -1){
-                    //改变标题
-                    $("#title  .ui-btn-text").html("保养与维修");
-                    ucar(map, 1, lng, lat);
-                }
-                else if(type.indexOf("2") != -1){
-                    //改变标题
-                    $("#title  .ui-btn-text").html("加油站");
-                    ucar(map, 2, lng, lat);
-                }
-                else if(type.indexOf("3") != -1){
-                    //改变标题
-                    $("#title  .ui-btn-text").html("停车场");
-                    ucar(map, 3, lng, lat);
+                map = new BMap.Map("container",{enableHighResolution:true});
+                if (lng != "" && lat != "") {
+                    var newpoint = new BMap.Point(parseFloat(lng),parseFloat(lat));
+                    map.centerAndZoom(newpoint, 16);
                 } else {
-                    $("#suspendBox").popup("open");
-                    getGPS();
+                    map.centerAndZoom("上海", 16);
+                    //getGPS();
                 }
                 
-                readfile1();
-                function readfile1() {
-                    document.addEventListener("deviceready", onDeviceReady, false);
-                    // PhoneGap is ready
-                    function onDeviceReady() {
-                        //checkConnection();
-                        window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, gotFS, fail);
-                    }
-                    
-                    function gotFS(fileSystem) {
-                        fileSystem.root.getFile("ucar/DataFile.txt", {create: true}, gotFileEntry, fail);
-                    }
-                    
-                    function gotFileEntry(fileEntry) {
-                        fileEntry.file(gotFile, fail);
-                    }
-                    
-                    function gotFile(file){
-                        readAsText(file);
-                    }
-                    
-                    function readAsText(file) {
-                        //alert("hello");
-                        var reader = new FileReader();
-                        reader.onloadend = function(evt) {
-                            //console.log("Read as text");
-                            //console.log(evt.target.result);
-                            var arg=evt.target.result.split(";");
-                            
-                            
-                            if (arg==""){
-                                // Empty file. Not Logined.
-                                $("#logbox").show();
-                            }else{
-                                //Read Loginfile
-                                var arg1=arg[0].split("=");
-                                var arg2=arg[1].split("=");
-                                var arg3=arg[2].split("=");
-                                var arg4=arg[3].split("=");
-                                
-                                var uid=arg1[1];
-                                
-                                
-                                var nickname=arg3[1];
-                                var image=arg4[1];
-                                
-                                $("#nickname").html(nickname);
-                                $("#userStatus").css("display", "none");
-                                $("#currentUser").attr("src",image);
-                            }
-                        };
-                        reader.readAsText(file);
-                    }
-                    
-                    function fail(evt) {
-                        $("#logbox").show();
-                        console.log("Detect as NOT logined.");
-                        console.log(evt.target.error.code);
-                    }
-                }
+                map.enablePinchToZoom();
+                /*map.addEventListener("click", function(evt){
+                 alert(evt.overlay);
+                 });*/
                 
+                tilesTime = 1;
+                map.addEventListener("tilesloaded", function(){
+                                     if (tilesTime == 1) {
+                                     var type = request("type");
+                                     
+                                     if(type.indexOf("1") != -1){
+                                     //改变标题
+                                     $("#title  .ui-btn-text").html("保养与维修");
+                                     ucar(map, 1, lng, lat);
+                                     }
+                                     else if(type.indexOf("2") != -1){
+                                     //改变标题
+                                     $("#title  .ui-btn-text").html("加油站");
+                                     ucar(map, 2, lng, lat);
+                                     }
+                                     else if(type.indexOf("3") != -1){
+                                     //改变标题
+                                     $("#title  .ui-btn-text").html("停车场");
+                                     ucar(map, 3, lng, lat);
+                                     } else {
+                                     getGPS();
+                                     $("#suspendBox").popup("open");
+                                     }
+                                     
+                                     
+                                     
+                                     /*var flag = false;
+                                      overlays = map.getOverlays();
+                                      for (var i = 0; i < overlays.length; i++) {
+                                      if (overlays[i] instanceof BMap.Marker) {
+                                      flag = true; 
+                                      break;
+                                      }
+                                      }	
+                                      if (flag) {
+                                      $("#refreshBox").popup("close");		
+                                      }*/
+                                     }
+                                     tilesTime += 1;
+                                     });
+                
+                
+                $("#container").css("height", document.body.clientHeight - $("#container").offset().top - $("#footer").height());
                 
                 $("#refreshCancel").click(function(){
-                                          $("#refreshBox").popup("close");
+                                          $("#refreshBox").popup("close");	
                                           });
                 
                 $("#search").keydown(function(){
-                                     if ($("#title  .ui-btn-text").html() == "保养与维修") {
-                                        enterSearch(map, 1);
-                                     }
-                                     else if($("#title  .ui-btn-text").html() == "加油站") {
-                                        enterSearch(map, 2);
-                                     }
-                                     else {
-                                        enterSearch(map, 3);
+                                     if ($("#title  .ui-btn-text").html() == "保养与维修") {              
+                                     enterSearch(map, 1);	
+                                     } else if($("#title  .ui-btn-text").html() == "加油站") {
+                                     enterSearch(map, 2);	
+                                     } else if($("#title  .ui-btn-text").html() == "停车场") {
+                                     enterSearch(map, 3);	
+                                     } else {
+                                     alert("wrong opertation");	
                                      }
                                      });
+                
+                
+                readfile1(0);
+                
+            }
+            function readfile1(flag) {
+                document.addEventListener("deviceready", onDeviceReady, false);
+                // PhoneGap is ready
+                function onDeviceReady() {
+                    //checkConnection();
+                    window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, gotFS, fail);
+                }
+                
+                function gotFS(fileSystem) {
+                    fileSystem.root.getFile("ucar/DataFile.txt", {create: true}, gotFileEntry, fail);
+                }
+                
+                function gotFileEntry(fileEntry) {
+                    fileEntry.file(gotFile, fail);
+                }
+                
+                function gotFile(file){
+                    readAsText(file);
+                }
+                
+                function readAsText(file) {
+                    //alert("hello");
+                    var reader = new FileReader();
+                    reader.onloadend = function(evt) {
+                        //console.log("Read as text");
+                        //console.log(evt.target.result);
+                        var arg=evt.target.result.split(";");
+                        
+                        
+                        if (arg==""){
+                            // Empty file. Not Logined.
+                            $("#logbox").show();
+                        }else{
+                            //Read Loginfile
+                            var arg1=arg[0].split("=");
+                            var arg2=arg[1].split("=");
+                            var arg3=arg[2].split("=");
+                            var arg4=arg[3].split("=");
+                            
+                            var uid=arg1[1];			
+                            var nickname=arg3[1];
+                            var image=arg4[1];
+                            if(!flag){
+                                $("#nickname").html(nickname);
+                                $("#userStatus").css("display", "none");
+                                $("#currentUser").attr("src",image);
+                            }else{
+                                self.location = "collect.html?uid="+uid;
+                            }
+                        }
+                    };
+                    reader.readAsText(file);	
+                }
+                
+                function fail(evt) {
+                    $("#logbox").show();
+                    console.log("Detect as NOT logined.");
+                    console.log(evt.target.error.code);
+                }
             }
             
             //自动联想
@@ -172,28 +226,15 @@
                                 $("#search").blur();
                                 });
             
-            if(DEBUG) {
-                $(document).ready(function(){
-                                  //checkConnection();
-                                  init_index();
-                                  });
-            } else {
-                document.addEventListener("deviceready", onDeviceReady, false);
-                function onDeviceReady()
-                {
-                    checkConnection();
-                    init_index();
-                }
-            }
-            
+
             
             function checkConnection()
             {
                 var networkState = navigator.network.connection.type;
                 if (networkState == Connection.NONE || networkState == Connection.UNKNOWN)
-                alert ("UCAR需要使用网络来加载数据.请确认您已经打开网络.");
+                    alert ("UCAR需要使用网络来加载数据.请确认您已经打开网络.");
                 else
-                console.log("Normal Network Connection.");
+                    console.log("Normal Network Connection.");
                 //alert ("联网了"); 
             }
     
@@ -211,9 +252,10 @@
 
 .left {
 	float: left;
-	padding: 10px 10px 10px 10px;
+	padding: 10px;
     margin-left: 20px;
     margin-top:15px;
+    cursor: pointer;
 }
 
 .clear {
@@ -241,6 +283,11 @@ div#suspendBox .icon {
 }
     #title .ui-btn-text{
         font-size:25px;
+    }
+    
+    div#shopbox .label {
+        font-weight: bold;
+        font-size: 25px;
     }
 
 div#shopbox .label {
@@ -298,7 +345,7 @@ div#header {
 
 </head>
 	
-<body >
+<body>
 
 <div data-role="page" id="main_menu">
     <div data-role="header" id="header" data-theme="b">
@@ -338,7 +385,7 @@ div#header {
     
     <!-- 地图区域 -->
         <div id="searchBox" style="display:none">
-    	  <input type="search" placeholder="输入地址" id="search" style="height:50px; FONT-SIZE:30px"  onKeyDown="enterSearch(map)"></input>
+    	  <input type="search" placeholder="输入地址" id="search" style="height:50px; FONT-SIZE:30px"></input>
         </div>
         <div id="container">
          
@@ -346,7 +393,7 @@ div#header {
         
      <div data-role="footer" id="footer">
      	<h5>
-        <font style="color: white;" size="6px">当前位置:&nbsp;&nbsp;<b id="current"></b></font>
+        <font style="color: white;" size="6px"><b id="current"></b></font>
         </h5>
      </div>
     

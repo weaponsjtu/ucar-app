@@ -1,4 +1,4 @@
-﻿var shFinish = -1;//-1初始化值，1在上海，0不在上海，－2无法获悉行政区域
+var shFinish = -1;//-1初始化值，1在上海，0不在上海，－2无法获悉行政区域
 
 var DEBUG = false; //控制是否为测试模式
 
@@ -32,7 +32,7 @@ function isInShanghai(point)
             {
                 if (geoResult.addressComponents.province == "上海市" || geoResult.addressComponents.city == "上海市")
                 {
-                	$("#current").html(geoResult.address);
+                	$("#current").html("当前位置:&nbsp;&nbsp;" + geoResult.address);
                 	shFinish = 1;
                     /* alert ("在上海"); */
                 }
@@ -137,7 +137,8 @@ function ucar(map, type, lng, lat) {
 	
 	map.clearOverlays();
 	
-	
+	map.addControl(new BMap.ScaleControl());
+    /*
 	//显示当前位置
 	getGPS();
 	
@@ -145,6 +146,7 @@ function ucar(map, type, lng, lat) {
 		var newpoint = new BMap.Point(lng.valueOf(),lat.valueOf());
 		map.panTo(newpoint);
 	}
+     */
 
 	map.addControl(new BMap.ScaleControl());
 	
@@ -195,8 +197,8 @@ function ucar(map, type, lng, lat) {
 	ZoomControl_TL.prototype = new BMap.Control();
 	ZoomControl_TL.prototype.initialize = function(map) {		
 		div = document.createElement("div");
-		div.innerHTML = "<img src='img/zoomOut.png' style='cursor: pointer; width: 64px; height: 60px;' onclick='map.zoomIn()'><br>" +
-		"<img src='img/zoomIn.png' style='cursor: pointer; width: 64px; height: 60px;' onclick='map.zoomOut()'>";
+		div.innerHTML = "<img src='img/zoomOut.png' style='cursor: pointer; width: 64px; height: 61px; margin-top: 4px' onclick='map.zoomIn()'><br>" +
+		"<img src='img/zoomIn.png' style='cursor: pointer; width: 64px; height: 60px; margin-top: 8px' onclick='map.zoomOut()'>";
 		map.getContainer().appendChild(div);
 		return div;
 	}
@@ -266,8 +268,9 @@ function readfile(msg) {
 								var arg4=arg[3].split("=");
             
 								var uid=arg1[1];
+                                alert("uid" + uid);
 				
-           			self.location = "collect.html?uid="+uid;            
+           			window.location = "collect.html?uid="+uid;
 					}
         };
         reader.readAsText(file);
