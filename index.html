@@ -58,6 +58,7 @@ if(DEBUG) {
   document.addEventListener("deviceready", onDeviceReady, false);
   function onDeviceReady()
   {
+  	navigator.splashscreen.hide()
     checkConnection();
 		init_index();
   }
@@ -280,16 +281,20 @@ div#suspendBox .icon {
 	width: 57px;
 }
 
-/*#title .ui-btn-text{
-   font-size:20px;
-}*/
+/* 
+   high dpi
 
+#title .ui-btn-text{
+   font-size:20px;
+}
+*/
 div#shopbox .label {
 	font-weight: bold;
 	font-size: 14px;
 }
 
-/*信息框*/
+/*信息框
+*/
 div#shopbox {
 	background: url("img/infobox.png") no-repeat;
 	width: 220px;
