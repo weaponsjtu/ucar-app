@@ -138,7 +138,7 @@ function ucar(map, type, lng, lat) {
 	map.clearOverlays();
 	
 	map.addControl(new BMap.ScaleControl());
-    
+    /*
 	//显示当前位置
 	getGPS();
 	
@@ -146,6 +146,7 @@ function ucar(map, type, lng, lat) {
 		var newpoint = new BMap.Point(lng.valueOf(),lat.valueOf());
 		map.panTo(newpoint);
 	}
+     */
      
 
 	map.addControl(new BMap.ScaleControl());
