@@ -4,9 +4,9 @@
 <meta name="viewport" content="initial-scale=1.0, user-scalable=no"/>
 <meta charset="utf-8">
 <title>账号设置</title>
-<link href="jquery-mobile/jquery.mobile-1.2.0-alpha.1.css" rel="stylesheet" type="text/css"/>
-<script src="jquery-mobile/jquery-1.7.2.js" type="text/javascript"></script>
-<script src="jquery-mobile/jquery.mobile-1.2.0-alpha.1.js" type="text/javascript"></script>
+<link href="jquery-mobile/jquery.mobile.min.css" rel="stylesheet" type="text/css"/>
+<script src="jquery-mobile/jquery.min.js" type="text/javascript"></script>
+<script src="jquery-mobile/jquery.mobile.min.js" type="text/javascript"></script>
 <script src="js/cordova.js" type="text/javascript"></script>
 
 <script type="text/javascript">
@@ -47,7 +47,7 @@ $('.ui-btn-back').live('tap',function() {
 <div data-role="page">
 	 <div data-role="header"  data-theme="b">
     <a href="#" class="ui-btn-back">返回</a>
-    <h1><a href="#" data-role="button">新浪授权</a></h1>
+    <h1>新浪授权</h1>
    </div>
    <div date-role="content">
      <iframe id="sinaframe" scrolling="yes" src="https://api.weibo.com/oauth2/authorize?client_id=3943049038&redirect_uri=http://ihavecar.sinaapp.com/callback.php&response_type=code&display=mobile">
