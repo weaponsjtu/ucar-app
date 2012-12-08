@@ -139,7 +139,7 @@ function SearchShopPlace(map, searchContent, type)
         {
             var searchPoint = searchResult.point;
             map.clearOverlays();
-            map.centerAndZoom(searchPoint,15);
+            map.panTo(searchPoint);
             var searchMarker = new BMap.Marker(searchPoint, {title: 'search'});
             map.addOverlay(searchMarker);
             showShopPlace(map, type);
@@ -148,7 +148,7 @@ function SearchShopPlace(map, searchContent, type)
             alert("找不到该位置");
         
     }
-    var local = new BMap.LocalSearch("上海",{onSearchComplete: searchComplete});
+    var local = new BMap.LocalSearch("上海市",{onSearchComplete: searchComplete});
     local.search(searchContent);
 }
 

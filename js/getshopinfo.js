@@ -16,11 +16,9 @@ $(document).ready(function(){
 				+ 'starHalf:  "star-half-big.png",'
 				+ 'starOff:   "star-off-big.png",'
 				+ 'starOn:    "star-on-big.png", start: '+entry['评分']+'	});});</script>'; 
-			
-			$('#lng').html(entry['经度']);
-			$('#lat').html(entry['纬度']);
 			lng=entry['经度'];
 			lat=entry['纬度'];
+			$('#back').attr("href", "index.html?type=" + type + "&lng=" + lng + "&lat=" + lat);
 	  });  
 	  $('#shopinfo').html(html); 
 		$('#shopstar').html(star);
