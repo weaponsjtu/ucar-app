@@ -3,9 +3,9 @@
     <head>
         <meta name="viewport" content="initial-scale=1.0, user-scalable=no, target-densitydpi=device-dpi"/>
         <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
-        <link href="jquery-mobile/jquery.mobile.min.css" rel="stylesheet" type="text/css"/>
-        <script src="jquery-mobile/jquery.min.js" type="text/javascript"></script>
-        <script src="jquery-mobile/jquery.mobile.min.js" type="text/javascript"></script>
+        <link href="jquery-mobile/jquery.mobile-1.2.0-alpha.1.css" rel="stylesheet" type="text/css"/>
+        <script src="jquery-mobile/jquery-1.7.2.js" type="text/javascript"></script>
+        <script src="jquery-mobile/jquery.mobile-1.2.0-alpha.1.js" type="text/javascript"></script>
         <script type="text/javascript" src="js/jquery.raty.js"></script>
         <link href="css/bmap.css" rel="stylesheet" type="text/css"/>
         <script type="text/javascript" charset="utf-8" src="js/cordova.js"></script>
@@ -23,6 +23,7 @@
             function repair(map) {
                 $("#suspendBox").popup("close");
                 ucar(map, 1, "","");
+                
             }
 
             function gasoline(map) {
@@ -53,17 +54,19 @@
                                   });
             } else {
                     document.addEventListener("deviceready", onDeviceReady, false);
+                function onDeviceReady()
+                {
+                    navigator.splashscreen.hide();
+                    checkConnection();
+                    init_index();
+                }
             }
-            function onDeviceReady()
-            {
-                navigator.splashscreen.hide()
-                checkConnection();
-                init_index();
-            }
+
             
 
     
             function init_index() {
+                //alert("0");
                 var lng = request("lng");
                 var lat = request("lat");
                 
@@ -84,8 +87,10 @@
                 
                 tilesTime = 1;
                 map.addEventListener("tilesloaded", function(){
+                                     //alert(tilesTime);
                                      if (tilesTime == 1) {
                                      var type = request("type");
+                                     //alert(type);
                                      
                                      if(type.indexOf("1") != -1){
                                      //改变标题
@@ -129,6 +134,7 @@
                 
                 
                 readfile1(0);
+            
                 
             }
             function readfile1(flag) {
@@ -354,7 +360,7 @@ div#header {
              <div style="float: right"><img id="currentUser" src='img/unlogin.png' class='icon'></div>
              <div style="float: right; margin-top: 20px; margin-right: 10px;">
                <div class='label' style="font-size: 32px;"><b id="nickname">未登录</b></div>
-               <div class='label' style="font-size: 20px;" id="userStatus"  onclick="window.location.href='login.html'">点击登录</div>
+               <div class='label' style="font-size: 20px; float:right; cursor: pointer;"id="userStatus"  onclick="window.location.href='login.html'">点击登录</div>
              </div>
          </div>
          <div class='clear'></div>
