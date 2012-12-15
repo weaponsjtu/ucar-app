@@ -134,6 +134,14 @@ function share() {
 	readfile(1);
 }
 
+function safecheck( str ){
+	str=str.replace(/"/g,"^");  //双引号必须替换，否则出现解析错误
+	str=str.replace(/%/g,"_%"); //去除%
+	str=str.replace(/</g,"<_"); //去除潜在html标签
+	str=str.replace(/>/g,"_>"); //去除潜在html标签
+	return str;
+}
+
 function readfile(flag) {
 	document.addEventListener("deviceready", onDeviceReady, false);
     // PhoneGap is ready
@@ -189,16 +197,17 @@ function readfile(flag) {
 					score=0;
 				}
 				var con = document.getElementsByName('textarea');
+				con = safecheck(con[0].value);
 				
 				//开始分享，必须等待上一步已经完成才切换到下一步	
 				if (IFshare==1){
-				$.ajax({type:'POST',async:false, url:'https://api.weibo.com/2/statuses/update.json',data:{access_token:access_token1,uid:uid1,client_id:"3943049038",status:"我在"+shopname+"，"+con[0].value+" ，评分："+star[score],lat:shoplat,long:shoplng}}, postserver() );
+				$.ajax({type:'POST',async:false, url:'https://api.weibo.com/2/statuses/update.json',data:{access_token:access_token1,uid:uid1,client_id:"3943049038",status:"我在"+shopname+"，"+con+" ，评分："+star[score],lat:shoplat,long:shoplng}}, postserver() );
 				}else {
 					postserver();
 				}
 				
 				function postserver(){
-				$.ajax({type:'POST',async:false, url:'http://ihavecar.sinaapp.com/postcomment.php?shopid='+shopid+'&type='+type+'&userid='+uid1+'&score='+score+'&content="'+con[0].value+'"'}, returnshop());
+				$.ajax({type:'POST',async:false, url:'http://ihavecar.sinaapp.com/postcomment.php?shopid='+shopid+'&type='+type+'&userid='+uid1+'&score='+score+'&content="'+con+'"'}, returnshop());
 				}
 				
 				function returnshop(){
@@ -210,7 +219,9 @@ function readfile(flag) {
     }
 
     function fail(evt) {
-				$("#logbox").show();
+				 $("#sina").css("background-position", "0 -16px");
+                alert("哎呀，请你先登录，才可以进行点评与分享");
+								window.location.href ='login.html';
 				console.log("Detect as NOT logined.");
         console.log(evt.target.error.code);
     }
