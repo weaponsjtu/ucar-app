@@ -8,7 +8,7 @@ var ClickTime = 0;
 function showYourPosition(map,point)
 {
 	//解决在用户移动状态下，定位出现多点问题，既我们的app会显示之前的定位点
-	overlays = map.getOverlays();
+	var overlays = map.getOverlays();
 	for (var i = 0; i < overlays.length; i++) {
     if (overlays[i] instanceof BMap.Marker) {
 		  if (overlays[i].getTitle() == 'current') {
@@ -56,7 +56,7 @@ function translateCallback (point) {
 	
 	if(map) {
 		
-	   map.centerAndZoom(point, 15);
+	   map.centerAndZoom(point, 18);
 	
 	 	 map.enablePinchToZoom();
 	 	 $("#container").css("height", document.body.clientHeight - $("#container").offset().top - $("#footer").height());
@@ -137,7 +137,6 @@ function ucar(map, type, lng, lat) {
 	
 	map.clearOverlays();
 	
-	map.addControl(new BMap.ScaleControl());
     /*
 	//显示当前位置
 	getGPS();
@@ -198,8 +197,8 @@ function ucar(map, type, lng, lat) {
 	ZoomControl_TL.prototype = new BMap.Control();
 	ZoomControl_TL.prototype.initialize = function(map) {		
 		div = document.createElement("div");
-		div.innerHTML = "<img src='img/zoomOut.png' style='cursor: pointer; width: 64px; height: 61px; margin-top: 4px' onclick='map.zoomIn()'><br>" +
-		"<img src='img/zoomIn.png' style='cursor: pointer; width: 64px; height: 60px; margin-top: 8px' onclick='map.zoomOut()'>";
+		div.innerHTML = "<img src='img/zoomOut.png' style='cursor: pointer; width: 64px; height: 61px; margin-top: 4px;' onclick='map.zoomIn()'><br>" +
+		"<img src='img/zoomIn.png' style='cursor: pointer; width: 64px; height: 60px; margin-top: 8px;' onclick='map.zoomOut()'>";
 		map.getContainer().appendChild(div);
 		return div;
 	}
@@ -207,6 +206,7 @@ function ucar(map, type, lng, lat) {
 	map.addControl(myZoomCtrl_TL);
 
 	showShopPlace(map, type);
+    //alert("dd");
 	if (type == 1) {
 		$("#title  .ui-btn-text").html("保养与维修");
 	}  else if (type == 2) {
@@ -216,6 +216,7 @@ function ucar(map, type, lng, lat) {
 	} else {
 		alert('wrong type');
 	}
+    //alert("x");
 
 }
 
@@ -271,7 +272,7 @@ function readfile(msg) {
 								var uid=arg1[1];
                                 alert("uid" + uid);
 				
-           			window.location = "collect.html?uid="+uid;
+           			window.location.href = "collect.html?uid="+uid;
 					}
         };
         reader.readAsText(file);
