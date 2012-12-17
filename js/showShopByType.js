@@ -1,15 +1,15 @@
-﻿function showShop(map,minlng,maxlng,minlat,maxlat,type)
+function showShop(map,minlng,maxlng,minlat,maxlat,type)
 {
 	$.getJSON("http://ihavecar.sinaapp.com/getShopPlace.php?jasoncallback=?&randomID="+Math.random()+"&minlng="+minlng+"&maxlng="+maxlng+"&minlat="+minlat+"&maxlat="+maxlat+"&type=" +type,function (json) {
 		var myIcon_Y = new BMap.Icon("img/pinY.png", new BMap.Size(45, 69), {anchor: new BMap.Size(22,69)});
 		
-		var myIcon_R = new BMap.Icon("img/pinR.png", new BMap.Size(45, 69), {anchor: new BMap.Size(22,69)});
+              var myIcon_R = new BMap.Icon("img/pinR.png", new BMap.Size(45, 69), {anchor: new BMap.Size(22,69)});
 		if (json.length > 0) {
 			$("#refreshBox").popup("close");
 		}
-		$.each(json,function(entryIndex,entry) {
+            $.each(json,function(entryIndex,entry) {
 			var ShopPoint = new BMap.Point(entry['经度'],entry['纬度']);
-			var ShopMarker =new BMap.Marker(ShopPoint, {icon: myIcon_Y});
+			var ShopMarker =new BMap.Marker(ShopPoint, {icon: myIcon_Y,title:'shop'});
 			map.addOverlay(ShopMarker);
 
 			var infohtml = "<div id='shopbox' style='opacity: 0.95;'><table><tr><td id='wrap'>" +
@@ -49,13 +49,14 @@
 				  
 				          if (DEBUG) {
 						         $("td#wrap").click(function(){
-						             window.location = "shopinfo.html?type="+type+"&shopid="+entry['序号'];
+						             window.location.href = "shopinfo.html?type="+type+"&shopid="+entry['序号'];
 					           });
 					        } else {
 					            $("td#wrap").live('tap',function(){
-						             window.location = "shopinfo.html?type="+type+"&shopid="+entry['序号'];
+						             window.location.href = "shopinfo.html?type="+type+"&shopid="+entry['序号'];
 					            });
 				          }
+                                        
         } else {
         	 if (ShopMarker.getTitle() == 'open') {
         	 	  ShopMarker.setTitle('');
@@ -94,11 +95,11 @@
 				  
 				          if (DEBUG) {
 						         $("td#wrap").click(function(){
-						             window.location = "shopinfo.html?type="+type+"&shopid="+entry['序号'];
+						             window.location.href = "shopinfo.html?type="+type+"&shopid="+entry['序号'];
 					           });
 					        } else {
 					            $("td#wrap").live('tap',function(){
-						             window.location = "shopinfo.html?type="+type+"&shopid="+entry['序号'];
+						             window.location.href = "shopinfo.html?type="+type+"&shopid="+entry['序号'];
 					            });
 				          }
 				    }
@@ -110,7 +111,7 @@
 
 function showShopPlace(map, type)
 {
-	$("#refreshBox").popup("open");
+    $("#refreshBox").popup("open");
 	var bounds = map.getBounds();
 	var sw = bounds.getSouthWest();
 	var ne = bounds.getNorthEast();
@@ -118,6 +119,16 @@ function showShopPlace(map, type)
 	var maxlng=ne.lng;
 	var minlat=sw.lat;
 	var maxlat=ne.lat;
+    
+    var overlays = map.getOverlays();
+	for (var i = 0; i < overlays.length; i++) {
+        if (overlays[i] instanceof BMap.Marker) {
+            if (overlays[i].getTitle() == 'shop') {
+                map.removeOverlay(overlays[i]);
+            }
+        }
+	}
+    
 	showShop(map,minlng,maxlng,minlat,maxlat, type);
 }
 

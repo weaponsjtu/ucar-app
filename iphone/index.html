@@ -73,9 +73,9 @@
                 map = new BMap.Map("container",{enableHighResolution:true});
                 if (lng != "" && lat != "") {
                     var newpoint = new BMap.Point(parseFloat(lng),parseFloat(lat));
-                    map.centerAndZoom(newpoint, 15);
+                    map.centerAndZoom(newpoint, 18);
                 } else {
-                    map.centerAndZoom("上海", 15);
+                    map.centerAndZoom("上海", 18);
                     //getGPS();
                 }
                 
@@ -119,6 +119,7 @@
                 $("#refreshCancel").click(function(){
                                           $("#refreshBox").popup("close");	
                                           });
+                
                 
                 $("#search").keydown(function(){
                                      if ($("#title  .ui-btn-text").html() == "保养与维修") {              
