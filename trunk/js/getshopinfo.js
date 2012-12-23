@@ -10,9 +10,9 @@ $(document).ready(function(){
 				shopname=entry['企业名称'];
 	      html+='<div style="font-size: 24px; "><b>'+entry['企业名称']+'</b></div><br>'; 
 				//html+='<div id="shopdetails"><div><br><a href="tel:' + entry['联系电话'] + '" style="font-size: 18px; padding: 10px 0 0 10px;">电话：'+entry['联系电话']+'</a></div>';
-				html+='<div id="shopdetails"><div style="font-size: 18px;font-family:黑体; padding: 10px 4px 20px 10px;">电话：'+entry['联系电话']+'<a href="tel:' + entry['联系电话'] + '"><img src="img/phone.png" align="right" style="padding: 0 0 0 3px;margin-right:10px;"></a></div>';
+				html+='<div id="shopdetails"><div style="font-size: 18px;font-family:黑体; padding: 10px 4px 15px 10px;">电话：'+entry['联系电话']+'<a href="tel:' + entry['联系电话'] + '"><img src="img/phone.png" align="right" style="padding: 0 0 0 3px;margin-right:10px;"></a></div>';
 				html+='<hr size="1" color="#AAA"   align="center" />';
-	      html+='<div style="font-size: 18px;font-family:黑体; padding: 0 10px 30px 10px;">地址：'+entry['企业地址']+'<img src="img/location.png" align="right" style="padding: 0 0 3px 3px;margin-right:4px;"></div></div>';   
+	      html+='<div style="font-size: 18px;font-family:黑体; padding: 0 10px 20px 10px;">地址：'+entry['企业地址']+'<img src="img/location.png" align="right" style="padding: 0 3px 3px 3px;margin-right:4px;"></div></div>';   
 				star += '<span id="star"></span><script type="text/javascript">$(function(){$("#star").raty({readOnly:	true,size:      24,'
 				+ 'starHalf:  "star-half-big.png",'
 				+ 'starOff:   "star-off-big.png",'
