@@ -145,13 +145,14 @@ function SearchShopPlace(map, searchContent, type)
 {
     function searchComplete()
     {
+    	var myIcon_Y = new BMap.Icon("img/pinY.png", new BMap.Size(45, 69), {anchor: new BMap.Size(22,69)});
         var searchResult = local.getResults().getPoi(0);
         if (searchResult != null && searchResult != undefined)
         {
             var searchPoint = searchResult.point;
             map.clearOverlays();
             map.panTo(searchPoint);
-            var searchMarker = new BMap.Marker(searchPoint, {title: 'search'});
+            var searchMarker = new BMap.Marker(searchPoint, {icon: myIcon_Y,title:'search'});
             map.addOverlay(searchMarker);
             showShopPlace(map, type);
         }
