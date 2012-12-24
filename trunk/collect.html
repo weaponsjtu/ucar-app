@@ -58,6 +58,13 @@ function back(){
 }
 
 $(document).ready(function(){
+	$('.ui-btn-back').live('tap',function() {
+	back();
+	return false;
+}).live('click',function() {
+	back();
+	return false;
+});
 	$("#content").css("min-height", document.body.clientHeight - $("#content").offset().top);
 	//$("#wrap_delete").css("min-width", $("table").width());
 	//$("#wrap_delete").css("height", $("table").height());
@@ -71,14 +78,6 @@ $(document).ready(function(){
 		window.history.forward();
 		//event.preventDefault();
 	});
-});
-
-$('.ui-btn-back').live('tap',function() {
-	back();
-	return false;
-}).live('click',function() {
-	back();
-	return false;
 });
 
 function edit(e){
