@@ -19,11 +19,33 @@
 <script type="text/javascript" src="js/UcarV1.js"></script>
 
 <script type="text/javascript">
-$(window).load(function() {
+	$(window).load(function() {
 	//$('#back').attr("href", "index.html?type=" + request("type") + "&lng=" + $("#lng").html() + "&lat=" + $("#lat").html());
 });
+function back(){
+	if (typeof(navigator) != 'undefined' && typeof(navigator.app) != 'undefined' && typeof(navigator.app.backHistory) == 'function') {
+		navigator.app.backHistory();
+	} else{
+		history.back();
+	}
+}
 
 $(document).ready(function(){
+		$('.ui-btn-back').live('tap',function() {
+	back();
+	return false;
+}).live('click',function() {
+	back();
+	return false;
+});
+	$("#content").css("min-height", document.body.clientHeight - $("#content").offset().top);
+	
+	jQuery('body').live('swipeleft',function(event){
+		back();
+	});
+	jQuery('body').live('swiperight',function(event){
+		window.history.forward();
+	});
 
 });
 </script>
@@ -77,12 +99,12 @@ table td {
 <div id="main" data-role="page">
 
 <div data-role="header" data-theme="b">
-    <a href="" id="back" rel="external">返回</a>
+    <a href="#" class="ui-btn-back">返回</a>
     <h1>所有评论</h1>
 </div>
- 
+<div  data-role="content" id="content"> 
   <div id="allcomment"></div>
-  
+</div>  
 </div>
 <script type="text/javascript">
 var type=request("type");
