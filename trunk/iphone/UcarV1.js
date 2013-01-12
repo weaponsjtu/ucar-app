@@ -16,7 +16,7 @@ function showYourPosition(map,point)
 		  }
 	  }
 	}
-	var myIcon = new BMap.Icon("img/position.png", new BMap.Size(32, 32));
+	var myIcon = new BMap.Icon("img/position_ip.png", new BMap.Size(18, 18));
 	var marker =new BMap.Marker(point, {icon: myIcon, title: 'current'});
 	map.addOverlay(marker);
 }
@@ -53,13 +53,12 @@ function isInShanghai(point)
 
 function translateCallback (point) {	
 	isInShanghai(point);
-	
 	if(map) {
-		
-	   map.centerAndZoom(point, 18);
+        map.panTo(point);
+	   /*map.centerAndZoom(point, 17);
 	
 	 	 map.enablePinchToZoom();
-	 	 $("#container").css("height", document.body.clientHeight - $("#container").offset().top - $("#footer").height());
+	 	 $("#container").css("height", document.body.clientHeight - $("#container").offset().top - $("#footer").height());*/
 	   showYourPosition(map,point);
 	
 	 //打开首页悬浮框
@@ -135,7 +134,7 @@ function ucar(map, type, lng, lat) {
 	
 	$("#container").css("height", document.body.clientHeight - $("#container").offset().top - $("#footer").height());
 	
-	map.clearOverlays();
+	//map.clearOverlays();
 	
     /*
 	//显示当前位置
@@ -149,6 +148,26 @@ function ucar(map, type, lng, lat) {
      
 
 	map.addControl(new BMap.ScaleControl());
+    
+    //添加定位控件
+	function ZoomControl_BR(){
+		this.defaultAnchor = BMAP_ANCHOR_BOTTOM_RIGHT;
+		this.defaultOffset = new BMap.Size(5,5);
+	}
+	ZoomControl_BR.prototype = new BMap.Control();
+	ZoomControl_BR.prototype.initialize = function(map) {
+		var div = document.createElement("div");
+		div.innerHTML = "<img style='width: 45px; height: 44px;' src='img/pin.png'>";
+		div.style.cursor = "pointer";
+		div.onclick = function (e) {
+            alert("aa");
+			getGPS();
+		}
+		map.getContainer().appendChild(div);
+		return div;
+	}
+	var myZoomCtrl_BR = new ZoomControl_BR();
+	map.addControl(myZoomCtrl_BR);
 	
 	//添加刷新控件
 	function ZoomControl_TR(){
@@ -158,9 +177,10 @@ function ucar(map, type, lng, lat) {
 	ZoomControl_TR.prototype = new BMap.Control();
 	ZoomControl_TR.prototype.initialize = function(map) {
 		var div = document.createElement("div");
-		div.innerHTML = "<a href='#refreshBox'  data-rel='popup' data-role='button' data-position-to='window' data-transition='slidedown'><img style='width: 90px; height: 88px;' src='img/loading.png'></a>";
+		div.innerHTML = "<a href='#refreshBox'  data-rel='popup' data-role='button' data-position-to='window' data-transition='slidedown'><img style='width: 45px; height: 44px;' src='img/loading.png'></a>";
 		div.style.cursor = "pointer";
 		div.onclick = function (e) {
+            //alert("bb")
 			showShopPlace(map,type);
 		}
 		map.getContainer().appendChild(div);
@@ -169,25 +189,7 @@ function ucar(map, type, lng, lat) {
 	var myZoomCtrl_TR = new ZoomControl_TR();
 	map.addControl(myZoomCtrl_TR);
 	
-	//添加定位控件
-	function ZoomControl_BR(){
-		this.defaultAnchor = BMAP_ANCHOR_BOTTOM_RIGHT;
-		this.defaultOffset = new BMap.Size(5,5);
-	}
-	ZoomControl_BR.prototype = new BMap.Control();
-	ZoomControl_BR.prototype.initialize = function(map) {
-		var div = document.createElement("div");
-		
-		div.innerHTML = "<img style='width: 90px; height: 88px;' src='img/pin.png'>";
-		div.style.cursor = "pointer";
-		div.onclick = function (e) {
-			getGPS();
-		}
-		map.getContainer().appendChild(div);
-		return div;
-	}
-	var myZoomCtrl_BR = new ZoomControl_BR();
-	map.addControl(myZoomCtrl_BR);
+
 	
 	//添加缩放控件
 	function ZoomControl_TL(){
@@ -197,8 +199,8 @@ function ucar(map, type, lng, lat) {
 	ZoomControl_TL.prototype = new BMap.Control();
 	ZoomControl_TL.prototype.initialize = function(map) {		
 		div = document.createElement("div");
-		div.innerHTML = "<img src='img/zoomOut.png' style='cursor: pointer; width: 64px; height: 61px; margin-top: 4px;' onclick='map.zoomIn()'><br>" +
-		"<img src='img/zoomIn.png' style='cursor: pointer; width: 64px; height: 60px; margin-top: 8px;' onclick='map.zoomOut()'>";
+		div.innerHTML = "<img src='img/zoomOut.png' style='cursor: pointer; width: 32px; height: 31px; margin-top: 2px;' onclick='map.zoomIn()'><br>" +
+		"<img src='img/zoomIn.png' style='cursor: pointer; width: 32px; height: 31px; margin-top: 4px;' onclick='map.zoomOut()'>";
 		map.getContainer().appendChild(div);
 		return div;
 	}

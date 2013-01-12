@@ -1,18 +1,24 @@
 <!DOCTYPE html>
 <html>
     <head>
+        
         <meta name="viewport" content="initial-scale=1.0, user-scalable=no, target-densitydpi=device-dpi"/>
         <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
         <link href="jquery-mobile/jquery.mobile-1.2.0-alpha.1.css" rel="stylesheet" type="text/css"/>
         <script src="jquery-mobile/jquery-1.7.2.js" type="text/javascript"></script>
         <script src="jquery-mobile/jquery.mobile-1.2.0-alpha.1.js" type="text/javascript"></script>
         <script type="text/javascript" src="js/jquery.raty.js"></script>
-        <link href="css/bmap.css" rel="stylesheet" type="text/css"/>
+        <!--<link href="css/bmap.css" rel="stylesheet" type="text/css"/>-->
         <script type="text/javascript" charset="utf-8" src="js/cordova.js"></script>
-        <link href="css/bmap_autocomplete.css" rel="stylesheet" type="text/css"/>
+        <!--<link href="css/bmap_autocomplete.css" rel="stylesheet" type="text/css"/>-->
+        
+        <script type="text/javascript" src="http://api.map.baidu.com/api?v=1.4"></script>
+        <!--
         <script type="text/javascript" src="js/baiduAPI.js"></script>
+         -->
         <script type="text/javascript" src="js/InfoBox_min.js"></script>
         <script type="text/javascript" src="js/convertor.js"></script>
+        
         <script src="js/showShopByType.js" type="text/javascript"></script>
         <script type="text/javascript" src="js/UcarV1.js"></script>
         
@@ -69,13 +75,13 @@
                 //alert("0");
                 var lng = request("lng");
                 var lat = request("lat");
-                
+        
                 map = new BMap.Map("container",{enableHighResolution:true});
                 if (lng != "" && lat != "") {
                     var newpoint = new BMap.Point(parseFloat(lng),parseFloat(lat));
-                    map.centerAndZoom(newpoint, 18);
+                    map.centerAndZoom(newpoint, 17);
                 } else {
-                    map.centerAndZoom("上海", 18);
+                    map.centerAndZoom("上海", 17);
                     //getGPS();
                 }
                 
@@ -236,7 +242,7 @@
 .box {
 	background-color: #222;
 	/*opacity: 0.95;*/
-	border-radius: 15px;
+	border-radius: 10px;
 	border-style: solid;
 	border-color: white;
 	border-width: 1px;
@@ -244,9 +250,9 @@
 
 .left {
 	float: left;
-	padding: 10px;
-    margin-left: 20px;
-    margin-top:15px;
+	padding: 5px;
+    /*margin-left: 5px;
+    margin-top:3px;*/
     cursor: pointer;
 }
 
@@ -256,8 +262,8 @@
 
 .label {
 	color: white;
-	font-size: 24px;
-	padding: 2px;
+	font-size:12px;
+	padding: 1px;
 	font-family:"Courier New", Courier, monospace;
 }
 
@@ -266,71 +272,71 @@
 }
 
 div#suspendBox .icon {
-	height: 134px;
-	width: 134px;
+	height: 64px;
+	width: 64px;
 }
 
 #title {
-	font-size: 50px;
+	font-size: 15px;
 }
     #title .ui-btn-text{
-        font-size:25px;
+        font-size:12px;
     }
     
     div#shopbox .label {
         font-weight: bold;
-        font-size: 25px;
+        font-size: 12px;
     }
 
 div#shopbox .label {
 	font-weight: bold;
-	font-size: 20px;
+	font-size: 10px;
 }
 
 /*信息框*/
 div#shopbox {
-	background: url("img/infobox_bak.jpg") no-repeat;
-	width: 300px;
-	height: 80px;
-	padding-left: 5px;
+	background: url("img/infobox.png") no-repeat;
+	width: 220px;
+	height: 59px;
+	padding-left: 2px;
 }
 
 td#wrap {
-	width: 280px;
+	width: 140px;
 }
 
 img#logo {
 	 position: absolute;
-	 width: 100px;
-	 height: 84px;
-	 margin-top: 4px;
-	 margin-left: 5px;
+	 width: 60px;
+	 height: 52px;
+	 margin-top: 2px;
+	 margin-left: 2px;
 }
 
 #refreshCancel {
-	width: 160px;
-	height: 60px;
+	width: 80px;
+	height: 30px;
 	background-color: #444;
 	color: white;
-	margin-left: 60px;
+	margin-left: 30px;
 	font-weight: bold;
 	text-decoration: none;
 	cursor: pointer;
-	padding: 8px 10px;
-	margin-right: 20px;
-	-moz-border-radius: 5px;
-	-webkit-border-radius: 5px;
+	padding: 4px 5px;
+	margin-right: 10px;
+	-moz-border-radius: 2px;
+	-webkit-border-radius: 2px;
 	-moz-box-shadow: 0 1px 3px rgba(0,0,0,0.5);
 	-webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
 	text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.25);
-	font-size: 24px;
+	font-size: 12px;
 }
 
 div#header {
-	 height: 100px;
+	 height: 50px;
 }
     div#footer{
-        height: 50px;
+        height: 25px;
     }
 
 </style>
@@ -359,9 +365,9 @@ div#header {
          </div>
          <div style="float: right">
              <div style="float: right"><img id="currentUser" src='img/unlogin.png' class='icon'></div>
-             <div style="float: right; margin-top: 20px; margin-right: 10px;">
-               <div class='label' style="font-size: 32px;"><b id="nickname">未登录</b></div>
-               <div class='label' style="font-size: 20px; float:right; cursor: pointer;"id="userStatus"  onclick="window.location.href='login.html'">点击登录</div>
+             <div style="float: right; margin-top: 10px; margin-right: 5px;">
+               <div class='label' style="font-size: 16px;"><b id="nickname">未登录</b></div>
+               <div class='label' style="font-size: 10px; float:right; cursor: pointer;"id="userStatus"  onclick="window.location.href='login.html'">点击登录</div>
              </div>
          </div>
          <div class='clear'></div>
@@ -369,15 +375,15 @@ div#header {
 	</div>
 	
 	<!-- 刷新提示框内容 -->
-	<div id="refreshBox" data-role="popup" data-theme="none" class="ui-content box" style="width: 200px; height: 160px;">
+	<div id="refreshBox" data-role="popup" data-theme="none" class="ui-content box" style="width: 100px; height: 80px;">
 		 <div class='label center'>正在努力刷新，请等待...</div>
-		 <br><br>
+		 <br>
 		 <a style="color: white" id="refreshCancel">取消</a>
 	</div>
     
     <!-- 地图区域 -->
         <div id="searchBox" style="display:none">
-    	  <input type="search" placeholder="输入地址" id="search" style="height:50px; FONT-SIZE:30px"></input>
+    	  <input type="search" placeholder="输入地址" id="search" data-mini="true"></input>
         </div>
         <div id="container">
          
@@ -385,7 +391,7 @@ div#header {
         
      <div data-role="footer" id="footer">
      	<h5>
-        <font style="color: white;" size="6px"><b id="current"></b></font>
+        <font style="color: white;" size="2px"><b id="current"></b></font>
         </h5>
      </div>
     
