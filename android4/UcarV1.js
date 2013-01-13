@@ -8,7 +8,7 @@ var ClickTime = 0;
 function showYourPosition(map,point)
 {
 	//解决在用户移动状态下，定位出现多点问题，既我们的app会显示之前的定位点
-	overlays = map.getOverlays();
+	var overlays = map.getOverlays();
 	for (var i = 0; i < overlays.length; i++) {
     if (overlays[i] instanceof BMap.Marker) {
 		  if (overlays[i].getTitle() == 'current') {
@@ -51,12 +51,35 @@ function isInShanghai(point)
         
 }
 
-function translateCallback (point) {
+function translateCallback (point) {	
 	isInShanghai(point);
 	if(map) {
         map.panTo(point);
-        showYourPosition(map,point);
-    }
+	   /*map.centerAndZoom(point, 17);
+	
+	 	 map.enablePinchToZoom();
+	 	 $("#container").css("height", document.body.clientHeight - $("#container").offset().top - $("#footer").height());*/
+	   showYourPosition(map,point);
+	
+	 //打开首页悬浮框
+	 /*map.addEventListener("tilesloaded", function(){	 	
+	  if($("#title  .ui-btn-text").html() == "首页"){
+		 $("#suspendBox").popup("open");
+	  } 
+	  
+	  var flag = false;
+        overlays = map.getOverlays();
+        for (var i = 0; i < overlays.length; i++) {
+        	 if (overlays[i] instanceof BMap.Marker) {
+        	 	  flag = true; 
+        	 	  break;
+        	 }
+        }	
+        if (flag) {
+           $("#refreshBox").popup("close");		
+     }
+	 });*/
+  }
 }
 
 //移动版
@@ -68,7 +91,7 @@ function showgps_product(position)
 		var longitude = position.coords.longitude;
 		var gpspoint = new BMap.Point(longitude,latitude);
 		BMap.Convertor.translate(gpspoint,0,translateCallback);
-        
+
 	}
 	else
 		alert("无法获取位置");
@@ -82,7 +105,7 @@ function showgps_debug(position)
 		var gpspoint = new BMap.Point(121.42559,31.01726);
 		BMap.Convertor.translate(gpspoint,0,translateCallback);
 }
-
+    
 function getGPS()
 {
 	if (DEBUG) {   //true开启固定坐标，false使用GPS
@@ -92,11 +115,11 @@ function getGPS()
 		if (gps)
 		{
 			gps.getCurrentPosition(showgps_product,
-                                   function (error)
-                                   {
-                                   alert ("UCAR需要GPS定位来获取您的位置信息。请在系统设置中打开GPS");
-                                   },
-                                   {timeout:20000,enableHighAccuracy: true});
+			function (error)
+			{
+	        alert ("UCAR需要GPS定位来获取您的位置信息。请在系统设置中打开GPS");
+			},
+			{timeout:20000,enableHighAccuracy: true});
 		}
 		else
 		{
@@ -105,17 +128,46 @@ function getGPS()
 	}
 }
 
-
-
 function ucar(map, type, lng, lat) {
 	//显示搜索框
 	$("#searchBox").css("display", "block");
 	
 	$("#container").css("height", document.body.clientHeight - $("#container").offset().top - $("#footer").height());
 	
-	map.clearOverlays();
+	//map.clearOverlays();
 	
+    /*
+	//显示当前位置
+	getGPS();
+	
+	if (lng != "" && lat != "") {
+		var newpoint = new BMap.Point(lng.valueOf(),lat.valueOf());
+		map.panTo(newpoint);
+	}
+     */
+     
+
 	map.addControl(new BMap.ScaleControl());
+    
+    //添加定位控件
+	function ZoomControl_BR(){
+		this.defaultAnchor = BMAP_ANCHOR_BOTTOM_RIGHT;
+		this.defaultOffset = new BMap.Size(5,5);
+	}
+	ZoomControl_BR.prototype = new BMap.Control();
+	ZoomControl_BR.prototype.initialize = function(map) {
+		var div = document.createElement("div");
+		div.innerHTML = "<img style='width: 68px; height: 65px;' src='img/pin.png'>";
+		div.style.cursor = "pointer";
+		div.onclick = function (e) {
+            //alert("aa");
+			getGPS();
+		}
+		map.getContainer().appendChild(div);
+		return div;
+	}
+	var myZoomCtrl_BR = new ZoomControl_BR();
+	map.addControl(myZoomCtrl_BR);
 	
 	//添加刷新控件
 	function ZoomControl_TR(){
@@ -128,6 +180,7 @@ function ucar(map, type, lng, lat) {
 		div.innerHTML = "<a href='#refreshBox'  data-rel='popup' data-role='button' data-position-to='window' data-transition='slidedown'><img style='width: 68px; height: 65px;' src='img/loading.png'></a>";
 		div.style.cursor = "pointer";
 		div.onclick = function (e) {
+            //alert("bb")
 			showShopPlace(map,type);
 		}
 		map.getContainer().appendChild(div);
@@ -136,25 +189,7 @@ function ucar(map, type, lng, lat) {
 	var myZoomCtrl_TR = new ZoomControl_TR();
 	map.addControl(myZoomCtrl_TR);
 	
-	//添加定位控件
-	function ZoomControl_BR(){
-		this.defaultAnchor = BMAP_ANCHOR_BOTTOM_RIGHT;
-		this.defaultOffset = new BMap.Size(5,5);
-	}
-	ZoomControl_BR.prototype = new BMap.Control();
-	ZoomControl_BR.prototype.initialize = function(map) {
-		var div = document.createElement("div");
-		
-		div.innerHTML = "<img style='width: 68px; height: 65px;' src='img/pin.png'>";
-		div.style.cursor = "pointer";
-		div.onclick = function (e) {
-			getGPS();
-		}
-		map.getContainer().appendChild(div);
-		return div;
-	}
-	var myZoomCtrl_BR = new ZoomControl_BR();
-	map.addControl(myZoomCtrl_BR);
+
 	
 	//添加缩放控件
 	function ZoomControl_TL(){
@@ -173,6 +208,7 @@ function ucar(map, type, lng, lat) {
 	map.addControl(myZoomCtrl_TL);
 
 	showShopPlace(map, type);
+    //alert("dd");
 	if (type == 1) {
 		$("#title  .ui-btn-text").html("保养与维修");
 	}  else if (type == 2) {
@@ -182,6 +218,8 @@ function ucar(map, type, lng, lat) {
 	} else {
 		alert('wrong type');
 	}
+    //alert("x");
+
 }
 
 //打印对象的所有值
@@ -222,7 +260,6 @@ function readfile(msg) {
 				//alert("hello");
         var reader = new FileReader();
         reader.onloadend = function(evt) {
-        	alert("arg "+ arg);
 					if (arg==""){
                 alert(msg);
 								window.location.href ='login.html';
@@ -235,8 +272,9 @@ function readfile(msg) {
 								var arg4=arg[3].split("=");
             
 								var uid=arg1[1];
-								alert("uid" + uid);
-           			window.location.href = "collect.html?uid="+uid;            
+                                alert("uid" + uid);
+				
+           			window.location.href = "collect.html?uid="+uid;
 					}
         };
         reader.readAsText(file);
