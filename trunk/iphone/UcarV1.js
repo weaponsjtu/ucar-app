@@ -160,7 +160,7 @@ function ucar(map, type, lng, lat) {
 		div.innerHTML = "<img style='width: 45px; height: 44px;' src='img/pin.png'>";
 		div.style.cursor = "pointer";
 		div.onclick = function (e) {
-            alert("aa");
+            //alert("aa");
 			getGPS();
 		}
 		map.getContainer().appendChild(div);
